@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stadium Navigation</title>
+  <!-- Tailwind CDN removed: causes massive idle CPU with MutationObserver -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: #0a0a0a; color: #e5e5e5; height: 100vh; overflow: hidden; }
+    
+    .glass { background: rgba(20,20,20,0.85); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.06); }
+    
+    /* Map */
+    .section-zone { cursor: pointer; transition: all 0.25s; }
+    .section-zone:hover { filter: brightness(1.4); }
+    .section-zone.active { filter: brightness(1.5) drop-shadow(0 0 12px rgba(99,102,241,0.5)); }
+    
+    .seat-dot { cursor: pointer; transition: all 0.15s; }
+    .seat-dot:hover { filter: brightness(1.5); r: 5; }
+    .seat-dot.picked { filter: drop-shadow(0 0 6px #facc15); r: 6; }
+    
+    .facility-icon { cursor: pointer; transition: transform 0.15s; }
+    .facility-icon:hover { transform: scale(1.25); }
+    
+    /* Path animation */
+    .route-line { stroke-dasharray: 8 4; animation: march 0.8s linear infinite; }
+    @keyframes march { to { stroke-dashoffset: -12; } }
+    
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 3px; }
+    ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+  </style>
+</head>
+<body>
+
+  <!-- Top bar -->
+  <header class="fixed top-0 left-0 right-0 z-50 glass px-4 py-2.5 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <a href="index.html" class="text-gray-500 hover:text-white transition-colors text-sm">&larr;</a>
+      <div class="w-px h-4 bg-gray-700"></div>
+      <span class="text-sm font-bold text-white">Stadium Navigator</span>
+      <span class="text-[10px] text-gray-500">FIFA 2026</span>
+    </div>
+    <div class="flex items-center gap-2">
+
+    </div>
+  </header>
+
+  <!-- Main layout -->
+  <div class="flex h-screen pt-10">
+
+    <!-- Map -->
+    <div class="flex-1 relative">
+      <svg id="map" class="w-full h-full" viewBox="0 0 1200 800">
+        <defs>
+          <radialGradient id="glow"><stop offset="0%" stop-color="#22c55e" stop-opacity="0.15"/><stop offset="100%" stop-color="#22c55e" stop-opacity="0"/></radialGradient>
+          <filter id="shadow"><feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#6366f1" flood-opacity="0.5"/></filter>
+        </defs>
+        <rect width="1200" height="800" fill="#0a0a0a"/>
+        <g id="g-heat"></g>
+        <g id="g-sections"></g>
+        <g id="g-seats"></g>
+        <g id="g-facilities"></g>
+        <g id="g-route"></g>
+        <g id="g-labels"></g>
+      </svg>
+
+      <!-- Zoom hint -->
+      <div class="absolute bottom-4 left-4 glass rounded-lg px-3 py-1.5 text-[10px] text-gray-400" id="hint">Click a section to zoom in</div>
+    </div>
+
+    <!-- Side panel -->
+    <div class="w-72 glass border-l border-white/5 flex flex-col overflow-hidden" id="panel">
+      <!-- Section info -->
+      <div class="p-4 border-b border-white/5" id="sec-info">
+        <div class="text-xs font-bold text-white mb-1" id="sec-name">Select a section</div>
+        <div class="text-[10px] text-gray-500" id="sec-detail">Click on the stadium map to view details</div>
+      </div>
+
+      <!-- Occupancy bar -->
+      <div class="p-4 border-b border-white/5">
+        <div class="text-[10px] text-gray-500 font-semibold mb-1.5">Occupancy</div>
+        <div class="flex items-center gap-2">
+          <div class="flex-1 h-1.5 bg-gray-800 rounded-full overflow-hidden">
+            <div id="occ-bar" class="h-full rounded-full bg-emerald-500 transition-all duration-500" style="width:0%"></div>
+          </div>
+          <span class="text-xs font-bold text-white" id="occ-pct">0%</span>
+        </div>
+      </div>
+
+      <!-- Walk time -->
+      <div class="p-4 border-b border-white/5">
+        <div class="text-[10px] text-gray-500 font-semibold mb-1">Walk Time</div>
+        <div class="text-lg font-bold text-blue-400" id="walk-time">--</div>
+      </div>
+
+      <!-- Nearby -->
+      <div class="p-4 border-b border-white/5 flex-1 overflow-y-auto">
+        <div class="text-[10px] text-gray-500 font-semibold mb-2">Nearby Amenities</div>
+        <div id="nearby-list" class="space-y-1.5"></div>
+      </div>
+
+      <!-- Navigate button -->
+      <div class="p-4">
+        <button onclick="showRoute()" class="w-full py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition-colors">Show Route</button>
+      </div>
+
+      <!-- Legend -->
+      <div class="px-4 pb-4">
+        <div class="text-[9px] text-gray-600 font-semibold mb-1.5">LEGEND</div>
+        <div class="grid grid-cols-2 gap-1 text-[9px]">
+          <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-emerald-500"></span> Available</span>
+          <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-gray-600"></span> Occupied</span>
+          <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-amber-500"></span> Reserved</span>
+          <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-indigo-500"></span> VIP</span>
+        </div>
+        <div class="grid grid-cols-2 gap-1 text-[9px] mt-1.5">
+          <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-emerald-500/40"></span> Low crowd</span>
+          <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-yellow-500/40"></span> Moderate</span>
+          <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-orange-500/40"></span> High</span>
+          <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-red-500/40"></span> Congested</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tooltip -->
+  <div id="tip" class="fixed z-[999] glass rounded-lg px-2.5 py-1.5 text-[10px] pointer-events-none opacity-0 transition-opacity max-w-[180px]">
+    <div class="font-bold text-white" id="tip-name"></div>
+    <div class="text-gray-400" id="tip-sub"></div>
+  </div>
+
+  <script>
+    // ============================================
+    // DATA
+    // ============================================
+    const CX = 600, CY = 400;
+    const FIELD = { x: 350, y: 250, w: 500, h: 300 };
+
+    // Sections with positions
+    const SECTIONS = [
+      // North
+      { id: "N1", stand: "North", name: "North 1", cap: 2200, angle: -160, color: "#22c55e" },
+      { id: "N2", stand: "North", name: "North 2", cap: 2800, angle: -135, color: "#22c55e" },
+      { id: "N3", stand: "North", name: "North 3", cap: 2800, angle: -110, color: "#22c55e" },
+      { id: "N4", stand: "North", name: "North 4", cap: 2200, angle: -85, color: "#22c55e" },
+      // South
+      { id: "S1", stand: "South", name: "South 1", cap: 2200, angle: 20, color: "#22c55e" },
+      { id: "S2", stand: "South", name: "South 2", cap: 2800, angle: 45, color: "#22c55e" },
+      { id: "S3", stand: "South", name: "South 3", cap: 2800, angle: 70, color: "#22c55e" },
+      { id: "S4", stand: "South", name: "South 4", cap: 2200, angle: 95, color: "#22c55e" },
+      // East
+      { id: "E1", stand: "East", name: "East Lower", cap: 4000, angle: -50, color: "#22c55e" },
+      { id: "E2", stand: "East", name: "East Upper", cap: 3000, angle: -25, color: "#22c55e" },
+      { id: "VIP", stand: "East", name: "VIP Lounge", cap: 800, angle: -10, color: "#a855f7" },
+      // West
+      { id: "W1", stand: "West", name: "West Lower", cap: 4000, angle: 130, color: "#22c55e" },
+      { id: "W2", stand: "West", name: "West Upper", cap: 3000, angle: 155, color: "#22c55e" },
+      { id: "MED", stand: "West", name: "Media Box", cap: 400, angle: 170, color: "#6366f1" },
+    ];
+
+    // Facility markers
+    const FACILITIES = [
+      { id: "exit-n", type: "exit", name: "North Exit", x: 600, y: 40, icon: "🚪" },
+      { id: "exit-s", type: "exit", name: "South Exit", x: 600, y: 760, icon: "🚪" },
+      { id: "exit-e", type: "exit", name: "East Exit", x: 1160, y: 400, icon: "🚪" },
+      { id: "exit-w", type: "exit", name: "West Exit", x: 40, y: 400, icon: "🚪" },
+      { id: "wc-n", type: "restroom", name: "Restroom North", x: 400, y: 85, icon: "🚻" },
+      { id: "wc-s", type: "restroom", name: "Restroom South", x: 800, y: 715, icon: "🚻" },
+      { id: "wc-e", type: "restroom", name: "Restroom East", x: 1100, y: 300, icon: "🚻" },
+      { id: "wc-w", type: "restroom", name: "Restroom West", x: 100, y: 500, icon: "🚻" },
+      { id: "food-n", type: "food", name: "Food Court North", x: 700, y: 75, icon: "🍔" },
+      { id: "food-s", type: "food", name: "Food Court South", x: 500, y: 725, icon: "🍔" },
+      { id: "food-e", type: "food", name: "Food Court East", x: 1080, y: 500, icon: "🍔" },
+      { id: "food-w", type: "food", name: "Food Court West", x: 120, y: 300, icon: "🍔" },
+      { id: "med-n", type: "medical", name: "Medical North", x: 300, y: 85, icon: "🏥" },
+      { id: "med-s", type: "medical", name: "Medical South", x: 900, y: 715, icon: "🏥" },
+      { id: "water1", type: "water", name: "Water Station", x: 500, y: 95, icon: "💧" },
+      { id: "water2", type: "water", name: "Water Station", x: 700, y: 705, icon: "💧" },
+      { id: "merch1", type: "merch", name: "Merchandise", x: 1050, y: 200, icon: "🛍️" },
+      { id: "merch2", type: "merch", name: "Merchandise", x: 150, y: 600, icon: "🛍️" },
+      { id: "info1", type: "info", name: "Info Kiosk", x: 1130, y: 150, icon: "ℹ️" },
+      { id: "info2", type: "info", name: "Info Kiosk", x: 70, y: 650, icon: "ℹ️" },
+    ];
+
+    // ============================================
+    // STATE
+    // ============================================
+    let showHeat = true;
+    let simRunning = false;
+    let simTimer = null;
+    let simMinute = 0;
+    let simPhase = "pre";
+    let selectedSec = null;
+    let selectedSeat = null;
+    let zoomed = false;
+    let secDensities = {};
+
+    // Init densities
+    SECTIONS.forEach(s => { secDensities[s.id] = 30 + Math.random() * 40; });
+
+    // ============================================
+    // RENDER
+    // ============================================
+    function init() {
+      renderMap();
+      renderFacilities();
+      renderHeat();
+    }
+
+    function renderMap() {
+      const g = document.getElementById("g-sections");
+      g.innerHTML = "";
+
+      // Field
+      g.innerHTML += `
+        <rect x="${FIELD.x}" y="${FIELD.y}" width="${FIELD.w}" height="${FIELD.h}" rx="4" fill="#166534" stroke="#22c55e" stroke-width="1.5" opacity="0.7"/>
+        <line x1="${CX}" y1="${FIELD.y}" x2="${CX}" y2="${FIELD.y+FIELD.h}" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+        <circle cx="${CX}" cy="${CY}" r="35" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+        <text x="${CX}" y="${CY+4}" fill="rgba(255,255,255,0.06)" font-size="11" font-weight="800" text-anchor="middle" font-family="Inter">PITCH</text>
+      `;
+
+      // Sections as arcs
+      SECTIONS.forEach(s => {
+        const path = arcPath(s.angle - 10, s.angle + 10, 280, 340);
+        const col = "#22c55e"; // Static green
+        g.innerHTML += `
+          <path d="${path}" fill="${col}" fill-opacity="0.3" stroke="${col}" stroke-opacity="0.5" stroke-width="1"
+                class="section-zone" data-id="${s.id}" onclick="clickSection('${s.id}')"/>
+        `;
+      });
+
+      // Stand labels
+      const labels = [
+        { t: "NORTH", x: CX, y: 105 },
+        { t: "SOUTH", x: CX, y: 695 },
+        { t: "EAST", x: 1095, y: CY },
+        { t: "WEST", x: 105, y: CY },
+      ];
+      labels.forEach(l => {
+        g.innerHTML += `<text x="${l.x}" y="${l.y}" fill="rgba(255,255,255,0.08)" font-size="13" font-weight="900" text-anchor="middle" letter-spacing="5" font-family="Inter">${l.t}</text>`;
+      });
+    }
+
+    function arcPath(a1, a2, rIn, rOut) {
+      const toRad = d => d * Math.PI / 180;
+      const steps = 16;
+      let d = "";
+      for (let i = 0; i <= steps; i++) {
+        const a = toRad(a1 + (a2 - a1) * i / steps);
+        const x = CX + rOut * Math.cos(a), y = CY + rOut * Math.sin(a);
+        d += (i === 0 ? "M" : "L") + `${x.toFixed(1)},${y.toFixed(1)} `;
+      }
+      for (let i = steps; i >= 0; i--) {
+        const a = toRad(a1 + (a2 - a1) * i / steps);
+        const x = CX + rIn * Math.cos(a), y = CY + rIn * Math.sin(a);
+        d += `L${x.toFixed(1)},${y.toFixed(1)} `;
+      }
+      return d + "Z";
+    }
+
+
+
+    function sectionCenter(angle) {
+      const r = 310;
+      const rad = angle * Math.PI / 180;
+      return { x: CX + r * Math.cos(rad), y: CY + r * Math.sin(rad) };
+    }
+
+    function renderFacilities() {
+      const g = document.getElementById("g-facilities");
+      g.innerHTML = "";
+      FACILITIES.forEach(f => {
+        g.innerHTML += `
+          <g class="facility-icon" onmouseenter="showTip(event,'${f.name}','${f.type}')" onmouseleave="hideTip()" onclick="clickFacility('${f.id}')">
+            <circle cx="${f.x}" cy="${f.y}" r="11" fill="rgba(30,30,30,0.8)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+            <text x="${f.x}" y="${f.y + 4}" font-size="11" text-anchor="middle">${f.icon}</text>
+          </g>
+        `;
+      });
+    }
+
+    // ============================================
+    // SEATS
+    // ============================================
+    function renderSeats(sectionId) {
+      const g = document.getElementById("g-seats");
+      g.innerHTML = "";
+      const sec = SECTIONS.find(s => s.id === sectionId);
+      if (!sec) return;
+
+      const pos = sectionCenter(sec.angle);
+      const rows = "ABCDEFGHIJ".split("");
+      const seatsPerRow = 12;
+      const rowH = 8, seatW = 7;
+
+      rows.forEach((row, ri) => {
+        // Row label
+        g.innerHTML += `<text x="${pos.x - seatsPerRow * seatW / 2 - 8}" y="${pos.y + ri * rowH + 3}" fill="rgba(255,255,255,0.3)" font-size="6" font-weight="600" font-family="Inter">${row}</text>`;
+        for (let s = 0; s < seatsPerRow; s++) {
+          const x = pos.x - seatsPerRow * seatW / 2 + s * seatW + seatW / 2;
+          const y = pos.y + ri * rowH;
+          const r = Math.random();
+          const status = r < 0.7 ? "available" : r < 0.85 ? "occupied" : "reserved";
+          const fill = status === "available" ? "#22c55e" : status === "reserved" ? "#f59e0b" : "#475569";
+          const seatId = `${sectionId}-${row}${s + 1}`;
+          g.innerHTML += `<circle cx="${x}" cy="${y}" r="2.5" fill="${fill}" fill-opacity="0.8" class="seat-dot" data-seat="${seatId}" onclick="pickSeat('${seatId}','${sectionId}')"/>`;
+        }
+      });
+    }
+
+    // ============================================
+    // INTERACTIONS
+    // ============================================
+    function clickSection(id) {
+      if (zoomed) return;
+      zoomed = true;
+      selectedSec = id;
+      const sec = SECTIONS.find(s => s.id === id);
+      const pos = sectionCenter(sec.angle);
+
+      // Zoom SVG
+      document.getElementById("map").setAttribute("viewBox", `${pos.x - 100} ${pos.y - 50} 200 120`);
+      document.getElementById("g-facilities").style.display = "none";
+      document.getElementById("g-heat").style.display = "none";
+      document.getElementById("g-labels").innerHTML = "";
+
+      // Highlight
+      document.querySelectorAll(".section-zone").forEach(el => el.classList.remove("active"));
+      document.querySelector(`[data-id="${id}"]`)?.classList.add("active");
+
+      // Show seats
+      renderSeats(id);
+
+      // Update panel
+      const d = secDensities[id] || 30;
+      document.getElementById("sec-name").textContent = sec.name;
+      document.getElementById("sec-detail").textContent = `${sec.stand} Stand · ${sec.cap.toLocaleString()} seats`;
+      document.getElementById("occ-pct").textContent = `${Math.round(d)}%`;
+      document.getElementById("occ-bar").style.width = `${d}%`;
+      document.getElementById("occ-bar").className = `h-full rounded-full transition-all duration-500 ${d > 80 ? "bg-red-500" : d > 60 ? "bg-orange-500" : d > 40 ? "bg-yellow-500" : "bg-emerald-500"}`;
+      document.getElementById("walk-time").textContent = `${Math.floor(2 + Math.random() * 4)} min`;
+      document.getElementById("hint").textContent = "Click a seat · Scroll to zoom out";
+
+      // Nearby
+      const nearby = FACILITIES.slice(0, 4);
+      const list = document.getElementById("nearby-list");
+      list.innerHTML = "";
+      nearby.forEach(f => {
+        list.innerHTML += `<div class="flex items-center gap-2 text-[10px]"><span>${f.icon}</span><span class="text-gray-300">${f.name}</span></div>`;
+      });
+    }
+
+    function pickSeat(seatId, sectionId) {
+      document.querySelectorAll(".seat-dot").forEach(el => el.classList.remove("picked"));
+      document.querySelector(`[data-seat="${seatId}"]`)?.classList.add("picked");
+      selectedSeat = seatId;
+      document.getElementById("sec-name").textContent = `Seat ${seatId}`;
+      document.getElementById("sec-detail").textContent = `Section ${sectionId}`;
+    }
+
+    function zoomOut() {
+      if (!zoomed) return;
+      zoomed = false;
+      selectedSec = null;
+      selectedSeat = null;
+      document.getElementById("map").setAttribute("viewBox", "0 0 1200 800");
+      document.getElementById("g-seats").innerHTML = "";
+      document.getElementById("g-facilities").style.display = "";
+      document.getElementById("g-heat").style.display = "";
+      document.querySelectorAll(".section-zone").forEach(el => el.classList.remove("active"));
+      document.getElementById("sec-name").textContent = "Select a section";
+      document.getElementById("sec-detail").textContent = "Click on the stadium map to view details";
+      document.getElementById("occ-pct").textContent = "0%";
+      document.getElementById("occ-bar").style.width = "0%";
+      document.getElementById("walk-time").textContent = "--";
+      document.getElementById("nearby-list").innerHTML = "";
+      document.getElementById("hint").textContent = "Click a section to zoom in";
+      renderHeat();
+    }
+
+    // Scroll to zoom out
+    document.getElementById("map").addEventListener("wheel", e => {
+      if (zoomed) { e.preventDefault(); zoomOut(); }
+    });
+
+    function clickFacility(id) {
+      const f = FACILITIES.find(x => x.id === id);
+      if (!f) return;
+      document.getElementById("sec-name").textContent = f.name;
+      document.getElementById("sec-detail").textContent = f.type.charAt(0).toUpperCase() + f.type.slice(1);
+      showRouteTo(f.x, f.y);
+    }
+
+    // ============================================
+    // ROUTING
+    // ============================================
+    function showRoute() {
+      if (!selectedSec) return;
+      const sec = SECTIONS.find(s => s.id === selectedSec);
+      const pos = sectionCenter(sec.angle);
+      showRouteTo(pos.x, pos.y);
+    }
+
+    function showRouteTo(tx, ty) {
+      const g = document.getElementById("g-route");
+      g.innerHTML = "";
+      // Simple path from nearest exit
+      const exits = FACILITIES.filter(f => f.type === "exit");
+      let best = exits[0], bestDist = Infinity;
+      exits.forEach(e => {
+        const d = Math.hypot(e.x - tx, e.y - ty);
+        if (d < bestDist) { bestDist = d; best = e; }
+      });
+      // Waypoint through concourse
+      const mx = (best.x + tx) / 2, my = (best.y + ty) / 2;
+      const pts = `${best.x},${best.y} ${best.x},${my} ${tx},${my} ${tx},${ty}`;
+      g.innerHTML = `
+        <polyline points="${pts}" fill="none" stroke="#6366f1" stroke-width="3" stroke-linecap="round" class="route-line" filter="url(#shadow)"/>
+        <circle cx="${best.x}" cy="${best.y}" r="5" fill="#22c55e" stroke="white" stroke-width="1.5"/>
+        <circle cx="${tx}" cy="${ty}" r="5" fill="#ef4444" stroke="white" stroke-width="1.5"/>
+      `;
+      document.getElementById("walk-time").textContent = `${Math.floor(1 + bestDist / 300)} min`;
+    }
+
+    // ============================================
+    // TOOLTIP
+    // ============================================
+    function showTip(e, name, sub) {
+      const tip = document.getElementById("tip");
+      tip.style.opacity = "1";
+      tip.style.left = `${e.clientX + 10}px`;
+      tip.style.top = `${e.clientY - 5}px`;
+      document.getElementById("tip-name").textContent = name;
+      document.getElementById("tip-sub").textContent = sub;
+    }
+    function hideTip() { document.getElementById("tip").style.opacity = "0"; }
+
+    // ============================================
+
+
+    // ============================================
+    // INIT
+    // ============================================
+    init();
+  </script>
+</body>
+</html>

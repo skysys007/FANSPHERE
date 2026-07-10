@@ -1,0 +1,15 @@
+{
+  "name": "smartstadium-ai",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "GenAI-Powered Real-Time Stadium Intelligence System for FIFA 2026",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^5.2.0"
+  }
+}

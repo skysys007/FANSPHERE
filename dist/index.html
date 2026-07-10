@@ -1,0 +1,1799 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-950 text-slate-100">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SmartStadium AI - FIFA World Cup 2026</title>
+  <meta name="description" content="GenAI-Powered Real-Time Stadium Intelligence System for FIFA World Cup 2026. Live crowd density, accessible navigation, and multilingual AI assistant.">
+  <meta name="keywords" content="FIFA 2026, SmartStadium, AI, crowd management, accessibility, stadium navigation">
+  <meta name="theme-color" content="#0284c7">
+  <meta property="og:title" content="SmartStadium AI - FIFA World Cup 2026">
+  <meta property="og:description" content="GenAI-Powered Real-Time Stadium Intelligence System">
+  <meta property="og:type" content="website">
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon-B3-V3SJf.svg">
+  <!-- Tailwind CSS v3 CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0f9ff',
+              100: '#e0f2fe',
+              500: '#0ea5e9',
+              600: '#0284c7',
+              700: '#0369a1',
+              900: '#0c4a6e',
+            },
+            accent: {
+              500: '#10b981',
+              600: '#059669',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" crossorigin href="/assets/index-pz-6R7aW.css">
+</head>
+<body class="h-full flex flex-col bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900 via-slate-950 to-black overflow-hidden selection:bg-brand-500/30 selection:text-white page-entrance">
+
+  <!-- ==========================================
+       HEADER & NAVIGATION BAR
+       ========================================== -->
+  <header class="glassmorphism sticky top-0 z-40 border-b border-slate-800 px-6 py-4 flex flex-wrap items-center justify-between gap-4 header-inner">
+    <div class="flex items-center gap-3">
+      <div class="h-10 w-10 rounded-xl bg-gradient-to-tr from-brand-600 to-emerald-500 flex items-center justify-center shadow-lg shadow-brand-500/20">
+        <i data-lucide="shield-alert" class="w-6 h-6 text-white"></i>
+      </div>
+      <div>
+        <h1 class="font-outfit text-xl font-bold tracking-tight text-white flex items-center gap-2" id="ui-title">
+          SmartStadium AI • FIFA 2026
+        </h1>
+        <p class="text-xs text-slate-400 font-medium" id="ui-subtitle">GenAI-Powered Real-Time Stadium Intelligence</p>
+      </div>
+    </div>
+
+    <!-- Toggle views -->
+    <div class="flex items-center bg-slate-900/80 p-1 rounded-xl border border-slate-800 view-toggle-group">
+      <button id="btn-fan-view" class="px-4 py-2 text-xs font-semibold rounded-lg transition-all duration-200 bg-brand-600 text-white shadow" onclick="switchView('fan')">
+        <span class="flex items-center gap-1.5"><i data-lucide="users" class="w-3.5 h-3.5"></i> <span id="ui-fan-tab">Fan Guide</span></span>
+      </button>
+      <button id="btn-staff-view" class="px-4 py-2 text-xs font-semibold rounded-lg transition-all duration-200 text-slate-400 hover:text-white" onclick="switchView('staff')">
+        <span class="flex items-center gap-1.5"><i data-lucide="layout-dashboard" class="w-3.5 h-3.5"></i> <span id="ui-staff-tab">Organizer Dashboard</span></span>
+      </button>
+    </div>
+
+    <!-- Language Selector -->
+    <div class="flex items-center gap-3 lang-selector">
+      <div class="flex items-center gap-1.5 text-xs text-slate-400">
+        <i data-lucide="globe" class="w-3.5 h-3.5"></i>
+        <span id="ui-lang-label">Language:</span>
+      </div>
+      <select id="lang-select" class="bg-slate-900 border border-slate-800 rounded-lg px-2 py-1.5 text-xs font-semibold text-slate-200 focus:outline-none focus:border-brand-500 transition-colors">
+        <option value="en">English (US)</option>
+        <option value="es">Español (ES)</option>
+        <option value="hi">हिन्दी (IN)</option>
+        <option value="fr">Français (FR)</option>
+        <option value="pt">Português (BR)</option>
+      </select>
+      <a href="navigate.html" class="px-3 py-1.5 text-xs font-bold rounded-lg bg-indigo-600/20 text-indigo-400 border border-indigo-600/30 hover:bg-indigo-600/30 transition-colors flex items-center gap-1.5">
+        <i data-lucide="map-pin" class="w-3 h-3"></i> Indoor Nav
+      </a>
+    </div>
+  </header>
+
+  <!-- ==========================================
+       MAIN CONTAINER
+       ========================================== -->
+  <main class="flex-1 flex overflow-hidden p-6 gap-6 main-layout">
+
+    <!-- LEFT COMPONENT: ALWAYS MAP IN BOTH VIEWS (Visual Centerpiece) -->
+    <div class="flex-[3] flex flex-col glassmorphism rounded-2xl p-4 overflow-hidden relative map-panel">
+      <div class="flex items-center justify-between mb-3">
+        <h2 class="font-outfit text-sm font-bold tracking-wide uppercase text-slate-300 flex items-center gap-2">
+          <i data-lucide="map" class="w-4 h-4 text-brand-500"></i>
+          <span id="ui-map-title">Real-Time Crowd Density Heatmap</span>
+        </h2>
+        
+        <!-- Heatmap Legend -->
+        <div class="flex items-center gap-3 text-[10px] font-medium">
+          <span class="flex items-center gap-1.5 text-slate-400">
+            <span class="h-2.5 w-2.5 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.6)]"></span> <span id="legend-low">Low (&lt;40%)</span>
+          </span>
+          <span class="flex items-center gap-1.5 text-slate-400">
+            <span class="h-2.5 w-2.5 rounded-full bg-yellow-500 shadow-[0_0_6px_rgba(234,179,8,0.6)]"></span> <span id="legend-med">Moderate (40-75%)</span>
+          </span>
+          <span class="flex items-center gap-1.5 text-slate-400">
+            <span class="h-2.5 w-2.5 rounded-full bg-red-500 shadow-[0_0_6px_rgba(239,68,68,0.6)]"></span> <span id="legend-high">High (&gt;75%)</span>
+          </span>
+          <div class="flex-1"></div>
+          <span class="text-[10px] text-slate-500 font-bold" id="heatmap-avg-density">Avg: 0%</span>
+        </div>
+      </div>
+
+      <!-- SVG Container with full responsive scaling -->
+      <div class="flex-1 bg-slate-950/80 rounded-xl border border-slate-900 relative overflow-hidden flex items-center justify-center shadow-inner">
+        <!-- SVG Stadium Layout -->
+        <svg id="stadium-svg" class="w-full h-full max-h-[550px]" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+          
+          <!-- Outer boundary -->
+          <rect x="10" y="10" width="780" height="580" rx="30" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="2" />
+          
+          <!-- Grid Background lines (Cyberpunk detail) -->
+          <g stroke="rgba(255,255,255,0.015)" stroke-width="1">
+            <line x1="100" y1="0" x2="100" y2="600" />
+            <line x1="200" y1="0" x2="200" y2="600" />
+            <line x1="300" y1="0" x2="300" y2="600" />
+            <line x1="400" y1="0" x2="400" y2="600" />
+            <line x1="500" y1="0" x2="500" y2="600" />
+            <line x1="600" y1="0" x2="600" y2="600" />
+            <line x1="700" y1="0" x2="700" y2="600" />
+            <line x1="0" y1="100" x2="800" y2="100" />
+            <line x1="0" y1="200" x2="800" y2="200" />
+            <line x1="0" y1="300" x2="800" y2="300" />
+            <line x1="0" y1="400" x2="800" y2="400" />
+            <line x1="0" y1="500" x2="800" y2="500" />
+          </g>
+
+          <!-- Central Soccer Pitch -->
+          <rect x="320" y="240" width="160" height="120" rx="5" fill="#1b4332" stroke="#2d6a4f" stroke-width="3" opacity="0.65" />
+          <circle cx="400" cy="300" r="30" fill="none" stroke="#2d6a4f" stroke-width="2" opacity="0.65" />
+          <line x1="400" y1="240" x2="400" y2="360" stroke="#2d6a4f" stroke-width="2" opacity="0.65" />
+
+          <!-- Concourse Ring Overlay -->
+          <circle cx="400" cy="300" r="210" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="30" stroke-dasharray="10 5" />
+
+          <!-- Links (edges) connecting nodes -->
+          <g id="edges-group" stroke="rgba(255, 255, 255, 0.15)" stroke-width="2.5" stroke-dasharray="4, 4">
+            <!-- Dynamically populated via JS -->
+          </g>
+
+          <!-- Active Path Polyline Overlay (Dijkstra route) -->
+          <polyline id="route-line" points="" stroke="#0ea5e9" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round" fill="none" class="animate-route-path hidden filter drop-shadow-[0_0_8px_#0ea5e9]" />
+
+          <!-- Interactive Node Circles -->
+          <g id="nodes-group">
+            <!-- Dynamically populated via JS -->
+          </g>
+        </svg>
+
+        <!-- Hover node details tooltip -->
+        <div id="node-tooltip" class="absolute hidden bg-slate-900 border border-slate-800 text-xs text-slate-300 p-2.5 rounded-lg shadow-xl pointer-events-none max-w-[220px]">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT CONTAINER: CHANGES DYNAMICALLY BY TAB (Fan View vs. Staff Operations) -->
+    
+    <!-- A. FAN GUIDE INTERFACE -->
+    <div id="view-fan" class="flex-[2] flex flex-col gap-6 overflow-hidden side-panel">
+      
+      <!-- Live Match Clock (Fan View) -->
+      <div class="glassmorphism rounded-2xl p-3 flex items-center justify-between shadow-xl border border-brand-500/20">
+        <div class="flex items-center gap-2">
+          <div class="h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></div>
+          <span class="text-xs font-bold text-slate-300" id="fan-match-teams">No live match</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <div class="text-sm font-outfit font-black text-white" id="fan-match-score">- : -</div>
+          <div class="w-px h-4 bg-slate-700"></div>
+          <div class="text-xs font-bold text-yellow-400 font-mono" id="fan-match-clock">00:00:00</div>
+          <div class="text-[10px] font-bold text-emerald-400" id="fan-match-minute"></div>
+        </div>
+      </div>
+
+      <!-- Routing Panel -->
+      <div class="glassmorphism rounded-2xl p-5 flex flex-col gap-4 shadow-xl">
+        <h3 class="font-outfit text-sm font-bold tracking-wide uppercase text-slate-300 flex items-center gap-2 border-b border-slate-800/80 pb-2.5">
+          <i data-lucide="navigation-2" class="w-4 h-4 text-emerald-500"></i>
+          <span id="ui-route-title">Find Navigation Route</span>
+        </h3>
+
+        <!-- Start node selector -->
+        <div class="flex flex-col gap-1.5">
+          <label class="text-xs text-slate-400 font-medium" id="lbl-start">Start Location</label>
+          <div class="relative">
+            <select id="select-start" class="w-full glass-input rounded-xl px-3 py-2.5 text-xs text-slate-200 appearance-none cursor-pointer">
+              <!-- Dynamically populated -->
+            </select>
+            <div class="absolute right-3 top-3.5 pointer-events-none text-slate-500">
+              <i data-lucide="chevron-down" class="w-4 h-4"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- End node selector -->
+        <div class="flex flex-col gap-1.5">
+          <label class="text-xs text-slate-400 font-medium" id="lbl-end">Destination</label>
+          <div class="relative">
+            <select id="select-end" class="w-full glass-input rounded-xl px-3 py-2.5 text-xs text-slate-200 appearance-none cursor-pointer">
+              <!-- Dynamically populated -->
+            </select>
+            <div class="absolute right-3 top-3.5 pointer-events-none text-slate-500">
+              <i data-lucide="chevron-down" class="w-4 h-4"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Accessibility toggle and button -->
+        <div class="flex items-center justify-between gap-4 mt-1">
+          <label class="flex items-center gap-2 text-xs font-semibold text-slate-300 cursor-pointer select-none">
+            <input type="checkbox" id="check-wheelchair" class="rounded border-slate-700 bg-slate-900 text-brand-600 focus:ring-brand-500 h-4.5 w-4.5" />
+            <span class="flex items-center gap-1"><i data-lucide="accessibility" class="w-4 h-4 text-brand-400"></i> <span id="ui-wheelchair-label">Wheelchair-Accessible Route</span></span>
+          </label>
+          <button id="btn-calc-route" class="bg-brand-600 hover:bg-brand-500 active:bg-brand-700 text-white px-4 py-2.5 rounded-xl font-bold text-xs shadow-lg shadow-brand-500/20 transition-all flex items-center gap-1.5">
+            <i data-lucide="milestone" class="w-3.5 h-3.5"></i> <span id="ui-calc-btn">Calculate Route</span>
+          </button>
+        </div>
+
+        <!-- Path navigation list -->
+        <div id="route-directions" class="hidden mt-2 bg-slate-950/50 rounded-xl p-3 border border-slate-900 max-h-[160px] overflow-y-auto">
+          <h4 class="text-xs font-bold text-slate-300 mb-2 flex items-center gap-1"><i data-lucide="footprints" class="w-3.5 h-3.5 text-slate-400"></i> <span id="ui-details-label">Route Navigation Path</span></h4>
+          <ol id="directions-list" class="text-xs text-slate-400 space-y-1.5 list-decimal pl-4">
+            <!-- Dynamically populated -->
+          </ol>
+        </div>
+      </div>
+
+      <!-- LLM Chatbot Panel -->
+      <div class="glassmorphism rounded-2xl flex-1 flex flex-col overflow-hidden shadow-xl min-h-[300px]">
+        <div class="px-5 py-4 border-b border-slate-800/80 bg-slate-900/30 flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="relative flex h-3 w-3">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-3 w-3 bg-brand-500"></span>
+            </span>
+            <h3 class="font-outfit text-sm font-bold tracking-wide uppercase text-slate-300" id="ui-chatbot-title">
+              SmartStadium AI Chatbot
+            </h3>
+          </div>
+          <!-- Clear Chat -->
+          <button id="btn-clear-chat" class="text-slate-500 hover:text-slate-300 transition-colors p-1" title="Clear Chat">
+            <i data-lucide="trash-2" class="w-4 h-4"></i>
+          </button>
+        </div>
+
+        <!-- Chat messages view -->
+        <div id="chat-messages" class="flex-1 p-5 overflow-y-auto space-y-4">
+          <!-- Dynamically populated. Start with greeting -->
+        </div>
+
+        <!-- Suggested Queries Chips -->
+        <div id="suggested-chips" class="px-5 py-2.5 bg-slate-950/20 border-t border-slate-900 flex flex-wrap gap-1.5 overflow-x-auto select-none">
+          <!-- Populated in JS based on language selection -->
+        </div>
+
+        <!-- Chat Input Form -->
+        <form id="chat-form" class="p-4 border-t border-slate-800 bg-slate-900/40 flex items-center gap-3">
+          <input type="text" id="chat-input" class="flex-1 glass-input rounded-xl px-4 py-3 text-xs text-slate-200" placeholder="Ask SmartStadium AI... (e.g. 'Where is EcoEats?')" />
+          <button type="submit" class="bg-brand-600 hover:bg-brand-500 text-white p-3 rounded-xl shadow shadow-brand-500/25 transition-all">
+            <i data-lucide="send" class="w-4.5 h-4.5"></i>
+          </button>
+        </form>
+      </div>
+
+    </div>
+
+    <!-- B. ORGANIZER/STAFF OPERATIONS DASHBOARD (Hidden by default) -->
+    <div id="view-staff" class="hidden flex-[2] flex flex-col gap-6 overflow-y-auto side-panel">
+      
+      <!-- Simulation Controls & Sensor Status Card -->
+      <div class="glassmorphism rounded-2xl p-5 flex flex-col gap-4 shadow-xl">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-2.5">
+          <h3 class="font-outfit text-sm font-bold tracking-wide uppercase text-slate-300 flex items-center gap-2">
+            <i data-lucide="cpu" class="w-4 h-4 text-yellow-500"></i>
+            <span id="ui-sim-title">Simulation Dashboard Controls</span>
+          </h3>
+          <!-- Pulse state -->
+          <div class="flex items-center gap-1.5 text-xs text-emerald-400 bg-emerald-950/40 border border-emerald-900/50 px-2 py-0.5 rounded-full" id="crowd-api-badge">
+            <span class="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" id="crowd-api-dot"></span>
+            <span id="crowd-api-status">Match API Sync</span>
+          </div>
+        </div>
+
+        <!-- Speed control slider -->
+        <div class="grid grid-cols-2 gap-4">
+          <div class="flex flex-col gap-1">
+            <span class="text-xs text-slate-400" id="ui-sim-speed">Simulation Speed</span>
+            <div class="flex items-center gap-2 mt-1">
+              <input type="range" id="sim-speed-slider" min="1" max="5" value="3" class="w-full accent-brand-500 bg-slate-800 h-1.5 rounded" />
+              <span id="sim-speed-val" class="text-xs font-bold text-brand-400 min-w-[20px]">3s</span>
+            </div>
+          </div>
+          <div class="flex items-center justify-end gap-2">
+            <button id="btn-pause-sim" class="border border-slate-800 bg-slate-900/60 text-slate-400 hover:text-white px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-colors">
+              <i data-lucide="pause" class="w-3.5 h-3.5"></i> Pause
+            </button>
+            <button id="btn-trigger-incident" class="bg-red-950/40 border border-red-900/50 hover:bg-red-900/30 text-red-400 px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-colors">
+              <i data-lucide="flame" class="w-3.5 h-3.5"></i> Trigger Incident
+            </button>
+          </div>
+        </div>
+
+        <!-- Quick Live Metrics -->
+        <div class="grid grid-cols-3 gap-3 border-t border-slate-800/80 pt-3">
+          <div class="bg-slate-950/50 rounded-xl p-2.5 border border-slate-900 text-center">
+            <div class="text-[10px] uppercase tracking-wider text-slate-500 font-bold">Total Attendance</div>
+            <div class="text-base font-outfit font-extrabold text-white mt-0.5">58,412</div>
+          </div>
+          <div class="bg-slate-950/50 rounded-xl p-2.5 border border-slate-900 text-center">
+            <div class="text-[10px] uppercase tracking-wider text-slate-500 font-bold" id="ui-bin-cap">Smart Bins</div>
+            <div class="text-base font-outfit font-extrabold text-emerald-400 mt-0.5" id="metric-bins">42%</div>
+          </div>
+          <div class="bg-slate-950/50 rounded-xl p-2.5 border border-slate-900 text-center">
+            <div class="text-[10px] uppercase tracking-wider text-slate-500 font-bold" id="ui-grid-load">Solar Grid</div>
+            <div class="text-base font-outfit font-extrabold text-yellow-400 mt-0.5" id="metric-solar">68 kW</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Real-Time Match State Widget (OpenLigaDB) -->
+      <div class="glassmorphism rounded-2xl p-4 flex flex-col gap-3 shadow-xl border border-brand-500/30 relative overflow-hidden">
+        <div class="absolute inset-0 bg-brand-500/5 z-0 pointer-events-none"></div>
+        <div class="relative z-10 flex items-center justify-between border-b border-slate-800 pb-2">
+          <h3 class="font-outfit text-sm font-bold tracking-wide uppercase text-slate-300 flex items-center gap-2">
+            <i data-lucide="radio" class="w-4 h-4 text-brand-400"></i>
+            <span>Live Match State</span>
+          </h3>
+          <div class="flex items-center gap-1.5 text-[9px] font-bold text-brand-400 bg-brand-950/40 border border-brand-900/50 px-2 py-0.5 rounded-full uppercase tracking-wider">
+            <span class="h-1.5 w-1.5 rounded-full bg-brand-400 animate-ping"></span>
+            <span>Broadcast Live</span>
+          </div>
+        </div>
+        <div class="relative z-10 grid grid-cols-[1fr_auto_1fr] items-center gap-4 py-1">
+          <div class="text-right">
+            <div class="text-xs font-bold text-slate-300 truncate" id="match-team1">--</div>
+          </div>
+          <div class="flex flex-col items-center bg-slate-900/80 px-5 py-3 rounded-xl border border-slate-800">
+            <div class="text-xl font-outfit font-black text-white tracking-widest"><span id="match-score1">0</span> : <span id="match-score2">0</span></div>
+            <div class="flex items-center gap-2 mt-1">
+              <div class="text-[11px] text-emerald-400 font-bold flex items-center gap-1">
+                <i data-lucide="clock" class="w-3 h-3"></i>
+                <span id="match-minute">--</span>'
+              </div>
+              <div class="w-px h-3 bg-slate-700"></div>
+              <div class="text-[11px] text-yellow-400 font-bold flex items-center gap-1" id="match-clock">
+                <i data-lucide="clock" class="w-3 h-3"></i>
+                <span id="match-clock-time">00:00:00</span>
+              </div>
+            </div>
+            <div class="text-[9px] text-slate-500 mt-1 font-medium" id="match-status">Waiting for kickoff...</div>
+          </div>
+          <div class="text-left">
+            <div class="text-xs font-bold text-slate-300 truncate" id="match-team2">--</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Environment API Widget -->
+      <div class="glassmorphism rounded-2xl p-4 flex flex-col gap-3 shadow-xl">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+          <h3 class="font-outfit text-sm font-bold tracking-wide uppercase text-slate-300 flex items-center gap-2">
+            <i data-lucide="cloud-sun" class="w-4 h-4 text-sky-400"></i>
+            <span>Live Environment Data</span>
+          </h3>
+          <div class="flex items-center gap-1.5 text-[9px] font-bold text-sky-400 bg-sky-950/40 border border-sky-900/50 px-2 py-0.5 rounded-full uppercase tracking-wider">
+            <span class="h-1.5 w-1.5 rounded-full bg-sky-400 animate-pulse" id="weather-sync-dot"></span>
+            <span id="weather-sync-status">API Sync Active</span>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div class="bg-slate-950/50 rounded-xl p-2.5 border border-slate-900 flex items-center justify-between">
+            <span class="text-[10px] uppercase tracking-wider text-slate-500 font-bold">Temperature</span>
+            <span class="text-sm font-outfit font-extrabold text-orange-400" id="live-weather-temp">--°C</span>
+          </div>
+          <div class="bg-slate-950/50 rounded-xl p-2.5 border border-slate-900 flex items-center justify-between">
+            <span class="text-[10px] uppercase tracking-wider text-slate-500 font-bold">Cloud Cover</span>
+            <span class="text-sm font-outfit font-extrabold text-slate-300" id="live-weather-clouds">--%</span>
+          </div>
+        </div>
+        <div class="text-[9px] text-slate-500 text-right italic mt-[-4px]">
+          Source: Open-Meteo API (New York, NJ)
+        </div>
+      </div>
+
+      <!-- GenAI Operations Summary Panel -->
+      <div class="glassmorphism rounded-2xl p-5 flex flex-col gap-3 shadow-xl">
+        <h3 class="font-outfit text-sm font-bold tracking-wide uppercase text-slate-300 flex items-center gap-2 border-b border-slate-800/80 pb-2.5">
+          <i data-lucide="sparkles" class="w-4 h-4 text-brand-400"></i>
+          <span id="ui-summary-title">GenAI Real-Time Operations Summary</span>
+        </h3>
+        
+        <!-- Live AI Situation Report -->
+        <div id="ai-situation-report" class="text-xs text-slate-400 leading-relaxed bg-slate-950/60 rounded-xl p-3 border border-slate-900/80 italic min-h-[80px]">
+          <div class="skeleton-loading" style="height: 10px; width: 90%; margin-bottom: 8px;">&nbsp;</div>
+          <div class="skeleton-loading" style="height: 10px; width: 75%; margin-bottom: 8px;">&nbsp;</div>
+          <div class="skeleton-loading" style="height: 10px; width: 60%;">&nbsp;</div>
+        </div>
+
+        <!-- Decision Suggestions Panel -->
+        <div class="flex flex-col gap-2.5">
+          <h4 class="text-xs font-bold text-slate-300 flex items-center gap-1.5 mt-1">
+            <i data-lucide="brain-circuit" class="w-3.5 h-3.5 text-brand-500"></i>
+            <span id="ui-recommend-title">GenAI Operational Recommendations</span>
+          </h4>
+          <div id="recommendations-container" class="space-y-2.5 max-h-[140px] overflow-y-auto">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Incident Center -->
+      <div class="glassmorphism rounded-2xl p-5 flex-1 flex flex-col overflow-hidden shadow-xl min-h-[220px]">
+        <h3 class="font-outfit text-sm font-bold tracking-wide uppercase text-slate-300 flex items-center gap-2 border-b border-slate-800/80 pb-2.5 mb-3 flex-shrink-0">
+          <i data-lucide="shield-alert" class="w-4 h-4 text-red-500"></i>
+          <span id="ui-incidents-title">Active Incident Center</span>
+        </h3>
+
+        <div class="flex-1 overflow-y-auto min-h-[100px] border border-slate-900 bg-slate-950/40 rounded-xl">
+          <table class="w-full text-left text-xs border-collapse">
+            <thead>
+              <tr class="border-b border-slate-800 bg-slate-900/60 text-slate-400 font-semibold select-none">
+                <th class="py-2.5 px-3">Location</th>
+                <th class="py-2.5 px-3">Description</th>
+                <th class="py-2.5 px-3">Priority</th>
+                <th class="py-2.5 px-3 text-right">Action</th>
+              </tr>
+            </thead>
+            <tbody id="incidents-tbody" class="text-slate-300 divide-y divide-slate-900">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Sustainability & Transit Analytics Panel (Phase 4) -->
+      <div class="glassmorphism rounded-2xl p-5 flex flex-col gap-4 shadow-xl">
+        <h3 class="font-outfit text-sm font-bold tracking-wide uppercase text-slate-300 flex items-center gap-2 border-b border-slate-800/80 pb-2.5">
+          <i data-lucide="leaf" class="w-4 h-4 text-emerald-500"></i>
+          <span id="ui-sustainability-title">Sustainability & Transit Live Analytics</span>
+        </h3>
+
+        <!-- Sustainability Metrics Grid -->
+        <div class="grid grid-cols-2 gap-3">
+          <!-- Smart Bins -->
+          <div class="bg-slate-950/50 rounded-xl p-3 border border-slate-900">
+            <div class="flex items-center gap-1.5 mb-2">
+              <i data-lucide="recycle" class="w-3 h-3 text-emerald-400"></i>
+              <span class="text-[10px] uppercase tracking-wider text-slate-500 font-bold">Smart Bins</span>
+            </div>
+            <div class="text-base font-outfit font-extrabold mt-0.5" id="metric-bins-val">42%</div>
+            <div class="progress-bar-track mt-1.5">
+              <div class="progress-bar-fill green" id="bar-bins" style="width: 42%"></div>
+            </div>
+          </div>
+
+          <!-- Solar Grid -->
+          <div class="bg-slate-950/50 rounded-xl p-3 border border-slate-900">
+            <div class="flex items-center gap-1.5 mb-2">
+              <i data-lucide="sun" class="w-3 h-3 text-yellow-400"></i>
+              <span class="text-[10px] uppercase tracking-wider text-slate-500 font-bold">Solar Output</span>
+            </div>
+            <div class="text-base font-outfit font-extrabold text-yellow-400 mt-0.5" id="metric-solar-val">68 kW</div>
+            <div class="progress-bar-track mt-1.5">
+              <div class="progress-bar-fill yellow" id="bar-solar" style="width: 45%"></div>
+            </div>
+          </div>
+
+          <!-- Water Usage -->
+          <div class="bg-slate-950/50 rounded-xl p-3 border border-slate-900">
+            <div class="flex items-center gap-1.5 mb-2">
+              <i data-lucide="droplets" class="w-3 h-3 text-blue-400"></i>
+              <span class="text-[10px] uppercase tracking-wider text-slate-500 font-bold">Water Usage</span>
+            </div>
+            <div class="text-base font-outfit font-extrabold text-blue-400 mt-0.5" id="metric-water-val">35 kL</div>
+            <div class="progress-bar-track mt-1.5">
+              <div class="progress-bar-fill blue" id="bar-water" style="width: 35%"></div>
+            </div>
+          </div>
+
+          <!-- Carbon Offset -->
+          <div class="bg-slate-950/50 rounded-xl p-3 border border-slate-900">
+            <div class="flex items-center gap-1.5 mb-2">
+              <i data-lucide="leaf" class="w-3 h-3 text-emerald-400"></i>
+              <span class="text-[10px] uppercase tracking-wider text-slate-500 font-bold">Carbon Offset</span>
+            </div>
+            <div class="text-base font-outfit font-extrabold text-emerald-400 mt-0.5" id="metric-carbon-val">2.4 t CO₂</div>
+            <div class="progress-bar-track mt-1.5">
+              <div class="progress-bar-fill green" id="bar-carbon" style="width: 48%"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Transit Wait Times -->
+        <div class="border-t border-slate-800/80 pt-3">
+          <h4 class="text-xs font-bold text-slate-300 flex items-center gap-1.5 mb-2.5">
+            <i data-lucide="train-front" class="w-3.5 h-3.5 text-brand-500"></i>
+            <span>Live Transit Wait Times</span>
+          </h4>
+          <div class="grid grid-cols-3 gap-2">
+            <div class="bg-slate-950/60 rounded-lg p-2 border border-slate-900 text-center">
+              <div class="text-[9px] uppercase tracking-wider text-slate-500 font-bold">Metro L1</div>
+              <div class="text-sm font-outfit font-extrabold text-brand-400 mt-0.5" id="transit-subway">4 min</div>
+            </div>
+            <div class="bg-slate-950/60 rounded-lg p-2 border border-slate-900 text-center">
+              <div class="text-[9px] uppercase tracking-wider text-slate-500 font-bold">Shuttle</div>
+              <div class="text-sm font-outfit font-extrabold text-yellow-400 mt-0.5" id="transit-shuttle">12 min</div>
+            </div>
+            <div class="bg-slate-950/60 rounded-lg p-2 border border-slate-900 text-center">
+              <div class="text-[9px] uppercase tracking-wider text-slate-500 font-bold">Taxi Zone</div>
+              <div class="text-sm font-outfit font-extrabold text-emerald-400 mt-0.5" id="transit-taxi">6 min</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bundesliga Attendance Analytics Panel -->
+      <div class="glassmorphism rounded-2xl p-5 flex flex-col gap-4 shadow-xl">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-2.5">
+          <h3 class="font-outfit text-sm font-bold tracking-wide uppercase text-slate-300 flex items-center gap-2">
+            <i data-lucide="bar-chart-3" class="w-4 h-4 text-brand-400"></i>
+            <span>Bundesliga Attendance Analytics</span>
+          </h3>
+          <div class="flex items-center gap-1.5 text-[9px] font-bold text-brand-400 bg-brand-950/40 border border-brand-900/50 px-2 py-0.5 rounded-full uppercase tracking-wider">
+            <span class="h-1.5 w-1.5 rounded-full bg-brand-400 animate-pulse"></span>
+            <span>Live Data</span>
+          </div>
+        </div>
+        
+        <!-- Stadium Selector -->
+        <div class="flex flex-col gap-1.5">
+          <label class="text-xs text-slate-400 font-medium">Select Stadium</label>
+          <select id="bundesliga-stadium-select" class="w-full glass-input rounded-xl px-3 py-2.5 text-xs text-slate-200 appearance-none cursor-pointer">
+            <option value="signal-iduna-park">Signal Iduna Park (Borussia Dortmund)</option>
+            <option value="allianz-arena">Allianz Arena (FC Bayern München)</option>
+            <option value="mhparena-stuttgart">MHPArena (VfB Stuttgart)</option>
+            <option value="deutsche-bank-park">Deutsche Bank Park (Eintracht Frankfurt)</option>
+            <option value="borussia-park">Stadion im Borussia-Park (Gladbach)</option>
+            <option value="red-bull-arena">Red Bull Arena (RB Leipzig)</option>
+            <option value="weserstadion">Weserstadion (Werder Bremen)</option>
+            <option value="europa-park-stadion">Europa-Park Stadion (SC Freiburg)</option>
+            <option value="mewa-arena">Mewa Arena (Mainz 05)</option>
+            <option value="bayarena">BayArena (Bayer Leverkusen)</option>
+            <option value="wwk-arena">WWK ARENA (FC Augsburg)</option>
+            <option value="millerntor-stadion">Millerntor-Stadion (FC St. Pauli)</option>
+            <option value="vonovia-ruhrstadion">Vonovia Ruhrstadion (VfL Bochum)</option>
+            <option value="prezero-arena">PreZero Arena (TSG Hoffenheim)</option>
+            <option value="volkswagen-arena">Volkswagen Arena (VfL Wolfsburg)</option>
+            <option value="alten-foersterei">Stadion An der Alten Försterei (Union Berlin)</option>
+            <option value="voith-arena">Voith-Arena (1. FC Heidenheim)</option>
+            <option value="holstein-stadion">Holstein-Stadion (Holstein Kiel)</option>
+          </select>
+        </div>
+
+        <!-- Attendance Metrics -->
+        <div class="grid grid-cols-3 gap-3">
+          <div class="bg-slate-950/50 rounded-xl p-2.5 border border-slate-900 text-center">
+            <div class="text-[10px] uppercase tracking-wider text-slate-500 font-bold">Capacity</div>
+            <div class="text-base font-outfit font-extrabold text-white mt-0.5" id="bl-capacity">81,365</div>
+          </div>
+          <div class="bg-slate-950/50 rounded-xl p-2.5 border border-slate-900 text-center">
+            <div class="text-[10px] uppercase tracking-wider text-slate-500 font-bold">Avg Attendance</div>
+            <div class="text-base font-outfit font-extrabold text-emerald-400 mt-0.5" id="bl-avg-attendance">81,365</div>
+          </div>
+          <div class="bg-slate-950/50 rounded-xl p-2.5 border border-slate-900 text-center">
+            <div class="text-[10px] uppercase tracking-wider text-slate-500 font-bold">Sell-Out Rate</div>
+            <div class="text-base font-outfit font-extrabold text-yellow-400 mt-0.5" id="bl-sellout-rate">100%</div>
+          </div>
+        </div>
+
+        <!-- Section Breakdown -->
+        <div class="border-t border-slate-800/80 pt-3">
+          <h4 class="text-xs font-bold text-slate-300 flex items-center gap-1.5 mb-2.5">
+            <i data-lucide="layout-grid" class="w-3.5 h-3.5 text-brand-500"></i>
+            <span>Section Breakdown</span>
+          </h4>
+          <div id="bl-section-breakdown" class="space-y-2">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+
+        <!-- Crowd Flow Analysis -->
+        <div class="border-t border-slate-800/80 pt-3">
+          <h4 class="text-xs font-bold text-slate-300 flex items-center gap-1.5 mb-2.5">
+            <i data-lucide="git-branch" class="w-3.5 h-3.5 text-brand-500"></i>
+            <span>Crowd Flow Analysis</span>
+          </h4>
+          <div id="bl-crowd-flow" class="grid grid-cols-2 gap-2">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+
+        <!-- Real-Time Heatmap -->
+        <div class="border-t border-slate-800/80 pt-3">
+          <h4 class="text-xs font-bold text-slate-300 flex items-center gap-1.5 mb-2.5">
+            <i data-lucide="flame" class="w-3.5 h-3.5 text-red-500"></i>
+            <span>Real-Time Heatmap Zones</span>
+          </h4>
+          <div id="bl-heatmap-zones" class="grid grid-cols-2 gap-2">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+
+        <!-- Organizer Recommendations -->
+        <div class="border-t border-slate-800/80 pt-3">
+          <h4 class="text-xs font-bold text-slate-300 flex items-center gap-1.5 mb-2.5">
+            <i data-lucide="brain-circuit" class="w-3.5 h-3.5 text-brand-500"></i>
+            <span>AI Recommendations</span>
+          </h4>
+          <div id="bl-recommendations" class="space-y-2">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Toast Notification Container (Phase 3) -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- ==========================================
+       FOOTER INFORMATION
+       ========================================== -->
+  <footer class="glassmorphism border-t border-slate-800/60 px-6 py-2.5 text-center text-[10px] text-slate-500 font-semibold flex items-center justify-between gap-4">
+    <span>© FIFA World Cup 2026 SmartStadium Host Services</span>
+    <span class="flex items-center gap-1.5">
+      <i data-lucide="activity" class="w-3 h-3 text-emerald-500 animate-pulse"></i>
+      System Status: Normal Operational Simulation
+    </span>
+  </footer>
+
+  <!-- ==========================================
+       JAVASCRIPT MODULES BINDING
+       ========================================== -->
+  <script src="./js/stadiumData.js"></script>
+
+
+  <script>
+
+    // Global simulation state
+    let activeLanguage = "en";
+    let activeView = "fan";
+    let activeRoute = null; // { start, end, path }
+    let simSpeedSeconds = 3;
+    let simIntervalId = null;
+    let isSimRunning = true;
+    let latestWeatherData = null; // Real-time API data
+
+    // ==========================================
+    // REAL-TIME MATCH CLOCK (ticks every second)
+    // ==========================================
+    let matchStartTime = null;  // Date object of match kickoff
+    let matchIsLive = false;
+    let matchClockInterval = null;
+
+    function startMatchClock() {
+      if (matchClockInterval) return;
+      matchClockInterval = setInterval(updateMatchClock, 1000);
+    }
+
+    function updateMatchClock() {
+      const clockEl = document.getElementById("match-clock-time");
+      const statusEl = document.getElementById("match-status");
+      const minuteEl = document.getElementById("match-minute");
+      // Fan view elements
+      const fanClock = document.getElementById("fan-match-clock");
+      const fanMinute = document.getElementById("fan-match-minute");
+      const fanTeams = document.getElementById("fan-match-teams");
+      const fanScore = document.getElementById("fan-match-score");
+      if (!clockEl) return;
+
+      const now = new Date();
+
+      if (matchIsLive && matchStartTime) {
+        // Calculate elapsed minutes from kickoff
+        const elapsed = Math.floor((now - matchStartTime) / 1000);
+        const hours = Math.floor(elapsed / 3600);
+        const mins = Math.floor((elapsed % 3600) / 60);
+        const secs = elapsed % 60;
+        const hh = String(hours).padStart(2, "0");
+        const mm = String(mins).padStart(2, "0");
+        const ss = String(secs).padStart(2, "0");
+        const clockStr = `${hh}:${mm}:${ss}`;
+        clockEl.textContent = clockStr;
+        if (fanClock) fanClock.textContent = clockStr;
+
+        // Match minute (normalise to 90 min scale over 2 hour window)
+        const totalSec = (now - matchStartTime) / 1000;
+        let matchMin;
+        let statusText;
+        let statusClass;
+        if (totalSec < 0) {
+          matchMin = 0;
+          statusText = "Pre-match";
+          statusClass = "text-[9px] text-yellow-400 mt-1 font-medium";
+        } else if (totalSec <= 2700) {
+          matchMin = Math.floor(totalSec / 60);
+          statusText = "1st Half";
+          statusClass = "text-[9px] text-emerald-400 mt-1 font-medium";
+        } else if (totalSec <= 3000) {
+          matchMin = 45;
+          statusText = "Half Time";
+          statusClass = "text-[9px] text-yellow-400 mt-1 font-medium";
+        } else if (totalSec <= 5400) {
+          matchMin = 45 + Math.floor((totalSec - 3000) / 60);
+          statusText = "2nd Half";
+          statusClass = "text-[9px] text-emerald-400 mt-1 font-medium";
+        } else {
+          matchMin = 90;
+          statusText = "Full Time";
+          statusClass = "text-[9px] text-red-400 mt-1 font-medium";
+        }
+        const finalMin = Math.min(matchMin, 90);
+        minuteEl.textContent = finalMin;
+        statusEl.textContent = statusText;
+        statusEl.className = statusClass;
+        if (fanMinute) fanMinute.textContent = finalMin + "'";
+
+        // Update fan view teams/score (stored in setMatchLive)
+        if (fanTeams) fanTeams.textContent = `${matchTeam1Name} vs ${matchTeam2Name}`;
+        if (fanScore) fanScore.textContent = `${matchScore1Val} : ${matchScore2Val}`;
+      } else {
+        // No live match — show wall clock
+        const hh = String(now.getHours()).padStart(2, "0");
+        const mm = String(now.getMinutes()).padStart(2, "0");
+        const ss = String(now.getSeconds()).padStart(2, "0");
+        const clockStr = `${hh}:${mm}:${ss}`;
+        clockEl.textContent = clockStr;
+        if (fanClock) fanClock.textContent = clockStr;
+        if (statusEl) {
+          statusEl.textContent = "No live match";
+          statusEl.className = "text-[9px] text-slate-500 mt-1 font-medium";
+        }
+        if (fanTeams) fanTeams.textContent = "No live match";
+        if (fanScore) fanScore.textContent = "- : -";
+        if (fanMinute) fanMinute.textContent = "";
+      }
+    }
+
+    // Stored match context for fan view
+    let matchTeam1Name = "--";
+    let matchTeam2Name = "--";
+    let matchScore1Val = "0";
+    let matchScore2Val = "0";
+        minuteEl.textContent = Math.min(matchMin, 90);
+      } else {
+        // No live match — show wall clock
+        const hh = String(now.getHours()).padStart(2, "0");
+        const mm = String(now.getMinutes()).padStart(2, "0");
+        const ss = String(now.getSeconds()).padStart(2, "0");
+        clockEl.textContent = `${hh}:${mm}:${ss}`;
+        statusEl.textContent = "No live match";
+        statusEl.className = "text-[9px] text-slate-500 mt-1 font-medium";
+      }
+    }
+
+    function setMatchLive(team1, team2, score1, score2, startTime) {
+      matchIsLive = true;
+      matchStartTime = startTime ? new Date(startTime) : new Date();
+      matchTeam1Name = team1;
+      matchTeam2Name = team2;
+      matchScore1Val = String(score1);
+      matchScore2Val = String(score2);
+      document.getElementById("match-team1").textContent = team1;
+      document.getElementById("match-team2").textContent = team2;
+      document.getElementById("match-score1").textContent = score1;
+      document.getElementById("match-score2").textContent = score2;
+      startMatchClock();
+    }
+
+    function setMatchOff() {
+      matchIsLive = false;
+      matchStartTime = null;
+      document.getElementById("match-minute").textContent = "--";
+      document.getElementById("match-status").textContent = "No live match";
+    }
+
+    // Kick off the clock immediately
+    startMatchClock();
+
+    // Crowd Simulation Data values (starts at initial defaults)
+    const crowdData = {};
+    for (const nodeId in STADIUM_NODES) {
+      // Default baseline values based on node type
+      const node = STADIUM_NODES[nodeId];
+      if (node.type === "gate") crowdData[nodeId] = Math.floor(Math.random() * 20) + 40; // 40-60
+      else if (node.type === "security") crowdData[nodeId] = Math.floor(Math.random() * 25) + 50; // 50-75
+      else if (node.type === "section") crowdData[nodeId] = Math.floor(Math.random() * 30) + 45; // 45-75
+      else if (node.type === "concession") crowdData[nodeId] = 70; // EcoEats is busy
+      else if (node.type === "restroom") crowdData[nodeId] = Math.floor(Math.random() * 30) + 30; // 30-60
+      else if (node.type === "firstaid") crowdData[nodeId] = 10;
+      else crowdData[nodeId] = 30; // Seats default
+    }
+
+    // Incidents database (initial states)
+    let incidents = [
+      {
+        id: "inc_1",
+        nodeId: "Stairs North",
+        description: "Debris blockage reported on Stairs North concourse landing.",
+        priority: "medium",
+        tags: ["safety", "stairs"],
+        status: "active"
+      },
+      {
+        id: "inc_2",
+        nodeId: "Restroom South",
+        description: "Soap dispenser sensor failure at Restroom South.",
+        priority: "low",
+        tags: ["maintenance"],
+        status: "active"
+      }
+    ];
+
+    // Sustainability & transit metrics (Phase 4)
+    let sustainabilityState = {
+      smartBins: SUSTAINABILITY_METRICS.smartBins.baseline,
+      solarGrid: SUSTAINABILITY_METRICS.solarGrid.baseline,
+      waterUsage: SUSTAINABILITY_METRICS.waterUsage.baseline,
+      carbonOffset: SUSTAINABILITY_METRICS.carbonOffset.baseline,
+      subwayWait: TRANSIT_SCHEDULE.subway.currentWait,
+      shuttleWait: TRANSIT_SCHEDULE.shuttle.currentWait,
+      taxiWait: TRANSIT_SCHEDULE.taxi.avgWait
+    };
+
+    // ==========================================
+    // TOAST NOTIFICATION SYSTEM (Phase 3)
+    // ==========================================
+    function showToast(message, type = 'info', duration = 4000) {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      toast.className = `toast toast-${type}`;
+
+      const icons = { info: '💡', success: '✅', warning: '⚠️', error: '🚨' };
+      const titles = { info: 'Info', success: 'Success', warning: 'Warning', error: 'Alert' };
+
+      toast.innerHTML = `
+        <span class="toast-icon">${icons[type] || icons.info}</span>
+        <div class="toast-content">
+          <div class="toast-title">${titles[type] || titles.info}</div>
+          <div class="toast-message">${message}</div>
+        </div>
+        <button class="toast-close" onclick="this.parentElement.classList.add('removing'); setTimeout(() => this.parentElement.remove(), 250);">&times;</button>
+      `;
+
+      container.appendChild(toast);
+
+      // Auto-dismiss
+      setTimeout(() => {
+        if (toast.parentElement) {
+          toast.classList.add('removing');
+          setTimeout(() => toast.remove(), 250);
+        }
+      }, duration);
+    }
+
+    // Expose globally
+    window.showToast = showToast;
+
+    // EXPOSE TO GLOBAL WINDOW FOR HTML CLICK HANDLERS
+    window.switchView = function(view) {
+      activeView = view;
+      const fanBtn = document.getElementById("btn-fan-view");
+      const staffBtn = document.getElementById("btn-staff-view");
+      
+      const fanView = document.getElementById("view-fan");
+      const staffView = document.getElementById("view-staff");
+
+      // Determine which view to show and which to hide
+      const showView = view === "fan" ? fanView : staffView;
+      const hideView = view === "fan" ? staffView : fanView;
+      const activeBtn = view === "fan" ? fanBtn : staffBtn;
+      const inactiveBtn = view === "fan" ? staffBtn : fanBtn;
+
+      // Animate transition
+      hideView.classList.add("view-exit");
+      setTimeout(() => {
+        hideView.classList.add("hidden");
+        hideView.classList.remove("view-exit");
+        showView.classList.remove("hidden");
+        showView.classList.add("view-enter");
+        setTimeout(() => showView.classList.remove("view-enter"), 350);
+      }, 200);
+
+      activeBtn.className = "px-4 py-2 text-xs font-semibold rounded-lg transition-all duration-200 bg-brand-600 text-white shadow";
+      inactiveBtn.className = "px-4 py-2 text-xs font-semibold rounded-lg transition-all duration-200 text-slate-400 hover:text-white";
+    };
+
+    window.mapNodeClick = function(nodeId) {
+      // Toggle start / end location based on selection
+      const startSelect = document.getElementById("select-start");
+      const endSelect = document.getElementById("select-end");
+      
+      if (!startSelect.value) {
+        startSelect.value = nodeId;
+      } else if (startSelect.value === nodeId) {
+        // Deselect if already selected
+        startSelect.value = "";
+      } else {
+        endSelect.value = nodeId;
+      }
+      
+      // Highlight selection visual changes
+      drawMap();
+    };
+
+    // Initialize layout selectors
+    function populateDropdowns() {
+      const startSelect = document.getElementById("select-start");
+      const endSelect = document.getElementById("select-end");
+
+      startSelect.innerHTML = `<option value="">-- Start Location --</option>`;
+      endSelect.innerHTML = `<option value="">-- Destination --</option>`;
+
+      // Group nodes by type for cleaner options
+      const sortedNodeIds = Object.keys(STADIUM_NODES).sort();
+
+      for (const nodeId of sortedNodeIds) {
+        const node = STADIUM_NODES[nodeId];
+        const optHtml = `<option value="${nodeId}">${node.name} (${node.type.toUpperCase()})</option>`;
+        startSelect.innerHTML += optHtml;
+        endSelect.innerHTML += optHtml;
+      }
+    }
+
+    // ==========================================
+    // MAP DRAWING & RENDERING (SVG LAYOUT)
+    // ==========================================
+    function drawMap() {
+      const edgesGroup = document.getElementById("edges-group");
+      const nodesGroup = document.getElementById("nodes-group");
+
+      // Draw Edges (Static Links)
+      edgesGroup.innerHTML = "";
+      for (const edge of STADIUM_EDGES) {
+        const nodeA = STADIUM_NODES[edge.from];
+        const nodeB = STADIUM_NODES[edge.to];
+        if (!nodeA || !nodeB) continue;
+        
+        const isPathEdge = activeRoute && 
+          ((activeRoute.path.includes(edge.from) && activeRoute.path.includes(edge.to) && 
+            Math.abs(activeRoute.path.indexOf(edge.from) - activeRoute.path.indexOf(edge.to)) === 1));
+
+        const strokeColor = isPathEdge ? "#38bdf8" : "rgba(255, 255, 255, 0.08)";
+        const strokeWidth = isPathEdge ? "4" : "1.5";
+
+        edgesGroup.innerHTML += `
+          <line x1="${nodeA.x}" y1="${nodeA.y}" x2="${nodeB.x}" y2="${nodeB.y}" 
+                stroke="${strokeColor}" stroke-width="${strokeWidth}" />
+        `;
+      }
+
+      // Draw Polyline for active path (dashed neon animation overlay)
+      const routeLine = document.getElementById("route-line");
+      if (activeRoute && activeRoute.path.length > 0) {
+        const pointsStr = activeRoute.path
+          .map(nodeId => `${STADIUM_NODES[nodeId].x},${STADIUM_NODES[nodeId].y}`)
+          .join(" ");
+        routeLine.setAttribute("points", pointsStr);
+        routeLine.classList.remove("hidden");
+      } else {
+        routeLine.classList.add("hidden");
+      }
+
+      // Draw Nodes (Interactive Circles)
+      nodesGroup.innerHTML = "";
+      for (const nodeId in STADIUM_NODES) {
+        const node = STADIUM_NODES[nodeId];
+        const density = crowdData[nodeId] || 0;
+        
+        // Heatmap colors based on density
+        let fillColor = "rgb(16, 185, 129)"; // Green
+        let hoverGlow = "rgba(16, 185, 129, 0.4)";
+        let pulseClass = "";
+        if (density > 75) {
+          fillColor = "rgb(239, 68, 68)"; // Red
+          hoverGlow = "rgba(239, 68, 68, 0.6)";
+          pulseClass = "animate-pulse";
+        } else if (density > 40) {
+          fillColor = "rgb(234, 179, 8)"; // Yellow
+          hoverGlow = "rgba(234, 179, 8, 0.5)";
+        }
+
+        // Highlight selection border
+        const startSelectVal = document.getElementById("select-start").value;
+        const endSelectVal = document.getElementById("select-end").value;
+        const isSelected = nodeId === startSelectVal || nodeId === endSelectVal;
+        
+        const strokeColor = isSelected ? "#38bdf8" : "rgba(0, 0, 0, 0.6)";
+        const strokeWidth = isSelected ? "4" : "2";
+        // Scale radius based on density for visual intensity
+        const baseRadius = isSelected ? 14 : 10;
+        const radius = Math.round(baseRadius + (density / 100) * 4);
+
+        // Access check icon indicator inside node if wheelchair-friendly
+        const wheelchairDot = node.wheelchair ? 
+          `<circle cx="${node.x}" cy="${node.y - 12}" r="3" fill="#38bdf8" stroke="black" stroke-width="0.5" />` : "";
+
+        // Active incident glow ring
+        const hasIncident = incidents.some(i => i.nodeId === nodeId && i.status === "active");
+        const incidentRing = hasIncident ? 
+          `<circle cx="${node.x}" cy="${node.y}" r="17" fill="none" stroke="red" stroke-width="1.5" class="animate-pulse" />` : "";
+
+        nodesGroup.innerHTML += `
+          <g class="cursor-pointer group" onclick="mapNodeClick('${nodeId}')" 
+             onmouseenter="showNodeTooltip('${nodeId}', event)" onmouseleave="hideNodeTooltip()">
+            ${incidentRing}
+            <circle cx="${node.x}" cy="${node.y}" r="${radius}" 
+                    fill="${fillColor}" stroke="${strokeColor}" stroke-width="${strokeWidth}" 
+                    class="transition-all duration-300 group-hover:r-[15px] group-hover:stroke-white ${pulseClass}" 
+                    filter="drop-shadow(0 0 8px ${hoverGlow})" />
+            ${wheelchairDot}
+            <!-- Hidden text for SVG labeling -->
+            <text x="${node.x}" y="${node.y + 24}" fill="rgba(255,255,255,0.7)" font-size="8" font-weight="600" text-anchor="middle" class="pointer-events-none group-hover:fill-white transition-colors">${node.name}</text>
+          </g>
+        `;
+      }
+
+      // Update average density indicator
+      const avgEl = document.getElementById("heatmap-avg-density");
+      if (avgEl) {
+        const vals = Object.values(crowdData);
+        const avg = vals.length ? Math.round(vals.reduce((a, b) => a + b, 0) / vals.length) : 0;
+        const avgColor = avg > 75 ? "text-red-400" : avg > 40 ? "text-yellow-400" : "text-emerald-400";
+        avgEl.className = `text-[10px] font-bold ${avgColor}`;
+        avgEl.textContent = `Avg: ${avg}%`;
+      }
+    }
+
+    // Node details tooltip hover
+    window.showNodeTooltip = function(nodeId, event) {
+      const tooltip = document.getElementById("node-tooltip");
+      const node = STADIUM_NODES[nodeId];
+      const density = crowdData[nodeId] || 0;
+      const statusText = density > 75 ? "Congested" : (density > 40 ? "Moderate" : "Clear");
+      const statusColor = density > 75 ? "text-red-400" : (density > 40 ? "text-yellow-400" : "text-emerald-400");
+      
+      const activeInc = incidents.find(i => i.nodeId === nodeId && i.status === "active");
+      const incidentNotice = activeInc ? `<div class="mt-1.5 text-red-500 font-bold flex items-center gap-1"><i data-lucide="triangle-alert" class="w-3 h-3"></i> [ALERT] Incident Active</div>` : "";
+
+      tooltip.innerHTML = `
+        <div class="font-bold text-slate-100">${node.name}</div>
+        <div class="text-[10px] text-slate-500 uppercase font-extrabold mt-0.5">${node.type}</div>
+        <div class="mt-1">Crowd Density: <span class="font-bold ${statusColor}">${density}% (${statusText})</span></div>
+        <div class="mt-0.5">Wheelchair Path: <span class="font-medium">${node.wheelchair ? '✅ Yes' : '❌ No'}</span></div>
+        ${incidentNotice}
+      `;
+      
+      // Update icons inside tooltip
+      lucide.createIcons();
+
+      tooltip.classList.remove("hidden");
+      
+      // Position tooltip close to mouse pointer relative to parent container
+      const rect = event.currentTarget.getBoundingClientRect();
+      const parentRect = event.currentTarget.parentNode.parentNode.getBoundingClientRect();
+      
+      tooltip.style.left = `${rect.left - parentRect.left + 25}px`;
+      tooltip.style.top = `${rect.top - parentRect.top - 10}px`;
+    };
+
+    window.hideNodeTooltip = function() {
+      document.getElementById("node-tooltip").classList.add("hidden");
+    };
+
+    // ==========================================
+    // ROUTE CALCULATION HANDLER
+    // ==========================================
+    function handleCalculateRoute() {
+      const startNodeId = document.getElementById("select-start").value;
+      const endNodeId = document.getElementById("select-end").value;
+      const wheelchairOnly = document.getElementById("check-wheelchair").checked;
+
+      if (!startNodeId || !endNodeId) {
+        showToast("Please select both a Start Location and a Destination.", "warning");
+        return;
+      }
+
+      if (startNodeId === endNodeId) {
+        showToast("Start and destination cannot be the same.", "warning");
+        return;
+      }
+
+      const result = findShortestPath(startNodeId, endNodeId, wheelchairOnly);
+      
+      const directionsDiv = document.getElementById("route-directions");
+      const directionsList = document.getElementById("directions-list");
+
+      directionsList.innerHTML = "";
+      if (result.path.length > 0) {
+        activeRoute = { start: startNodeId, end: endNodeId, path: result.path };
+        
+        result.steps.forEach(step => {
+          directionsList.innerHTML += `<li>${step}</li>`;
+        });
+        
+        directionsDiv.classList.remove("hidden");
+      } else {
+        activeRoute = null;
+        directionsList.innerHTML = `<li class="text-red-400 font-medium">${result.steps[0]}</li>`;
+        directionsDiv.classList.remove("hidden");
+      }
+
+      drawMap();
+    }
+
+    // ==========================================
+    // CROWD & INCIDENT SIMULATION LOOP
+    // ==========================================
+    async function runSimulationStep() {
+      if (!isSimRunning) return;
+
+      // 1. Fetch live external crowd telemetry
+      const telemetry = await fetchLiveCrowdTelemetry(crowdData);
+      const updatedCrowdData = telemetry.crowdData;
+      
+      // Update UI Badge based on API status
+      const badge = document.getElementById("crowd-api-badge");
+      const dot = document.getElementById("crowd-api-dot");
+      const statusText = document.getElementById("crowd-api-status");
+      
+      if (telemetry.active) {
+        badge.className = "flex items-center gap-1.5 text-xs text-emerald-400 bg-emerald-950/40 border border-emerald-900/50 px-2 py-0.5 rounded-full";
+        dot.className = "h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse";
+        statusText.innerText = "Match API Sync Live";
+        
+        if (telemetry.matchContext) {
+          // Use the real-time clock system
+          setMatchLive(
+            telemetry.matchContext.team1,
+            telemetry.matchContext.team2,
+            telemetry.matchContext.score1,
+            telemetry.matchContext.score2,
+            null // will default to now() — the clock ticks from this point
+          );
+        }
+      } else {
+        badge.className = "flex items-center gap-1.5 text-xs text-red-400 bg-red-950/40 border border-red-900/50 px-2 py-0.5 rounded-full";
+        dot.className = "h-1.5 w-1.5 rounded-full bg-red-400";
+        statusText.innerText = "Match API Offline";
+        setMatchOff();
+      }
+
+      // Apply to global state, overriding with incident congestions
+      for (const nodeId in updatedCrowdData) {
+        let newVal = updatedCrowdData[nodeId];
+        
+        // If an active incident is at this node, boost crowd density significantly, ignoring telemetry
+        const activeInc = incidents.find(i => i.nodeId === nodeId && i.status === "active");
+        if (activeInc) {
+          newVal = Math.max(88, newVal + 8); // Congest incident zones
+        }
+
+        crowdData[nodeId] = newVal;
+      }
+
+      // 2. Update sustainability & transit metrics via algorithm (using live weather data if available)
+      sustainabilityState = generateSustainabilityUpdate(sustainabilityState, latestWeatherData);
+      
+      // Update sustainability UI elements
+      const bins = Math.round(sustainabilityState.smartBins);
+      const solar = Math.round(sustainabilityState.solarGrid);
+      const water = Math.round(sustainabilityState.waterUsage);
+      const carbon = sustainabilityState.carbonOffset.toFixed(1);
+
+      // Quick metrics (original top bar in sim controls)
+      document.getElementById("metric-bins").innerText = `${bins}%`;
+      document.getElementById("metric-solar").innerText = `${solar} kW`;
+      
+      if (bins > 80) {
+        document.getElementById("metric-bins").className = "text-base font-outfit font-extrabold text-red-500 mt-0.5 animate-pulse";
+      } else {
+        document.getElementById("metric-bins").className = "text-base font-outfit font-extrabold text-emerald-400 mt-0.5";
+      }
+
+      // Detailed sustainability panel values
+      document.getElementById("metric-bins-val").innerText = `${bins}%`;
+      document.getElementById("metric-bins-val").className = `text-base font-outfit font-extrabold mt-0.5 ${bins > 75 ? 'text-red-400 animate-pulse' : bins > 50 ? 'text-yellow-400' : 'text-emerald-400'}`;
+      document.getElementById("bar-bins").style.width = `${bins}%`;
+      document.getElementById("bar-bins").className = `progress-bar-fill ${bins > 75 ? 'red' : bins > 50 ? 'yellow' : 'green'}`;
+
+      document.getElementById("metric-solar-val").innerText = `${solar} kW`;
+      document.getElementById("bar-solar").style.width = `${(solar / 150) * 100}%`;
+
+      document.getElementById("metric-water-val").innerText = `${water} kL`;
+      document.getElementById("metric-water-val").className = `text-base font-outfit font-extrabold mt-0.5 ${water > 70 ? 'text-red-400' : 'text-blue-400'}`;
+      document.getElementById("bar-water").style.width = `${water}%`;
+      document.getElementById("bar-water").className = `progress-bar-fill ${water > 70 ? 'red' : 'blue'}`;
+
+      document.getElementById("metric-carbon-val").innerText = `${carbon} t CO₂`;
+      document.getElementById("bar-carbon").style.width = `${(sustainabilityState.carbonOffset / 5.0) * 100}%`;
+
+      // Transit wait times
+      document.getElementById("transit-subway").innerText = `${Math.round(sustainabilityState.subwayWait)} min`;
+      document.getElementById("transit-shuttle").innerText = `${Math.round(sustainabilityState.shuttleWait)} min`;
+      document.getElementById("transit-taxi").innerText = `${Math.round(sustainabilityState.taxiWait)} min`;
+
+      // 3. Redraw SVG Layout Heatmaps
+      drawMap();
+
+      // 4. Update Staff Dashboard UI components
+      updateStaffDashboard();
+    }
+
+    function updateStaffDashboard() {
+      const summaryReportDiv = document.getElementById("ai-situation-report");
+      const recommendationsDiv = document.getElementById("recommendations-container");
+      const incidentsTbody = document.getElementById("incidents-tbody");
+
+      // Generate text data
+      const analysis = generateOperationsSummary(crowdData, incidents);
+
+      // Situation report (GenAI formatted paragraph)
+      summaryReportDiv.innerHTML = analysis.summary.replace(/\n/g, "<br/>");
+
+      // AI recommendation cards
+      recommendationsDiv.innerHTML = "";
+      analysis.recommendations.forEach(rec => {
+        let borderClass = "border-slate-800 bg-slate-950/40";
+        let iconClass = "text-brand-500";
+        let icon = "brain";
+        
+        if (rec.type === "crowd") {
+          borderClass = "border-yellow-900/40 bg-yellow-950/10";
+          iconClass = "text-yellow-500";
+          icon = "users";
+        } else if (rec.type === "accessibility") {
+          borderClass = "border-red-950/50 bg-red-950/10 critical-alert";
+          iconClass = "text-red-500";
+          icon = "accessibility";
+        }
+
+        recommendationsDiv.innerHTML += `
+          <div class="border rounded-xl p-3 flex flex-col gap-2 ${borderClass} transition-all duration-300">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-slate-200 flex items-center gap-1.5">
+                <i data-lucide="${icon}" class="w-3.5 h-3.5 ${iconClass}"></i> ${rec.title}
+              </span>
+              <span class="text-[9px] font-extrabold uppercase bg-slate-800 text-slate-400 px-1.5 py-0.5 rounded">GenAI</span>
+            </div>
+            <p class="text-[11px] text-slate-400 leading-normal">${rec.text}</p>
+            <button onclick="executeRecommendation('${rec.id}')" class="self-end bg-brand-600/20 hover:bg-brand-600/40 border border-brand-500/30 text-brand-400 text-[10px] font-bold px-2.5 py-1 rounded transition-colors">
+              ${rec.action}
+            </button>
+          </div>
+        `;
+      });
+
+      // Active Incidents table list
+      incidentsTbody.innerHTML = "";
+      const activeIncidents = incidents.filter(i => i.status === "active");
+      
+      if (activeIncidents.length === 0) {
+        incidentsTbody.innerHTML = `
+          <tr>
+            <td colspan="4" class="py-6 text-center text-slate-500">No active incidents. Stadium is secure.</td>
+          </tr>
+        `;
+      } else {
+        activeIncidents.forEach(inc => {
+          let priorityColor = "bg-yellow-950 text-yellow-400 border-yellow-900/60";
+          if (inc.priority === "high") {
+            priorityColor = "bg-red-950 text-red-400 border-red-900/60 animate-pulse";
+          } else if (inc.priority === "low") {
+            priorityColor = "bg-slate-900 text-slate-400 border-slate-800";
+          }
+
+          incidentsTbody.innerHTML += `
+            <tr class="hover:bg-slate-900/30 transition-colors">
+              <td class="py-3 px-3 font-semibold text-slate-200">${inc.nodeId}</td>
+              <td class="py-3 px-3 text-slate-400 leading-normal max-w-[200px]">${inc.description}</td>
+              <td class="py-3 px-3">
+                <span class="border px-2 py-0.5 rounded-full font-bold text-[9px] uppercase tracking-wide ${priorityColor}">
+                  ${inc.priority}
+                </span>
+              </td>
+              <td class="py-3 px-3 text-right">
+                <button onclick="resolveIncident('${inc.id}')" class="bg-emerald-950/50 hover:bg-emerald-900/30 border border-emerald-900/40 text-emerald-400 text-[10px] font-bold px-2 py-1 rounded transition-colors">
+                  Resolve
+                </button>
+              </td>
+            </tr>
+          `;
+        });
+      }
+
+      lucide.createIcons();
+    }
+
+    window.resolveIncident = function(id) {
+      incidents = incidents.map(inc => inc.id === id ? { ...inc, status: "resolved" } : inc);
+      updateStaffDashboard();
+      drawMap();
+    };
+
+    window.executeRecommendation = function(recId) {
+      if (recId === "rec_gate2") {
+        crowdData["Gate 2 (East)"] = Math.max(30, crowdData["Gate 2 (East)"] - 30);
+        crowdData["Gate 1 (North)"] += 15;
+        crowdData["Gate 3 (South)"] += 10;
+        showToast("GenAI Command Dispatch: Dynamic signage active at Metro corridor. Ingress crowd rerouted from Gate 2 to Gates 1 and 3.", "success");
+      } else if (recId === "rec_eco") {
+        crowdData["EcoEats (Concessions)"] = Math.max(50, crowdData["EcoEats (Concessions)"] - 25);
+        showToast("GenAI Promo Broadcasted: 15,000 Push notifications sent with 10% coupon. Crowd dispersed to concourse Section B2 and C1 concessions.", "success");
+      } else if (recId === "rec_accessibility") {
+        // Resolve the incident causing accessibility blockage
+        const blockInc = incidents.find(i => i.status === "active" && (i.tags.includes("stairs") || i.tags.includes("safety")));
+        if (blockInc) {
+          blockInc.status = "resolved";
+        }
+        showToast("GenAI Re-routing active: Dynamic GPS paths updated. Maintenance stewards dispatched to clear pathway.", "success");
+      } else {
+        showToast("Operations Optimization Executed: Subway Train dispatch timetable advanced by 10 minutes.", "info");
+      }
+      
+      updateStaffDashboard();
+      drawMap();
+    };
+
+    // Toggle simulation intervals
+    function startSimLoop() {
+      if (simIntervalId) clearInterval(simIntervalId);
+      simIntervalId = setInterval(runSimulationStep, simSpeedSeconds * 1000);
+    }
+
+    // Trigger random new incident
+    document.getElementById("btn-trigger-incident").addEventListener("click", () => {
+      const nodes = Object.keys(STADIUM_NODES);
+      const randomNode = nodes[Math.floor(Math.random() * nodes.length)];
+      
+      const newInc = {
+        id: `inc_${Date.now()}`,
+        nodeId: randomNode,
+        description: `High crowd pressure sensor threshold exceeded at ${randomNode}. Verification requested.`,
+        priority: Math.random() > 0.4 ? "high" : "medium",
+        tags: ["sensor", "crowd"],
+        status: "active"
+      };
+
+      incidents.unshift(newInc);
+      crowdData[randomNode] = 95; // Force congestion
+      
+      updateStaffDashboard();
+      drawMap();
+      
+      showToast(`Simulation Alert: New Incident triggered at [${randomNode}]! Check the Incident Center.`, "error", 5000);
+    });
+
+    // Pause simulation control
+    const pauseBtn = document.getElementById("btn-pause-sim");
+    pauseBtn.addEventListener("click", () => {
+      isSimRunning = !isSimRunning;
+      if (isSimRunning) {
+        pauseBtn.innerHTML = `<i data-lucide="pause" class="w-3.5 h-3.5"></i> Pause`;
+        pauseBtn.className = "border border-slate-800 bg-slate-900/60 text-slate-400 hover:text-white px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-colors";
+      } else {
+        pauseBtn.innerHTML = `<i data-lucide="play" class="w-3.5 h-3.5"></i> Resume`;
+        pauseBtn.className = "border border-yellow-900 bg-yellow-950/40 text-yellow-400 hover:text-yellow-300 px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-colors";
+      }
+      lucide.createIcons();
+    });
+
+    // Speed slider controls
+    const speedSlider = document.getElementById("sim-speed-slider");
+    const speedValSpan = document.getElementById("sim-speed-val");
+    speedSlider.addEventListener("input", (e) => {
+      simSpeedSeconds = parseInt(e.target.value);
+      speedValSpan.innerText = `${simSpeedSeconds}s`;
+      startSimLoop();
+    });
+
+    // ==========================================
+    // REAL-TIME WEATHER API INTEGRATION
+    // ==========================================
+    async function updateLiveWeather() {
+      const syncDot = document.getElementById("weather-sync-dot");
+      if(syncDot) syncDot.classList.add("bg-brand-500", "animate-ping"); // Flash while fetching
+      
+      const weatherData = await fetchRealTimeWeatherData();
+      
+      if (weatherData) {
+        latestWeatherData = weatherData;
+        document.getElementById("live-weather-temp").innerText = `${weatherData.temperature}°C`;
+        document.getElementById("live-weather-clouds").innerText = `${weatherData.cloudCover}%`;
+        
+        // Visual indicator of successful fetch
+        if(syncDot) {
+          syncDot.classList.remove("bg-brand-500", "animate-ping", "bg-red-500");
+          syncDot.classList.add("bg-sky-400", "animate-pulse");
+        }
+      } else {
+        if(syncDot) {
+          syncDot.classList.remove("bg-brand-500", "animate-ping", "bg-sky-400");
+          syncDot.classList.add("bg-red-500");
+        }
+      }
+    }
+
+    function startWeatherSync() {
+      updateLiveWeather(); // Fetch immediately
+      setInterval(updateLiveWeather, 60000); // Fetch every 60 seconds
+    }
+
+    // ==========================================
+    // CHATBOT INTERACTIVE INTERFACE
+    // ==========================================
+    const chatForm = document.getElementById("chat-form");
+    const chatInput = document.getElementById("chat-input");
+    const chatMessages = document.getElementById("chat-messages");
+
+    function addMessage(sender, text, citations = [], routeObj = null) {
+      const isAI = sender === "ai";
+      const bgClass = isAI ? "bg-slate-900 border border-slate-800 text-slate-300" : "bg-brand-600 text-white self-end ml-auto";
+      const icon = isAI ? "shield-alert" : "user";
+      const name = isAI ? "SmartStadium AI" : "You";
+      
+      // Formatting citations
+      let citationHtml = "";
+      if (citations.length > 0) {
+        citationHtml = `
+          <div class="mt-2.5 pt-1.5 border-t border-slate-800/80 flex items-center gap-1.5 text-[10px] text-slate-500 font-bold uppercase select-none">
+            <i data-lucide="bookmark-check" class="w-3.5 h-3.5"></i>
+            Sources: ${citations.join(", ")}
+          </div>
+        `;
+      }
+
+      // Convert linebreaks to HTML
+      const formattedText = text.replace(/\n/g, "<br/>").replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+
+      const msgHtml = `
+        <div class="flex items-start gap-3 max-w-[85%] ${!isAI ? 'ml-auto' : ''}">
+          ${isAI ? `
+            <div class="h-8 w-8 rounded-lg bg-gradient-to-tr from-brand-600 to-emerald-500 flex items-center justify-center flex-shrink-0">
+              <i data-lucide="${icon}" class="w-4.5 h-4.5 text-white"></i>
+            </div>
+          ` : ''}
+          <div class="flex flex-col gap-1">
+            <span class="text-[10px] font-bold text-slate-500 ${!isAI ? 'text-right' : ''}">${name}</span>
+            <div class="rounded-2xl px-4 py-3 text-xs leading-relaxed ${bgClass} shadow-md shadow-black/15">
+              <div>${formattedText}</div>
+              ${citationHtml}
+            </div>
+          </div>
+          ${!isAI ? `
+            <div class="h-8 w-8 rounded-lg bg-slate-800 flex items-center justify-center flex-shrink-0 border border-slate-700">
+              <i data-lucide="${icon}" class="w-4.5 h-4.5 text-slate-400"></i>
+            </div>
+          ` : ''}
+        </div>
+      `;
+
+      chatMessages.innerHTML += msgHtml;
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+
+      // Handle map routing update if bot calculated a route during chat response
+      if (routeObj) {
+        activeRoute = routeObj;
+        
+        // Sync selectors in routing card
+        document.getElementById("select-start").value = routeObj.start;
+        document.getElementById("select-end").value = routeObj.end;
+        
+        // Fetch steps
+        const pathfindingResult = findShortestPath(routeObj.start, routeObj.end, false);
+        const directionsDiv = document.getElementById("route-directions");
+        const directionsList = document.getElementById("directions-list");
+        directionsList.innerHTML = "";
+        pathfindingResult.steps.forEach(step => {
+          directionsList.innerHTML += `<li>${step}</li>`;
+        });
+        directionsDiv.classList.remove("hidden");
+
+        drawMap();
+      }
+
+      lucide.createIcons();
+    }
+
+    // Suggested Chips based on Language
+    const suggestedQueriesByLang = {
+      en: [
+        "Where is Gate 4?",
+        "Where is EcoEats food court?",
+        "How to reach Section A1 from Gate 1?",
+        "Is there a wheelchair accessible restroom?",
+        "Subway train timings"
+      ],
+      es: [
+        "¿Dónde está la Puerta 4?",
+        "¿Dónde comer EcoEats?",
+        "Ruta desde Puerta 1 a Sección A1",
+        "¿Hay baños con acceso para silla de ruedas?",
+        "Horario de trenes subterráneos"
+      ],
+      hi: [
+        "गेट 4 कहाँ है?",
+        "इकोईट्स फ़ूड कोर्ट कहाँ है?",
+        "गेट 1 से सेक्शन A1 कैसे जाएं?",
+        "क्या व्हीलचेयर अनुकूल शौचालय है?",
+        "मेट्रो ट्रेन की समय सारणी"
+      ],
+      fr: [
+        "Où est la Porte 4?",
+        "Où manger EcoEats?",
+        "Itinéraire Porte 1 à Section A1",
+        "Y a-t-il des toilettes accessibles?",
+        "Horaires du métro"
+      ],
+      pt: [
+        "Onde fica o Portão 4?",
+        "Onde comer EcoEats?",
+        "Como ir do Portão 1 ao Setor A1?",
+        "Há banheiro acessível?",
+        "Horário dos trens"
+      ]
+    };
+
+    function populateChips() {
+      const chipsContainer = document.getElementById("suggested-chips");
+      chipsContainer.innerHTML = "";
+      const queries = suggestedQueriesByLang[activeLanguage] || suggestedQueriesByLang.en;
+      
+      queries.forEach(q => {
+        chipsContainer.innerHTML += `
+          <button type="button" onclick="submitSuggestedQuery('${q.replace(/'/g, "\\'")}')" class="bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-400 hover:text-slate-200 px-3 py-1.5 rounded-full text-[10px] font-semibold transition-all select-none">
+            ${q}
+          </button>
+        `;
+      });
+    }
+
+    window.submitSuggestedQuery = function(query) {
+      addMessage("user", query);
+      simulateBotResponse(query);
+    };
+
+    function simulateBotResponse(query) {
+      // Show typing indicator
+      const chatMessages = document.getElementById("chat-messages");
+      const typingDiv = document.createElement("div");
+      typingDiv.id = "typing-indicator";
+      typingDiv.className = "flex items-start gap-3 max-w-[85%]";
+      typingDiv.innerHTML = `
+        <div class="h-8 w-8 rounded-lg bg-gradient-to-tr from-brand-600 to-emerald-500 flex items-center justify-center flex-shrink-0">
+          <i data-lucide="shield-alert" class="w-4.5 h-4.5 text-white"></i>
+        </div>
+        <div class="rounded-2xl px-4 py-3 bg-slate-900 border border-slate-800 shadow-md shadow-black/15">
+          <div class="typing-indicator">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+          </div>
+        </div>
+      `;
+      chatMessages.appendChild(typingDiv);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+      lucide.createIcons();
+
+      // Simulate typing speed delay then replace with actual response
+      setTimeout(() => {
+        const indicator = document.getElementById("typing-indicator");
+        if (indicator) indicator.remove();
+        const responseData = generateAIResponse(query, activeLanguage, crowdData);
+        addMessage("ai", responseData.text, responseData.citations, responseData.suggestedRoute);
+      }, 800 + Math.random() * 600);
+    }
+
+    chatForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const query = chatInput.value.trim();
+      if (!query) return;
+
+      addMessage("user", query);
+      chatInput.value = "";
+      simulateBotResponse(query);
+    });
+
+    document.getElementById("btn-clear-chat").addEventListener("click", () => {
+      chatMessages.innerHTML = "";
+      addBotGreeting();
+    });
+
+    function addBotGreeting() {
+      let greeting = "";
+      if (activeLanguage === "en") {
+        greeting = "👋 Welcome to FIFA 2026 SmartStadium Host Services! I am your AI assistant.\n\nAsk me about routes, layouts, wheelchair options, live crowds, concessions, or public transit timings. How can I help you today?";
+      } else if (activeLanguage === "es") {
+        greeting = "👋 ¡Bienvenido a SmartStadium FIFA 2026! Soy su asistente de IA.\n\nPregúnteme sobre rutas, accesos para sillas de ruedas, tiendas, estado del tráfico o trenes subterráneos. ¿Cómo puedo ayudarle hoy?";
+      } else if (activeLanguage === "hi") {
+        greeting = "👋 फीफा 2026 स्मार्टस्टेडियम में आपका स्वागत है! मैं आपका एआई सहायक हूँ।\n\nआप मुझसे मार्ग, शौचालय, व्हीलचेयर सुविधा, भीड़ और ट्रेन समय सारिणी के बारे में पूछ सकते हैं। आज मैं आपकी क्या मदद कर सकता हूँ?";
+      } else if (activeLanguage === "fr") {
+        greeting = "👋 Bienvenue aux services SmartStadium FIFA 2026! Je suis votre assistant IA.\n\nPosez-moi des questions sur les trajets, l'accès handicapé, la nourriture EcoEats, ou le métro. Comment puis-je vous aider?";
+      } else {
+        greeting = "👋 Bem-vindo ao SmartStadium FIFA 2026! Sou seu assistente de IA.\n\nPergunte-me sobre rotas, caminhos de cadeirante, lanchonetes, trânsito ou metrô. Como posso ajudar?";
+      }
+      addMessage("ai", greeting);
+    }
+
+    // ==========================================
+    // MULTILINGUAL STRINGS DYNAMIC LOCALIZATION
+    // ==========================================
+    const langSelect = document.getElementById("lang-select");
+    langSelect.addEventListener("change", (e) => {
+      activeLanguage = e.target.value;
+      localizeUI();
+      populateChips();
+      
+      // Clear and re-greet
+      chatMessages.innerHTML = "";
+      addBotGreeting();
+    });
+
+    function localizeUI() {
+      const strings = TRANSLATIONS[activeLanguage] || TRANSLATIONS.en;
+      
+      document.getElementById("ui-title").innerText = strings.title;
+      document.getElementById("ui-subtitle").innerText = strings.subtitle;
+      document.getElementById("ui-fan-tab").innerText = strings.fanView;
+      document.getElementById("ui-staff-tab").innerText = strings.staffView;
+      
+      document.getElementById("ui-route-title").innerText = strings.findRoute;
+      document.getElementById("lbl-start").innerText = strings.startLoc;
+      document.getElementById("lbl-end").innerText = strings.endLoc;
+      document.getElementById("ui-wheelchair-label").innerText = strings.wheelchairFriendly;
+      document.getElementById("ui-calc-btn").innerText = strings.calculateRoute;
+      document.getElementById("ui-details-label").innerText = strings.routeDetails;
+      
+      document.getElementById("ui-map-title").innerText = strings.crowdHeatmap;
+      document.getElementById("legend-low").innerText = strings.crowdLow;
+      document.getElementById("legend-med").innerText = strings.crowdMedium;
+      document.getElementById("legend-high").innerText = strings.crowdHigh;
+      
+      document.getElementById("chat-input").placeholder = strings.chatPlaceholder;
+      document.getElementById("ui-chatbot-title").innerText = strings.chatbotTitle;
+      
+      // Staff UI
+      document.getElementById("ui-sim-title").innerText = strings.simulationControls;
+      document.getElementById("ui-sim-speed").innerText = strings.simSpeed;
+      document.getElementById("ui-bin-cap").innerText = strings.wasteCapacity;
+      document.getElementById("ui-grid-load").innerText = strings.energyUsage;
+      
+      document.getElementById("ui-summary-title").innerText = strings.aiSituationSummary;
+      document.getElementById("ui-recommend-title").innerText = strings.aiDecisions;
+      document.getElementById("ui-incidents-title").innerText = strings.activeIncidents;
+
+      // Update dropdown defaults
+      populateDropdowns();
+    }
+
+    // ==========================================
+    // INITIALIZATION & STARTUP
+    // ==========================================
+    // Set up elements
+    populateDropdowns();
+    drawMap();
+    addBotGreeting();
+    populateChips();
+    
+    // Bind buttons
+    document.getElementById("btn-calc-route").addEventListener("click", handleCalculateRoute);
+    
+    // Start simulation loop and Live API Sync
+    startSimLoop();
+    startWeatherSync();
+    updateStaffDashboard();
+
+    // ==========================================
+    // BUNDESLIGA ATTENDANCE PANEL INTEGRATION
+    // ==========================================
+    function initBundesligaPanel() {
+      const stadiumSelect = document.getElementById('bundesliga-stadium-select');
+      if (!stadiumSelect) return;
+
+      // Initial load
+      updateBundesligaPanel(stadiumSelect.value);
+
+      // Event listener for stadium selection
+      stadiumSelect.addEventListener('change', function() {
+        updateBundesligaPanel(this.value);
+      });
+    }
+
+    function updateBundesligaPanel(stadiumId) {
+      const stadium = BUNDESLIGA_STADIUMS[stadiumId];
+      if (!stadium) return;
+
+      // Update metrics
+      document.getElementById('bl-capacity').textContent = stadium.capacity.toLocaleString();
+      const attendanceData = generateMatchAttendance(stadiumId, 5);
+      document.getElementById('bl-avg-attendance').textContent = attendanceData.attendance.toLocaleString();
+      document.getElementById('bl-sellout-rate').textContent = stadium.sellOutRate.toFixed(1) + '%';
+
+      // Update section breakdown
+      const sectionBreakdown = document.getElementById('bl-section-breakdown');
+      sectionBreakdown.innerHTML = '';
+      for (const [sectionName, sectionData] of Object.entries(attendanceData.sections)) {
+        const occupancyColor = sectionData.occupancy > 95 ? 'text-emerald-400' : 
+                              sectionData.occupancy > 80 ? 'text-yellow-400' : 'text-orange-400';
+        sectionBreakdown.innerHTML += `
+          <div class="flex justify-between items-center bg-slate-950/40 rounded-lg px-3 py-2 border border-slate-900/50">
+            <div>
+              <span class="text-xs font-medium text-slate-300">${sectionName}</span>
+              <span class="text-[10px] text-slate-500 ml-1.5">(${sectionData.type})</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-xs text-slate-400">${sectionData.attendance.toLocaleString()}/${sectionData.capacity.toLocaleString()}</span>
+              <span class="text-xs font-bold ${occupancyColor}">${sectionData.occupancy}%</span>
+            </div>
+          </div>
+        `;
+      }
+
+      // Update crowd flow
+      const crowdFlow = document.getElementById('bl-crowd-flow');
+      const flow = attendanceData.crowdFlow;
+      crowdFlow.innerHTML = `
+        <div class="bg-slate-950/40 rounded-lg p-2.5 border border-slate-900/50">
+          <div class="text-[10px] text-slate-500 font-bold uppercase">Congestion Risk</div>
+          <div class="text-sm font-bold ${flow.congestionRisk === 'High' ? 'text-red-400' : flow.congestionRisk === 'Medium' ? 'text-yellow-400' : 'text-emerald-400'}">${flow.congestionRisk}</div>
+        </div>
+        <div class="bg-slate-950/40 rounded-lg p-2.5 border border-slate-900/50">
+          <div class="text-[10px] text-slate-500 font-bold uppercase">Security Wait</div>
+          <div class="text-sm font-bold text-blue-400">${flow.estimatedWaitTimes.security} min</div>
+        </div>
+        <div class="bg-slate-950/40 rounded-lg p-2.5 border border-slate-900/50">
+          <div class="text-[10px] text-slate-500 font-bold uppercase">Food Wait</div>
+          <div class="text-sm font-bold text-orange-400">${flow.estimatedWaitTimes.foodConcession} min</div>
+        </div>
+        <div class="bg-slate-950/40 rounded-lg p-2.5 border border-slate-900/50">
+          <div class="text-[10px] text-slate-500 font-bold uppercase">Restroom Wait</div>
+          <div class="text-sm font-bold text-purple-400">${flow.estimatedWaitTimes.restrooms} min</div>
+        </div>
+      `;
+
+      // Update heatmap zones
+      const heatmapData = generateHeatmapData(stadiumId, attendanceData.attendance);
+      const heatmapZones = document.getElementById('bl-heatmap-zones');
+      heatmapZones.innerHTML = '';
+      for (const [zone, data] of Object.entries(heatmapData.densityZones)) {
+        const riskColor = data.riskLevel === 'high' ? 'bg-red-500' : 
+                         data.riskLevel === 'medium' ? 'bg-yellow-500' : 'bg-emerald-500';
+        const densityWidth = Math.min(100, data.density);
+        heatmapZones.innerHTML += `
+          <div class="bg-slate-950/40 rounded-lg p-2.5 border border-slate-900/50">
+            <div class="flex justify-between items-center mb-1">
+              <span class="text-[10px] font-medium text-slate-300 capitalize">${zone.replace(/_/g, ' ')}</span>
+              <span class="text-[10px] font-bold ${data.riskLevel === 'high' ? 'text-red-400' : data.riskLevel === 'medium' ? 'text-yellow-400' : 'text-emerald-400'}">${data.density}%</span>
+            </div>
+            <div class="w-full bg-slate-800 rounded-full h-1.5">
+              <div class="${riskColor} h-1.5 rounded-full" style="width: ${densityWidth}%"></div>
+            </div>
+          </div>
+        `;
+      }
+
+      // Update recommendations
+      const recommendations = document.getElementById('bl-recommendations');
+      recommendations.innerHTML = '';
+      flow.recommendedActions.forEach(rec => {
+        const priorityColor = rec.priority === 'high' ? 'text-red-400 bg-red-950/30 border-red-900/50' :
+                             rec.priority === 'medium' ? 'text-yellow-400 bg-yellow-950/30 border-yellow-900/50' :
+                             'text-emerald-400 bg-emerald-950/30 border-emerald-900/50';
+        recommendations.innerHTML += `
+          <div class="bg-slate-950/40 rounded-lg p-2.5 border border-slate-900/50">
+            <div class="flex items-center gap-2 mb-1">
+              <span class="text-[10px] font-bold uppercase px-1.5 py-0.5 rounded ${priorityColor}">${rec.priority}</span>
+              <span class="text-xs font-bold text-slate-200">${rec.title}</span>
+            </div>
+            <p class="text-[10px] text-slate-400 leading-relaxed">${rec.description}</p>
+          </div>
+        `;
+      });
+    }
+
+    // Initialize Bundesliga panel
+    initBundesligaPanel();
+
+    // Trigger initial Lucide render
+    lucide.createIcons();
+  </script>
+</body>
+</html>

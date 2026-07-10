@@ -1,0 +1,1927 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MetLife Stadium Architecture</title>
+  
+  <meta name="description" content="Detailed Architectural Layout of MetLife Stadium" />
+  
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2338bdf8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z'/></svg>" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CDN removed: its runtime JIT compiler causes massive idle CPU usage with 600+ SVG elements -->
+  <!-- Inline SVG icons: replaces entire lucide CDN (~150KB) with only the 11 icons used -->
+  <script>
+    window.lucide = {
+      _icons: {
+        flame: '<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>',
+        map: '<polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/><line x1="9" y1="3" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="21"/>',
+        'message-square': '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
+        'zoom-in': '<circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>',
+        'zoom-out': '<circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="8" y1="11" x2="14" y2="11"/>',
+        maximize: '<path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>',
+        'map-pin': '<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>',
+        x: '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>',
+        'arrow-down': '<line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/>',
+        bot: '<path d="M12 8V4H8"/><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 16v2a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h2"/>',
+        send: '<line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>'
+      },
+      createIcons: function() {
+        document.querySelectorAll('[data-lucide]').forEach(el => {
+          const name = el.getAttribute('data-lucide');
+          const svgContent = this._icons[name];
+          if (!svgContent) return;
+          const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+          svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+          svg.setAttribute('width', '24');
+          svg.setAttribute('height', '24');
+          svg.setAttribute('viewBox', '0 0 24 24');
+          svg.setAttribute('fill', 'none');
+          svg.setAttribute('stroke', 'currentColor');
+          svg.setAttribute('stroke-width', '2');
+          svg.setAttribute('stroke-linejoin', 'round');
+          if (el.getAttribute('class')) {
+            svg.setAttribute('class', el.getAttribute('class'));
+          }
+          svg.innerHTML = svgContent;
+          el.parentNode.replaceChild(svg, el);
+        });
+      }
+    };
+  </script>
+
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background-color: #020617; /* slate-950 */
+      font-family: 'Inter', sans-serif;
+    }
+    
+    /* Grid background removed for performance */
+
+    #map-container {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      contain: layout style;
+    }
+
+    svg {
+      width: 100%;
+      height: 100%;
+      max-width: 1600px;
+      max-height: 1200px;
+      contain: layout style;
+    }
+
+    /* SVG Styling */
+    .blueprint-line {
+      fill: none;
+      stroke: #38bdf8;
+      stroke-width: 1.5;
+      opacity: 0.8;
+    }
+    
+    .blueprint-line-thick {
+      fill: none;
+      stroke: #38bdf8;
+      stroke-width: 3;
+      opacity: 0.9;
+    }
+
+    .blueprint-fill {
+      fill: rgba(56, 189, 248, 0.05);
+      stroke: #38bdf8;
+      stroke-width: 1;
+    }
+
+    .field-fill {
+      fill: rgba(16, 185, 129, 0.15); /* Emerald turf */
+      stroke: #10b981;
+      stroke-width: 2;
+    }
+
+    .endzone {
+      fill: rgba(16, 185, 129, 0.3);
+      stroke: #10b981;
+      stroke-width: 1;
+    }
+
+    .field-lines {
+      stroke: rgba(255, 255, 255, 0.4);
+      stroke-width: 1;
+    }
+
+    .section-line {
+      stroke: rgba(56, 189, 248, 0.3);
+      stroke-width: 1;
+      stroke-dasharray: 4 2;
+    }
+
+    .blueprint-text {
+      font-family: 'JetBrains Mono', monospace;
+      fill: #7dd3fc;
+      font-size: 10px;
+      letter-spacing: 1px;
+    }
+
+    .blueprint-title {
+      font-family: 'Outfit', sans-serif;
+      fill: #ffffff;
+      font-weight: 900;
+      font-size: 36px;
+      letter-spacing: 4px;
+      opacity: 0.9;
+    }
+
+    .gate-marker {
+      fill: #0ea5e9;
+      stroke: #bae6fd;
+      stroke-width: 2;
+    }
+
+    .gate-heatmap-overlay {
+      fill: hsla(225, 90%, 40%, 0.8);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 2.5s ease-in-out;
+    }
+    
+    .gate-traffic-text {
+      fill: #38bdf8;
+      font-size: 10px;
+      font-weight: bold;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 1s;
+    }
+    
+    .heatmap-mode .gate-traffic-text {
+      opacity: 1;
+    }
+
+    /* Panning controls overlay */
+    .controls-overlay {
+      position: absolute;
+      bottom: 40px;
+      right: 40px;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+
+      padding: 16px;
+      border-radius: 12px;
+      display: flex;
+      gap: 12px;
+      z-index: 40;
+    }
+
+    @media (max-width: 640px) {
+      .controls-overlay {
+        bottom: 16px;
+        right: 16px;
+        padding: 8px;
+        gap: 8px;
+      }
+      .btn-control {
+        width: 36px;
+        height: 36px;
+      }
+      .btn-control svg {
+        width: 18px;
+        height: 18px;
+      }
+    }
+
+    .btn-control {
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      color: #38bdf8;
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-control:hover {
+      background: rgba(56, 189, 248, 0.2);
+      transform: translateY(-2px);
+    }
+    
+    .wedge-path {
+      stroke: rgba(255,255,255,0.1);
+      stroke-width: 1;
+      cursor: pointer;
+    }
+    /* Removed hover and transition on wedges to reduce style recalc */
+    
+    .heatmap-mode .wedge-path {
+      transition: fill 1s;
+    }
+    
+    .wedge-overlay {
+      fill: hsla(225, 90%, 40%, 0.9);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 2.5s ease-in-out;
+    }
+    
+    #interactive-wedges, #route-layer {
+      contain: layout style;
+    }
+
+    .route-line {
+      fill: none;
+      stroke: #38bdf8;
+      stroke-width: 2;
+      stroke-dasharray: 10, 10;
+      animation: dash 1s linear infinite;
+      pointer-events: none;
+    }
+    
+    @keyframes dash {
+      to {
+        stroke-dashoffset: -20;
+      }
+    }
+    /* ==========================================
+       UTILITY CLASSES (replaces Tailwind CDN)
+       ========================================== */
+    .hidden { display: none !important; }
+    .absolute { position: absolute; }
+    .relative { position: relative; }
+    .flex { display: flex; }
+    .flex-col { flex-direction: column; }
+    .flex-1 { flex: 1 1 0%; }
+    .items-center { align-items: center; }
+    .items-start { align-items: flex-start; }
+    .justify-center { justify-content: center; }
+    .justify-between { justify-content: space-between; }
+    .self-start { align-self: flex-start; }
+    .self-end { align-self: flex-end; }
+    .gap-1 { gap: 0.25rem; }
+    .gap-1\.5 { gap: 0.375rem; }
+    .gap-2 { gap: 0.5rem; }
+    .gap-3 { gap: 0.75rem; }
+    .gap-4 { gap: 1rem; }
+    .w-full { width: 100%; }
+    .w-px { width: 1px; }
+    .w-1 { width: 0.25rem; }
+    .w-1\.5 { width: 0.375rem; }
+    .w-3 { width: 0.75rem; }
+    .w-3\.5 { width: 0.875rem; }
+    .w-5 { width: 1.25rem; }
+    .w-6 { width: 1.5rem; }
+    .h-1 { height: 0.25rem; }
+    .h-1\.5 { height: 0.375rem; }
+    .h-3 { height: 0.75rem; }
+    .h-3\.5 { height: 0.875rem; }
+    .h-5 { height: 1.25rem; }
+    .h-6 { height: 1.5rem; }
+    .h-full { height: 100%; }
+    .p-1\.5 { padding: 0.375rem; }
+    .p-2 { padding: 0.5rem; }
+    .p-4 { padding: 1rem; }
+    .p-5 { padding: 1.25rem; }
+    .px-2 { padding-left: 0.5rem; padding-right: 0.5rem; }
+    .px-4 { padding-left: 1rem; padding-right: 1rem; }
+    .py-1 { padding-top: 0.25rem; padding-bottom: 0.25rem; }
+    .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+    .py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+    .pr-1 { padding-right: 0.25rem; }
+    .pb-12 { padding-bottom: 3rem; }
+    .mb-1 { margin-bottom: 0.25rem; }
+    .mb-2 { margin-bottom: 0.5rem; }
+    .mb-4 { margin-bottom: 1rem; }
+    .mb-6 { margin-bottom: 1.5rem; }
+    .mt-1 { margin-top: 0.25rem; }
+    .mt-2 { margin-top: 0.5rem; }
+    .mt-4 { margin-top: 1rem; }
+    .mx-1 { margin-left: 0.25rem; margin-right: 0.25rem; }
+    .top-0 { top: 0; }
+    .top-4 { top: 1rem; }
+    .right-0 { right: 0; }
+    .left-4 { left: 1rem; }
+    .z-10 { z-index: 10; }
+    .z-40 { z-index: 40; }
+    .z-50 { z-index: 50; }
+    .rounded { border-radius: 0.25rem; }
+    .rounded-sm { border-radius: 0.125rem; }
+    .rounded-md { border-radius: 0.375rem; }
+    .rounded-lg { border-radius: 0.5rem; }
+    .rounded-2xl { border-radius: 1rem; }
+    .rounded-full { border-radius: 9999px; }
+    .rounded-tr-sm { border-top-right-radius: 0.125rem; }
+    .rounded-tl-sm { border-top-left-radius: 0.125rem; }
+    .border { border-width: 1px; border-style: solid; }
+    .border-l { border-left-width: 1px; border-left-style: solid; }
+    .border-t { border-top-width: 1px; border-top-style: solid; }
+    .border-b { border-bottom-width: 1px; border-bottom-style: solid; }
+    .text-white { color: #ffffff; }
+    .text-xs { font-size: 0.75rem; line-height: 1rem; }
+    .text-sm { font-size: 0.875rem; line-height: 1.25rem; }
+    .text-2xl { font-size: 1.5rem; line-height: 2rem; }
+    .text-xl { font-size: 1.25rem; line-height: 1.75rem; }
+    .text-center { text-align: center; }
+    .text-right { text-align: right; }
+    .text-left { text-align: left; }
+    .font-mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+    .font-outfit { font-family: 'Outfit', 'Inter', sans-serif; }
+    .font-sans { font-family: 'Inter', sans-serif; }
+    .font-bold { font-weight: 700; }
+    .font-black { font-weight: 900; }
+    .uppercase { text-transform: uppercase; }
+    .tracking-tight { letter-spacing: -0.025em; }
+    .tracking-widest { letter-spacing: 0.1em; }
+    .leading-relaxed { line-height: 1.625; }
+    .whitespace-nowrap { white-space: nowrap; }
+    .whitespace-pre-wrap { white-space: pre-wrap; }
+    .overflow-hidden { overflow: hidden; }
+    .overflow-y-auto { overflow-y: auto; }
+    .pointer-events-none { pointer-events: none; }
+    .pointer-events-auto { pointer-events: auto; }
+    .cursor-pointer { cursor: pointer; }
+    .transition-colors { transition-property: color, background-color, border-color; transition-duration: 150ms; }
+    .transition-transform { transition-property: transform; transition-duration: 300ms; }
+    .transition-all { transition-property: all; transition-duration: 300ms; }
+    .duration-300 { transition-duration: 300ms; }
+    .opacity-50 { opacity: 0.5; }
+    .opacity-80 { opacity: 0.8; }
+    .transform { transform: translateX(0); }
+    .translate-x-full { transform: translateX(100%); }
+    .-translate-x-1\/2 { transform: translateX(-50%); }
+    .drop-shadow-lg { } /* Removed for performance */
+    .shadow-md { }
+    .shadow-lg { }
+    .shadow-2xl { }
+    .inline { display: inline; }
+    .block { display: block; }
+    .group { position: relative; }
+    .group:hover .group-hover\:block { display: block !important; }
+    .group:hover .group-hover\:opacity-100 { opacity: 1 !important; }
+    .group:hover .group-hover\:text-white { color: #ffffff !important; }
+    .space-y-2 > * + * { margin-top: 0.5rem; }
+    .space-y-4 > * + * { margin-top: 1rem; }
+    .max-h-48 { max-height: 12rem; }
+    .max-w-\[85\%\] { max-width: 85%; }
+    .max-w-\[320px\] { max-width: 320px; }
+    .w-11\/12 { width: 91.666667%; }
+    .pt-4 { padding-top: 1rem; }
+    .top-20 { top: 5rem; }
+    .bottom-40 { bottom: 10rem; }
+    .right-40 { right: 10rem; }
+    .items-baseline { align-items: baseline; }
+    .left-1\/2 { left: 50%; }
+    .animate-bounce { animation: bounce 1s infinite; }
+    @keyframes bounce { 0%, 100% { transform: translateY(-25%); animation-timing-function: cubic-bezier(0.8,0,1,1); } 50% { transform: translateY(0); animation-timing-function: cubic-bezier(0,0,0.2,1); } }
+
+    /* Color utilities */
+    .text-slate-200 { color: #e2e8f0; }
+    .text-slate-300 { color: #cbd5e1; }
+    .text-slate-400 { color: #94a3b8; }
+    .text-slate-500 { color: #64748b; }
+    .text-sky-400 { color: #38bdf8; }
+    .text-amber-400 { color: #fbbf24; }
+    .text-emerald-400 { color: #34d399; }
+    .text-emerald-500 { color: #10b981; }
+    .text-purple-400 { color: #c084fc; }
+    .text-blue-500 { color: #3b82f6; }
+    .text-slate-900 { color: #0f172a; }
+    .bg-slate-800 { background-color: #1e293b; }
+    .bg-slate-900 { background-color: #0f172a; }
+    .bg-slate-950 { background-color: #020617; }
+    .bg-slate-100 { background-color: #f1f5f9; }
+    .bg-slate-700 { background-color: #334155; }
+    .bg-emerald-500 { background-color: #10b981; }
+    .bg-amber-500 { background-color: #f59e0b; }
+    .bg-sky-500 { background-color: #0ea5e9; }
+    .bg-purple-500 { background-color: #a855f7; }
+    .border-slate-600 { border-color: #475569; }
+    .border-slate-700 { border-color: #334155; }
+    .border-slate-800 { border-color: #1e293b; }
+    .border-emerald-400 { border-color: #34d399; }
+    .border-amber-400 { border-color: #fbbf24; }
+    .border-sky-400 { border-color: #38bdf8; }
+    .border-purple-400 { border-color: #c084fc; }
+    .border-purple-800 { border-color: #6b21a8; }
+    .text-\[8px\] { font-size: 8px; }
+    .text-\[10px\] { font-size: 10px; }
+    .text-\[9px\] { font-size: 9px; }
+    .tracking-\[0\.3em\] { letter-spacing: 0.3em; }
+    .bg-sky-500\/20 { background-color: rgba(14, 165, 233, 0.2); }
+    .border-sky-500\/30 { border-color: rgba(14, 165, 233, 0.3); }
+    .border-sky-500\/50 { border-color: rgba(14, 165, 233, 0.5); }
+    .bg-sky-600 { background-color: #0284c7; }
+    .bg-slate-900\/95 { background-color: rgba(15, 23, 42, 0.95); }
+    .bg-slate-950\/80 { background-color: rgba(2, 6, 23, 0.8); }
+    .bg-slate-950\/90 { background-color: rgba(2, 6, 23, 0.9); }
+    .bg-emerald-950\/30 { background-color: rgba(2, 44, 34, 0.3); }
+    .border-emerald-900\/50 { border-color: rgba(6, 78, 59, 0.5); }
+    .bg-purple-900\/50 { background-color: rgba(88, 28, 135, 0.5); }
+    .bg-blue-500\/20 { background-color: rgba(59, 130, 246, 0.2); }
+    .border-blue-500\/50 { border-color: rgba(59, 130, 246, 0.5); }
+    .backdrop-blur-md { /* blur removed for performance */ }
+    .shadow-\[0_0_50px_rgba\(0\,0\,0\,0\.8\)\] { box-shadow: none; border-left: 1px solid rgba(255,255,255,0.1); }
+    .focus\:border-sky-500:focus { border-color: #0ea5e9; }
+    .focus\:outline-none:focus { outline: none; }
+    .hover\:text-white:hover { color: #ffffff; }
+    .hover\:bg-slate-700:hover { background-color: #334155; }
+    .hover\:bg-sky-500\/40:hover { background-color: rgba(14, 165, 233, 0.4); }
+    .hover\:bg-emerald-500:hover { background-color: #10b981; }
+    .hover\:bg-amber-500:hover { background-color: #f59e0b; }
+    .hover\:bg-sky-500:hover { background-color: #0ea5e9; }
+    .hover\:bg-purple-500:hover { background-color: #a855f7; }
+    .hover\:border-emerald-400:hover { border-color: #34d399; }
+    .hover\:border-amber-400:hover { border-color: #fbbf24; }
+    .hover\:border-sky-400:hover { border-color: #38bdf8; }
+    .hover\:border-purple-400:hover { border-color: #c084fc; }
+    .placeholder-slate-500::placeholder { color: #64748b; }
+
+    /* Responsive */
+    @media (min-width: 640px) {
+      .sm\:top-6 { top: 1.5rem; }
+      .sm\:left-8 { left: 2rem; }
+      .sm\:text-\[10px\] { font-size: 10px; }
+      .sm\:text-xs { font-size: 0.75rem; line-height: 1rem; }
+      .sm\:text-4xl { font-size: 2.25rem; line-height: 2.5rem; }
+      .sm\:flex-row { flex-direction: row; }
+      .sm\:items-center { align-items: center; }
+      .sm\:gap-3 { gap: 0.75rem; }
+      .sm\:block { display: block; }
+      .sm\:w-\[380px\] { width: 380px; }
+      .sm\:translate-x-0 { transform: translateX(0); }
+      .sm\:top-24 { top: 6rem; }
+      .sm\:left-8 { left: 2rem; }
+    }
+  </style>
+</head>
+<body class="bg-grid text-slate-200">
+
+  <!-- Header Overlay -->
+  <div class="absolute top-4 left-4 sm:top-6 sm:left-8 z-10 pointer-events-none">
+    <div class="text-[8px] sm:text-[10px] text-sky-400 font-mono tracking-[0.3em] uppercase mb-1">Architectural Blueprint</div>
+    <h1 class="text-2xl sm:text-4xl font-outfit font-black text-white tracking-tight drop-shadow-lg flex flex-col sm:flex-row items-start sm:items-center gap-1 sm:gap-3">
+      <span data-i18n="title">METLIFE STADIUM</span>
+      <span data-i18n="scaleBadge" class="bg-sky-500/20 text-sky-400 border border-sky-500/30 text-[10px] sm:text-xs px-2 py-1 rounded tracking-widest font-bold">100% SCALE</span>
+    </h1>
+    <div class="flex items-center gap-3 mt-2">
+      <div class="text-[10px] sm:text-xs text-slate-400 font-mono opacity-80 hidden sm:block">
+        <span data-i18n="coords">COORDINATES: 40.8136° N, 74.0745° W</span> <br/>
+        <span data-i18n="capacity">CAPACITY: 82,500</span> <br/>
+        <span data-i18n="levels">LEVELS: 100, 200, 300, SUITES</span>
+      </div>
+      <select id="ui-lang-select" class="pointer-events-auto bg-slate-900 border border-slate-700 text-xs text-slate-200 rounded px-2 py-1 focus:border-sky-500 focus:outline-none cursor-pointer" onchange="setUiLanguage(this.value)"></select>
+    </div>
+  </div>
+
+
+
+  <div id="map-container">
+    <!-- viewBox: X Y Width Height. Center is at 600, 500 -->
+    <svg id="blueprint-svg" viewBox="0 0 1200 1000" preserveAspectRatio="xMidYMid meet">
+      
+      <!-- DEFINITIONS FOR REUSE -->
+      <defs>
+        <radialGradient id="stadiumGlow" cx="50%" cy="50%" r="50%">
+          <stop offset="60%" stop-color="rgba(14, 165, 233, 0.05)" />
+          <stop offset="100%" stop-color="transparent" />
+        </radialGradient>
+      </defs>
+
+      <!-- Background Ambient Glow -->
+      <circle cx="600" cy="500" r="450" fill="url(#stadiumGlow)" />
+
+      <!-- =======================================
+           STADIUM OUTER SHELL (PLAZA)
+           Horizontal orientation
+           ======================================= -->
+      <rect x="150" y="150" width="900" height="700" rx="350" ry="350" class="blueprint-line" stroke-dasharray="10 10" />
+      
+      <!-- =======================================
+           INTERACTIVE SEATING SECTIONS
+           ======================================= -->
+      <!-- We will populate these interactive wedges via JS -->
+      <g id="interactive-wedges"></g>
+      
+      <!-- Route layer on top of wedges -->
+      <g id="route-layer"></g>
+      
+      <!-- Inner retaining wall (Field boundary) -->
+      <rect x="370" y="370" width="460" height="260" rx="130" ry="130" fill="#020617" stroke="#38bdf8" stroke-width="3" />
+
+      <!-- =======================================
+           FOOTBALL FIELD (TURF)
+           120 yards x 53.3 yards scaled to 360 x 160
+           Center = 600, 500
+           Rotated 90 degrees to lay horizontally matching reference
+           ======================================= -->
+      <g id="football-field" transform="translate(600, 500) rotate(-90) translate(-80, -180)">
+        <!-- Main Turf -->
+        <rect x="0" y="0" width="160" height="360" class="field-fill" />
+        
+        <!-- North Endzone (30 units high) -->
+        <rect x="0" y="0" width="160" height="30" class="endzone" />
+        <text x="80" y="20" class="blueprint-text" fill="rgba(255,255,255,0.6)" font-size="14" font-weight="bold" text-anchor="middle" transform="rotate(180 80 20)">METLIFE</text>
+        
+        <!-- South Endzone -->
+        <rect x="0" y="330" width="160" height="30" class="endzone" />
+        <text x="80" y="350" class="blueprint-text" fill="rgba(255,255,255,0.6)" font-size="14" font-weight="bold" text-anchor="middle">METLIFE</text>
+
+        <!-- Yard Lines (Every 10 yards = 30 units) -->
+        <!-- Starts after North Endzone (y=30), ends before South Endzone (y=330) -->
+        <line x1="0" y1="60" x2="160" y2="60" class="field-lines" />
+        <line x1="0" y1="90" x2="160" y2="90" class="field-lines" />
+        <line x1="0" y1="120" x2="160" y2="120" class="field-lines" />
+        <line x1="0" y1="150" x2="160" y2="150" class="field-lines" />
+        <!-- 50 Yard Line -->
+        <line x1="0" y1="180" x2="160" y2="180" class="field-lines" stroke-width="3" stroke="rgba(255,255,255,0.8)" />
+        <text x="10" y="176" class="blueprint-text" fill="rgba(255,255,255,0.6)">50</text>
+        <text x="150" y="176" class="blueprint-text" fill="rgba(255,255,255,0.6)" text-anchor="end">50</text>
+        
+        <line x1="0" y1="210" x2="160" y2="210" class="field-lines" />
+        <line x1="0" y1="240" x2="160" y2="240" class="field-lines" />
+        <line x1="0" y1="270" x2="160" y2="270" class="field-lines" />
+        <line x1="0" y1="300" x2="160" y2="300" class="field-lines" />
+
+        <!-- Hash marks -->
+        <g id="hash-marks"></g>
+      </g>
+
+      <!-- =======================================
+           GATE PLAZAS
+           ======================================= -->
+      <!-- AMEX Gate (Top) -->
+      <g id="gate-amex" transform="translate(600, 150)">
+        <circle cx="0" cy="0" r="35" class="gate-heatmap-overlay" id="overlay-gate-amex" />
+        <circle cx="0" cy="0" r="25" class="blueprint-fill" />
+        <circle cx="0" cy="0" r="15" class="gate-marker" />
+        <text x="-35" y="-15" class="blueprint-text" font-weight="bold">AMEX GATE</text>
+        <line x1="-30" y1="-10" x2="-10" y2="-5" class="blueprint-line" />
+        <text x="35" y="5" class="gate-traffic-text" id="traffic-gate-amex">Traffic: 0/min</text>
+      </g>
+
+      <!-- HCLTech Gate (Top-Right) -->
+      <g id="gate-hcl" transform="translate(890, 260)">
+        <circle cx="0" cy="0" r="35" class="gate-heatmap-overlay" id="overlay-gate-hcl" />
+        <circle cx="0" cy="0" r="25" class="blueprint-fill" />
+        <circle cx="0" cy="0" r="15" class="gate-marker" />
+        <text x="35" y="-35" class="blueprint-text" font-weight="bold" text-anchor="end">HCLTECH GATE</text>
+        <line x1="30" y1="-30" x2="10" y2="-10" class="blueprint-line" />
+        <text x="-35" y="5" class="gate-traffic-text" text-anchor="end" id="traffic-gate-hcl">Traffic: 0/min</text>
+      </g>
+
+      <!-- Verizon Gate (Bottom-Right) -->
+      <g id="gate-verizon" transform="translate(890, 740)">
+        <circle cx="0" cy="0" r="35" class="gate-heatmap-overlay" id="overlay-gate-verizon" />
+        <circle cx="0" cy="0" r="25" class="blueprint-fill" />
+        <circle cx="0" cy="0" r="15" class="gate-marker" />
+        <text x="35" y="40" class="blueprint-text" font-weight="bold" text-anchor="end">VERIZON GATE</text>
+        <line x1="30" y1="30" x2="10" y2="10" class="blueprint-line" />
+        <text x="-35" y="5" class="gate-traffic-text" text-anchor="end" id="traffic-gate-verizon">Traffic: 0/min</text>
+      </g>
+
+      <!-- MetLife Gate (Bottom) -->
+      <g id="gate-metlife" transform="translate(600, 850)">
+        <circle cx="0" cy="0" r="35" class="gate-heatmap-overlay" id="overlay-gate-metlife" />
+        <circle cx="0" cy="0" r="25" class="blueprint-fill" />
+        <circle cx="0" cy="0" r="15" class="gate-marker" />
+        <text x="-35" y="25" class="blueprint-text" font-weight="bold">METLIFE GATE</text>
+        <line x1="-30" y1="15" x2="-10" y2="5" class="blueprint-line" />
+        <text x="35" y="5" class="gate-traffic-text" id="traffic-gate-metlife">Traffic: 0/min</text>
+      </g>
+
+      <!-- Moody's Gate (Bottom-Left) -->
+      <g id="gate-moodys" transform="translate(310, 740)">
+        <circle cx="0" cy="0" r="35" class="gate-heatmap-overlay" id="overlay-gate-moodys" />
+        <circle cx="0" cy="0" r="25" class="blueprint-fill" />
+        <circle cx="0" cy="0" r="15" class="gate-marker" />
+        <text x="-35" y="40" class="blueprint-text" font-weight="bold">MOODY'S GATE</text>
+        <line x1="-30" y1="30" x2="-10" y2="10" class="blueprint-line" />
+        <text x="35" y="5" class="gate-traffic-text" id="traffic-gate-moodys">Traffic: 0/min</text>
+      </g>
+
+      <!-- Structural crosshairs / Grid overlays -->
+      <line x1="600" y1="0" x2="600" y2="1000" stroke="rgba(56,189,248,0.2)" stroke-width="1" stroke-dasharray="20 20" />
+      <line x1="0" y1="500" x2="1200" y2="500" stroke="rgba(56,189,248,0.2)" stroke-width="1" stroke-dasharray="20 20" />
+      <circle cx="600" cy="500" r="5" fill="#38bdf8" />
+    </svg>
+  </div>
+
+  <!-- Live Crowd Stats HUD (visible when heatmap active) -->
+  <div id="crowd-hud" class="absolute bottom-40 right-40 z-40 hidden" style="pointer-events: none;">
+    <div style="background: rgba(15, 23, 42, 0.92); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 12px; padding: 16px 20px; min-width: 220px; pointer-events: auto;">
+      <div class="text-[10px] text-sky-400 font-mono tracking-widest uppercase mb-2 flex items-center gap-2">
+        <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#10b981;animation:pulse-dot 1.5s infinite;"></span>
+        LIVE CROWD DATA
+      </div>
+      <div class="flex items-baseline gap-2 mb-1">
+        <span id="hud-attendance" class="text-2xl font-outfit font-black text-white">0</span>
+        <span class="text-xs text-slate-400">/ <span id="hud-capacity">82,500</span></span>
+      </div>
+      <div style="width:100%;height:4px;background:#1e293b;border-radius:2px;margin-bottom:8px;overflow:hidden;">
+        <div id="hud-fill-bar" style="height:100%;width:0%;background:linear-gradient(90deg,#10b981,#fbbf24,#ef4444);border-radius:2px;transition:width 1s ease;"></div>
+      </div>
+      <div class="flex justify-between text-[10px] text-slate-400 mb-2">
+        <span id="hud-fill-pct">0%</span>
+        <span id="hud-phase" class="text-amber-400">--</span>
+      </div>
+      <div class="text-[10px] text-slate-500 font-mono" id="hud-kickoff">Kickoff: --</div>
+      <div class="text-[10px] text-slate-500 font-mono" id="hud-match">-- vs --</div>
+      <div class="text-[9px] text-slate-600 font-mono mt-1" id="hud-source"></div>
+    </div>
+  </div>
+  <style>
+    @keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    .btn-control.heatmap-active { background: rgba(239, 68, 68, 0.25); border-color: rgba(239, 68, 68, 0.6); color: #f87171; }
+  </style>
+
+  <!-- Zoom/Pan Controls -->
+  <div class="controls-overlay">
+    <button class="btn-control" id="btn-heatmap" data-i18n-title="btnHeatmap" title="Toggle Live Crowd Heatmap"><i data-lucide="flame" class="w-5 h-5"></i></button>
+    <button class="btn-control" id="btn-nav" data-i18n-title="btnNav" title="Navigation"><i data-lucide="map" class="w-5 h-5"></i></button>
+    <button class="btn-control" id="btn-chat" data-i18n-title="btnChat" title="AI Assistant"><i data-lucide="message-square" class="w-5 h-5"></i></button>
+    <div class="w-px bg-slate-700 mx-1"></div>
+    <button class="btn-control" id="btn-zoom-in" data-i18n-title="btnZoomIn" title="Zoom In"><i data-lucide="zoom-in" class="w-5 h-5"></i></button>
+    <button class="btn-control" id="btn-zoom-out" data-i18n-title="btnZoomOut" title="Zoom Out"><i data-lucide="zoom-out" class="w-5 h-5"></i></button>
+    <button class="btn-control" id="btn-reset" data-i18n-title="btnReset" title="Reset View"><i data-lucide="maximize" class="w-5 h-5"></i></button>
+  </div>
+
+  <!-- NAVIGATION OVERLAY -->
+  <div id="nav-panel" class="absolute top-20 left-1/2 -translate-x-1/2 sm:translate-x-0 sm:top-24 sm:left-8 w-11/12 max-w-[320px] bg-slate-900/95 border border-slate-700 rounded-lg p-5 hidden z-40 transition-all duration-300" style="will-change: transform;">
+    <div class="flex items-center gap-2 mb-4">
+      <i data-lucide="map-pin" class="w-5 h-5 text-sky-400"></i>
+      <h3 class="text-xl font-outfit font-black text-white" data-i18n="navTitle">Smart Routing</h3>
+    </div>
+    <div class="space-y-4">
+      <div>
+        <label class="block text-[10px] text-sky-400 font-mono tracking-widest uppercase mb-1" data-i18n="navStart">Start Location</label>
+        <select id="nav-start" class="w-full bg-slate-950 border border-slate-700 text-sm text-slate-200 rounded p-2 focus:border-sky-500 focus:outline-none"></select>
+      </div>
+      <div>
+        <label class="block text-[10px] text-sky-400 font-mono tracking-widest uppercase mb-1" data-i18n="navEnd">Destination</label>
+        <select id="nav-end" class="w-full bg-slate-950 border border-slate-700 text-sm text-slate-200 rounded p-2 focus:border-sky-500 focus:outline-none"></select>
+      </div>
+      <button id="btn-find-route" class="w-full py-2 bg-sky-500/20 hover:bg-sky-500/40 border border-sky-500/50 text-sky-400 font-bold rounded transition-colors text-sm" data-i18n="navBtn">Calculate Route</button>
+      <div id="nav-status" class="text-xs text-amber-400 text-center font-mono mt-2 hidden" data-i18n="navStatus">Calculating path...</div>
+      
+      <div id="nav-steps-container" class="mt-4 pt-4 border-t border-slate-700 hidden">
+        <div class="text-[10px] text-emerald-400 font-mono tracking-widest uppercase mb-2" data-i18n="navSteps">Turn-by-Turn Directions</div>
+        <ul id="nav-steps" class="space-y-2 text-xs text-slate-300 max-h-48 overflow-y-auto pr-1"></ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEAT DRILL-DOWN PANEL -->
+  <div id="seat-panel" class="absolute top-0 right-0 h-full w-full sm:w-[380px] bg-slate-900/95 backdrop-blur-md border-l border-slate-700 shadow-[0_0_50px_rgba(0,0,0,0.8)] transform translate-x-full transition-transform duration-300 z-50 flex flex-col" style="will-change: transform;">
+    <div class="p-5 border-b border-slate-800 flex justify-between items-start bg-slate-950/80">
+      <div>
+        <h3 class="text-2xl font-outfit font-black text-white" id="sp-title">Section 114</h3>
+        <div class="flex items-center gap-2 mt-1">
+          <span class="text-xs text-sky-400 font-bold uppercase tracking-wider" id="sp-subtitle">100 Level</span>
+          <span class="w-1 h-1 rounded-full bg-slate-600"></span>
+          <span class="text-xs text-slate-400" id="sp-capacity">640 Seats</span>
+        </div>
+      </div>
+      <button onclick="closeSeatPanel()" class="text-slate-400 hover:text-white bg-slate-800 hover:bg-slate-700 p-1.5 rounded-lg transition-colors">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+    </div>
+    <div class="p-5 flex-1 overflow-y-auto">
+      <div class="w-full bg-emerald-950/30 border border-emerald-900/50 rounded-lg p-2 text-center mb-6">
+        <div class="text-[10px] font-bold text-emerald-500 uppercase tracking-widest"><i data-lucide="arrow-down" class="w-3 h-3 inline"></i> <span data-i18n="fieldDirection">Field Direction</span> <i data-lucide="arrow-down" class="w-3 h-3 inline"></i></div>
+      </div>
+      <!-- Seat grid generated here -->
+      <div id="seat-grid" class="flex flex-col gap-2 items-center pb-12"></div>
+    </div>
+  </div>
+
+  <!-- AI CHAT PANEL -->
+  <div id="chat-panel" class="absolute top-0 right-0 h-full w-full sm:w-[380px] bg-slate-900/95 backdrop-blur-md border-l border-slate-700 shadow-[0_0_50px_rgba(0,0,0,0.8)] transform translate-x-full transition-transform duration-300 z-50 flex flex-col" style="will-change: transform;">
+    <div class="p-5 border-b border-slate-800 flex justify-between items-start bg-slate-950/80">
+      <div>
+        <h3 class="text-2xl font-outfit font-black text-white flex items-center gap-2"><i data-lucide="bot" class="w-6 h-6 text-emerald-400"></i> <span data-i18n="chatTitle">Stadium AI</span></h3>
+        <p class="text-[10px] text-sky-400 font-bold uppercase tracking-widest mt-1" data-i18n="chatSubtitle">Digital Concierge</p>
+      </div>
+      <button onclick="document.getElementById('chat-panel').classList.add('translate-x-full')" class="text-slate-400 hover:text-white bg-slate-800 hover:bg-slate-700 p-1.5 rounded-lg transition-colors">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+    </div>
+    <div id="chat-history" class="p-5 flex-1 overflow-y-auto flex flex-col gap-4 text-sm font-sans">
+       <div class="self-start bg-slate-800 text-slate-200 border border-slate-700 px-4 py-2 rounded-2xl rounded-tl-sm max-w-[85%] shadow-md leading-relaxed" data-i18n="welcomeMessage">Welcome to MetLife Stadium! I am your AI concierge. Ask me about the Live Heatmap, finding the shortest Route, or exploring VIP Suites.</div>
+    </div>
+    <div class="p-4 border-t border-slate-800 bg-slate-950/90">
+      <form id="chat-form" class="flex gap-2 relative">
+        <input type="text" id="chat-input" data-i18n-placeholder="chatPlaceholder" placeholder="Ask about routes, seats, or heatmap..." class="flex-1 bg-slate-800 border border-slate-700 text-white rounded-lg px-4 py-2 focus:outline-none focus:border-sky-500 text-sm placeholder-slate-500 w-full" autocomplete="off" />
+        <button type="submit" class="bg-sky-500/20 hover:bg-sky-500/40 text-sky-400 border border-sky-500/50 rounded-lg p-2 transition-colors">
+           <i data-lucide="send" class="w-5 h-5"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // ==========================================
+    // API KEY CONFIGURATION
+    // ==========================================
+    // Replace these placeholder strings with your actual API keys.
+    // Since there is no backend server, these must be defined here for the frontend to use.
+    const GOOGLE_TRANSLATE_API_KEY = "YOUR_GOOGLE_TRANSLATE_API_KEY";
+    const GROQ_API_KEY = "YOUR_GROQ_API_KEY";
+
+    // ==========================================
+    // GLOBAL i18n SYSTEM
+    // ==========================================
+    window.uiLang = 'en';
+    const uiDict = {
+      title: { en: "METLIFE STADIUM", es: "ESTADIO METLIFE", fr: "STADE METLIFE", de: "METLIFE STADION", it: "STADIO METLIFE", pt: "ESTÁDIO METLIFE" },
+      scaleBadge: { en: "100% SCALE", es: "ESCALA 100%", fr: "ÉCHELLE 100%", de: "100% MASSSTAB", it: "SCALA 100%", pt: "ESCALA 100%" },
+      coords: { en: "COORDINATES: 40.8136° N, 74.0745° W", es: "COORDENADAS: 40.8136° N, 74.0745° W", fr: "COORDONNÉES: 40.8136° N, 74.0745° W", de: "KOORDINATEN: 40.8136° N, 74.0745° W", it: "COORDINATE: 40.8136° N, 74.0745° W", pt: "COORDENADAS: 40.8136° N, 74.0745° W" },
+      capacity: { en: "CAPACITY: 82,500", es: "CAPACIDAD: 82,500", fr: "CAPACITÉ: 82 500", de: "KAPAZITÄT: 82.500", it: "CAPACITÀ: 82.500", pt: "CAPACIDADE: 82.500" },
+      levels: { en: "LEVELS: 100, 200, 300, SUITES", es: "NIVELES: 100, 200, 300, SUITES", fr: "NIVEAUX: 100, 200, 300, SUITES", de: "EBENEN: 100, 200, 300, SUITES", it: "LIVELLI: 100, 200, 300, SUITES", pt: "NÍVEIS: 100, 200, 300, SUITES" },
+      btnHeatmap: { en: "Toggle Live Crowd Heatmap", es: "Alternar Mapa de Calor", fr: "Basculer la Carte de Chaleur", de: "Live-Heatmap Umschalten", it: "Attiva Mappa di Calore", pt: "Alternar Mapa de Calor" },
+      btnNav: { en: "Navigation", es: "Navegación", fr: "Navigation", de: "Navigation", it: "Navigazione", pt: "Navegação" },
+      btnChat: { en: "AI Assistant", es: "Asistente de IA", fr: "Assistant IA", de: "KI-Assistent", it: "Assistente IA", pt: "Assistente de IA" },
+      btnZoomIn: { en: "Zoom In", es: "Acercar", fr: "Zoomer", de: "Hineinzoomen", it: "Ingrandire", pt: "Aumentar o Zoom" },
+      btnZoomOut: { en: "Zoom Out", es: "Alejar", fr: "Dézoomer", de: "Herauszoomen", it: "Rimpicciolire", pt: "Diminuir o Zoom" },
+      btnReset: { en: "Reset View", es: "Restablecer Vista", fr: "Réinitialiser", de: "Ansicht Zurücksetzen", it: "Ripristina Vista", pt: "Redefinir Visão" },
+      navTitle: { en: "Smart Routing", es: "Rutas Inteligentes", fr: "Itinéraire Intelligent", de: "Intelligentes Routing", it: "Percorsi Intelligenti", pt: "Rotas Inteligentes" },
+      navStart: { en: "Start Location", es: "Ubicación Inicial", fr: "Point de Départ", de: "Startort", it: "Punto di Partenza", pt: "Ponto de Partida" },
+      navEnd: { en: "Destination", es: "Destino", fr: "Destination", de: "Zielort", it: "Destinazione", pt: "Destino" },
+      navBtn: { en: "Calculate Route", es: "Calcular Ruta", fr: "Calculer l'Itinéraire", de: "Route Berechnen", it: "Calcola Percorso", pt: "Calcular Rota" },
+      navStatus: { en: "Calculating heatmap-aware path...", es: "Calculando ruta por mapa de calor...", fr: "Calcul de l'itinéraire...", de: "Berechne Route mit Heatmap...", it: "Calcolo percorso termico...", pt: "Calculando rota por mapa de calor..." },
+      navSteps: { en: "Turn-by-Turn Directions", es: "Instrucciones Paso a Paso", fr: "Instructions Étape par Étape", de: "Schritt-für-Schritt-Anleitung", it: "Indicazioni Passo-Passo", pt: "Instruções Passo a Passo" },
+      fieldDirection: { en: "Field Direction", es: "Dirección al Campo", fr: "Direction du Terrain", de: "Feldrichtung", it: "Direzione del Campo", pt: "Direção do Campo" },
+      chatTitle: { en: "Stadium AI", es: "Estadio IA", fr: "Stade IA", de: "Stadion KI", it: "Stadio IA", pt: "Estádio IA" },
+      chatSubtitle: { en: "Digital Concierge", es: "Conserje Digital", fr: "Concierge Numérique", de: "Digitaler Concierge", it: "Concierge Digitale", pt: "Concierge Digital" },
+      chatPlaceholder: { en: "Ask about routes, seats, or heatmap...", es: "Pregunta sobre rutas, asientos o mapa...", fr: "Posez des questions sur les sièges, le plan, etc.", de: "Fragen Sie nach Routen, Sitzen oder der Heatmap...", it: "Chiedi su percorsi, posti o mappa...", pt: "Pergunte sobre rotas, assentos ou mapa..." },
+      stepStartAt: { en: "Start at", es: "Comienza en", fr: "Commencez à", de: "Starten bei", it: "Inizia a", pt: "Comece em" },
+      stepEnterGate: { en: "Enter the stadium towards", es: "Entra al estadio hacia", fr: "Entrez dans le stade vers", de: "Betreten Sie das Stadion in Richtung", it: "Entra nello stadio verso", pt: "Entre no estádio em direção a" },
+      stepExitGate: { en: "Exit the stadium towards", es: "Sal del estadio hacia", fr: "Sortez du stade vers", de: "Verlassen Sie das Stadion in Richtung", it: "Esci dallo stadio verso", pt: "Saia do estádio em direção a" },
+      stepStairs: { en: "Take the stairs/escalator to", es: "Toma las escaleras hacia", fr: "Prenez les escaliers vers", de: "Nehmen Sie die Treppe zu", it: "Prendi le scale verso", pt: "Pegue as escadas para" },
+      stepWalkPast: { en: "Walk past", es: "Camina por", fr: "Marchez au-delà de", de: "Gehen Sie vorbei an", it: "Cammina oltre", pt: "Caminhe por" },
+      stepWalkPastSections: { en: "Sections", es: "Secciones", fr: "Sections", de: "Abschnitten", it: "Sezioni", pt: "Seções" },
+      stepWalkPastSuites: { en: "Suites", es: "Suites", fr: "Suites", de: "Suiten", it: "Suite", pt: "Suítes" },
+      stepToReach: { en: "to reach", es: "para llegar a", fr: "pour atteindre", de: "um zu erreichen:", it: "per raggiungere", pt: "para chegar a" },
+      stepWalkTo: { en: "Walk to", es: "Camina hacia", fr: "Marchez vers", de: "Gehen Sie zu", it: "Cammina verso", pt: "Caminhe para" },
+      stepArrive: { en: "Arrive at", es: "Llega a", fr: "Arrivez à", de: "Ankunft bei", it: "Arriva a", pt: "Chegue a" },
+      welcomeMessage: { en: "Welcome to MetLife Stadium! I am your AI concierge. Ask me about the Live Heatmap, finding the shortest Route, or exploring VIP Suites." }
+    };
+
+    const supportedLangs = [
+      {code: 'en', name: 'English'}, {code: 'af', name: 'Afrikaans'}, {code: 'sq', name: 'Albanian'}, {code: 'am', name: 'Amharic'},
+      {code: 'ar', name: 'Arabic'}, {code: 'hy', name: 'Armenian'}, {code: 'az', name: 'Azerbaijani'}, {code: 'eu', name: 'Basque'},
+      {code: 'be', name: 'Belarusian'}, {code: 'bn', name: 'Bengali'}, {code: 'bs', name: 'Bosnian'}, {code: 'bg', name: 'Bulgarian'},
+      {code: 'ca', name: 'Catalan'}, {code: 'ceb', name: 'Cebuano'}, {code: 'ny', name: 'Chichewa'}, {code: 'zh', name: 'Chinese'},
+      {code: 'co', name: 'Corsican'}, {code: 'hr', name: 'Croatian'}, {code: 'cs', name: 'Czech'}, {code: 'da', name: 'Danish'},
+      {code: 'nl', name: 'Dutch'}, {code: 'eo', name: 'Esperanto'}, {code: 'et', name: 'Estonian'}, {code: 'tl', name: 'Filipino'},
+      {code: 'fi', name: 'Finnish'}, {code: 'fr', name: 'French'}, {code: 'fy', name: 'Frisian'}, {code: 'gl', name: 'Galician'},
+      {code: 'ka', name: 'Georgian'}, {code: 'de', name: 'German'}, {code: 'el', name: 'Greek'}, {code: 'gu', name: 'Gujarati'},
+      {code: 'ht', name: 'Haitian Creole'}, {code: 'ha', name: 'Hausa'}, {code: 'haw', name: 'Hawaiian'}, {code: 'iw', name: 'Hebrew'},
+      {code: 'hi', name: 'Hindi'}, {code: 'hmn', name: 'Hmong'}, {code: 'hu', name: 'Hungarian'}, {code: 'is', name: 'Icelandic'},
+      {code: 'ig', name: 'Igbo'}, {code: 'id', name: 'Indonesian'}, {code: 'ga', name: 'Irish'}, {code: 'it', name: 'Italian'},
+      {code: 'ja', name: 'Japanese'}, {code: 'jw', name: 'Javanese'}, {code: 'kn', name: 'Kannada'}, {code: 'kk', name: 'Kazakh'},
+      {code: 'km', name: 'Khmer'}, {code: 'rw', name: 'Kinyarwanda'}, {code: 'ko', name: 'Korean'}, {code: 'ku', name: 'Kurdish'},
+      {code: 'ky', name: 'Kyrgyz'}, {code: 'lo', name: 'Lao'}, {code: 'la', name: 'Latin'}, {code: 'lv', name: 'Latvian'},
+      {code: 'lt', name: 'Lithuanian'}, {code: 'lb', name: 'Luxembourgish'}, {code: 'mk', name: 'Macedonian'}, {code: 'mg', name: 'Malagasy'},
+      {code: 'ms', name: 'Malay'}, {code: 'ml', name: 'Malayalam'}, {code: 'mt', name: 'Maltese'}, {code: 'mi', name: 'Maori'},
+      {code: 'mr', name: 'Marathi'}, {code: 'mn', name: 'Mongolian'}, {code: 'my', name: 'Myanmar (Burmese)'}, {code: 'ne', name: 'Nepali'},
+      {code: 'no', name: 'Norwegian'}, {code: 'or', name: 'Odia (Oriya)'}, {code: 'ps', name: 'Pashto'}, {code: 'fa', name: 'Persian'},
+      {code: 'pl', name: 'Polish'}, {code: 'pt', name: 'Portuguese'}, {code: 'pa', name: 'Punjabi'}, {code: 'ro', name: 'Romanian'},
+      {code: 'ru', name: 'Russian'}, {code: 'sm', name: 'Samoan'}, {code: 'gd', name: 'Scots Gaelic'}, {code: 'sr', name: 'Serbian'},
+      {code: 'st', name: 'Sesotho'}, {code: 'sn', name: 'Shona'}, {code: 'sd', name: 'Sindhi'}, {code: 'si', name: 'Sinhala'},
+      {code: 'sk', name: 'Slovak'}, {code: 'sl', name: 'Slovenian'}, {code: 'so', name: 'Somali'}, {code: 'es', name: 'Spanish'},
+      {code: 'su', name: 'Sundanese'}, {code: 'sw', name: 'Swahili'}, {code: 'sv', name: 'Swedish'}, {code: 'tg', name: 'Tajik'},
+      {code: 'ta', name: 'Tamil'}, {code: 'tt', name: 'Tatar'}, {code: 'te', name: 'Telugu'}, {code: 'th', name: 'Thai'},
+      {code: 'tr', name: 'Turkish'}, {code: 'tk', name: 'Turkmen'}, {code: 'uk', name: 'Ukrainian'}, {code: 'ur', name: 'Urdu'}
+    ];
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const select = document.getElementById('ui-lang-select');
+      if (select) {
+        supportedLangs.forEach(l => {
+          const opt = document.createElement('option');
+          opt.value = l.name;
+          opt.textContent = l.name;
+          select.appendChild(opt);
+        });
+        select.value = 'English';
+      }
+    });
+
+    async function setUiLanguage(lang) {
+      window.uiLang = lang;
+      
+      if (lang === 'English') {
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+          const key = el.getAttribute('data-i18n');
+          if (uiDict[key] && uiDict[key].en) el.textContent = uiDict[key].en;
+        });
+        document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+          const key = el.getAttribute('data-i18n-placeholder');
+          if (uiDict[key] && uiDict[key].en) el.placeholder = uiDict[key].en;
+        });
+        document.querySelectorAll('[data-i18n-title]').forEach(el => {
+          const key = el.getAttribute('data-i18n-title');
+          if (uiDict[key] && uiDict[key].en) el.title = uiDict[key].en;
+        });
+        return;
+      }
+      
+      const elementsToTranslate = [];
+      const stringsToTranslate = [];
+
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (uiDict[key] && uiDict[key].en) {
+          elementsToTranslate.push({ el, type: 'text' });
+          stringsToTranslate.push(uiDict[key].en);
+        }
+      });
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const key = el.getAttribute('data-i18n-placeholder');
+        if (uiDict[key] && uiDict[key].en) {
+          elementsToTranslate.push({ el, type: 'placeholder' });
+          stringsToTranslate.push(uiDict[key].en);
+        }
+      });
+      document.querySelectorAll('[data-i18n-title]').forEach(el => {
+        const key = el.getAttribute('data-i18n-title');
+        if (uiDict[key] && uiDict[key].en) {
+          elementsToTranslate.push({ el, type: 'title' });
+          stringsToTranslate.push(uiDict[key].en);
+        }
+      });
+
+      try {
+        const systemPrompt = `Translate the following JSON array of English strings into ${lang}. You must output a valid JSON object with a single key "translations" containing the array of translated strings in the exact same order. Preserve all HTML tags (like <b>).`;
+        
+        const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+           method: 'POST',
+           headers: { 
+             'Content-Type': 'application/json',
+             'Authorization': `Bearer ${GROQ_API_KEY}`
+           },
+           body: JSON.stringify({
+             model: 'llama-3.3-70b-versatile',
+             messages: [
+               { role: "system", content: systemPrompt },
+               { role: "user", content: JSON.stringify(stringsToTranslate) }
+             ],
+             response_format: { type: "json_object" }
+           })
+         });
+
+        const data = await response.json();
+        if (data.error) throw new Error(data.error.message);
+
+        const translatedObj = JSON.parse(data.choices[0].message.content);
+        const translatedArray = translatedObj.translations;
+        
+        if (translatedArray && translatedArray.length === elementsToTranslate.length) {
+            translatedArray.forEach((t, i) => {
+              const item = elementsToTranslate[i];
+              if (item) {
+                 if (item.type === 'text') item.el.innerHTML = t;
+                 else if (item.type === 'placeholder') item.el.placeholder = t;
+                 else if (item.type === 'title') item.el.title = t;
+              }
+            });
+        }
+      } catch (err) {
+        console.error("Translation error:", err);
+        alert("Failed to translate UI. Please check your network or API quota.");
+        document.getElementById('ui-lang-select').value = 'English';
+      }
+    }
+
+    // Initialize icons
+    lucide.createIcons();
+
+    // ==========================================
+    // PROCEDURAL INTERACTIVE WEDGES
+    // ==========================================
+    const wedgesGroup = document.getElementById('interactive-wedges');
+    const centerX = 600;
+    const centerY = 500;
+    
+    // MetLife Stadium accurately features 50 sections per level (e.g., 101-150)
+    const numSections = 50;
+    const angleStep = (2 * Math.PI) / numSections;
+    
+    // Graph engine variables
+    const stadiumGraph = { nodes: {}, edges: [] };
+
+    // Helper to generate an SVG path for an elliptical wedge
+    function createEllipticalWedge(cx, cy, innerRx, innerRy, outerRx, outerRy, startAngle, endAngle) {
+      // Add a tiny gap between sections so they don't overlap perfectly
+      const gap = 0.01;
+      startAngle += gap;
+      endAngle -= gap;
+
+      const p1x = cx + innerRx * Math.cos(startAngle);
+      const p1y = cy + innerRy * Math.sin(startAngle);
+      const p2x = cx + outerRx * Math.cos(startAngle);
+      const p2y = cy + outerRy * Math.sin(startAngle);
+      const p3x = cx + outerRx * Math.cos(endAngle);
+      const p3y = cy + outerRy * Math.sin(endAngle);
+      const p4x = cx + innerRx * Math.cos(endAngle);
+      const p4y = cy + innerRy * Math.sin(endAngle);
+      
+      const largeArc = (endAngle - startAngle) > Math.PI ? 1 : 0;
+
+      return `
+        M ${p1x} ${p1y}
+        L ${p2x} ${p2y}
+        A ${outerRx} ${outerRy} 0 ${largeArc} 1 ${p3x} ${p3y}
+        L ${p4x} ${p4y}
+        A ${innerRx} ${innerRy} 0 ${largeArc} 0 ${p1x} ${p1y}
+        Z
+      `;
+    }
+
+    // Level definitions (Inner Rx, Inner Ry, Outer Rx, Outer Ry, Fill Color, Level Number)
+    // Modified to match horizontal layout (Rx > Ry) and restore neon blueprint theme
+    const levels = [
+      { name: '100', inRx: 210, inRy: 110, outRx: 260, outRy: 160, fill: "rgba(16, 185, 129, 0.15)" },
+      { name: 'Suite 3', inRx: 262, inRy: 162, outRx: 274, outRy: 174, fill: "rgba(244, 63, 94, 0.2)", type: 'suite' },
+      { name: '200', inRx: 276, inRy: 176, outRx: 330, outRy: 230, fill: "rgba(245, 158, 11, 0.15)" },
+      { name: 'Suite 5', inRx: 332, inRy: 232, outRx: 344, outRy: 244, fill: "rgba(168, 85, 247, 0.2)", type: 'suite' },
+      { name: 'Suite 6', inRx: 346, inRy: 246, outRx: 358, outRy: 258, fill: "rgba(99, 102, 241, 0.2)", type: 'suite' },
+      { name: '300', inRx: 360, inRy: 260, outRx: 430, outRy: 330, fill: "rgba(2, 6, 23, 0.8)" }
+    ];
+
+    // Batch-build all SVG wedges as a single string, then set innerHTML once (1 DOM write vs 500+)
+    let wedgeSvg = '';
+    const wedgeSectionMap = {}; // id -> { sectionId, level } for event delegation
+
+    for(let l = 0; l < levels.length; l++) {
+      const lvl = levels[l];
+      
+      // Draw background ring for non-suite levels
+      if (!lvl.type) {
+        const bgPath = createEllipticalWedge(centerX, centerY, lvl.inRx, lvl.inRy, lvl.outRx, lvl.outRy, 0, 2 * Math.PI);
+        const bgFill = lvl.name === '300' ? '#020617' : 'rgba(2, 6, 23, 0.8)';
+        wedgeSvg += `<path d="${bgPath}" fill="${bgFill}"/>`;
+      }
+
+      for(let i = 0; i < numSections; i++) {
+        const angle = (i * angleStep) - (Math.PI / 2);
+        
+        let normAngle = angle;
+        while (normAngle < 0) normAngle += 2 * Math.PI;
+        
+        const isSideline = (normAngle > 0.5 && normAngle < 2.6) || (normAngle > 3.6 && normAngle < 5.7);
+        
+        if (lvl.type === 'suite' && !isSideline) continue;
+
+        const pathData = createEllipticalWedge(centerX, centerY, lvl.inRx, lvl.inRy, lvl.outRx, lvl.outRy, angle, angle + angleStep);
+        
+        const sectionId = lvl.type === 'suite' 
+          ? `${lvl.name.replace('Suite ', 'S')}-${String(i+1).padStart(2, '0')}` 
+          : `${lvl.name.charAt(0)}${String(i+1).padStart(2, '0')}`;
+          
+        const secId = `sec-${sectionId}`;
+        const tipText = `Click to view ${lvl.type === 'suite' ? 'VIP Suite' : 'seats in Section'} ${sectionId}`;
+        
+        wedgeSvg += `<path d="${pathData}" class="wedge-path" fill="${lvl.fill}" id="${secId}"><title>${tipText}</title></path>`;
+        /* wedge-overlay removed to cut DOM size in half */
+        
+        // Store node in Graph for navigation
+        const midAngle = angle + (angleStep / 2);
+        const midRx = lvl.inRx + (lvl.outRx - lvl.inRx)/2;
+        const midRy = lvl.inRy + (lvl.outRy - lvl.inRy)/2;
+        const cx = centerX + Math.cos(midAngle) * midRx;
+        const cy = centerY + Math.sin(midAngle) * midRy;
+        
+        // Route exactly in the 2px gap between stadium rings to avoid overlapping section graphics
+        const concourseRx = lvl.outRx + 1;
+        const concourseRy = lvl.outRy + 1;
+        const concourseX = centerX + Math.cos(midAngle) * concourseRx;
+        const concourseY = centerY + Math.sin(midAngle) * concourseRy;
+        
+        stadiumGraph.nodes[secId] = { 
+          id: secId, 
+          name: `${lvl.type === 'suite' ? 'Suite' : 'Section'} ${sectionId}`, 
+          x: cx, y: cy, 
+          rx: midRx, ry: midRy, angle: midAngle,
+          concourseX, concourseY, concourseRx, concourseRy,
+          level: lvl.name,
+          index: i
+        };
+
+        wedgeSectionMap[secId] = { sectionId, level: lvl.name };
+
+        // Section labels every other section
+        if (i % 2 === 0) {
+          const textRx = lvl.inRx + (lvl.outRx - lvl.inRx)/2;
+          const textRy = lvl.inRy + (lvl.outRy - lvl.inRy)/2;
+          const tx = centerX + Math.cos(midAngle) * textRx;
+          const ty = centerY + Math.sin(midAngle) * textRy;
+          const deg = (midAngle * 180 / Math.PI) + 90;
+          const fontSize = lvl.name === '100' ? 5.5 : lvl.name === '200' ? 7 : 10;
+          
+          wedgeSvg += `<text x="${tx}" y="${ty}" class="blueprint-text pointer-events-none" text-anchor="middle" alignment-baseline="middle" font-size="${fontSize}" transform="rotate(${deg} ${tx} ${ty})">${sectionId}</text>`;
+        }
+      }
+    }
+
+    wedgesGroup.innerHTML = wedgeSvg;
+
+    // Event delegation: single listener for all wedge clicks (instead of 250+ individual onclick handlers)
+    wedgesGroup.addEventListener('click', (e) => {
+      const wedge = e.target.closest('.wedge-path');
+      if (wedge && wedgeSectionMap[wedge.id]) {
+        const info = wedgeSectionMap[wedge.id];
+        openSeatPanel(info.sectionId, info.level);
+      }
+    });
+
+    // Add Gates to Graph manually
+    const gates = [
+      { id: 'gate-amex', name: 'AMEX Gate', x: 600, y: 150 },
+      { id: 'gate-hcl', name: 'HCLTech Gate', x: 890, y: 260 },
+      { id: 'gate-verizon', name: 'Verizon Gate', x: 890, y: 740 },
+      { id: 'gate-metlife', name: 'MetLife Gate', x: 600, y: 850 },
+      { id: 'gate-moodys', name: 'Moody\'s Gate', x: 310, y: 740 },
+    ];
+    gates.forEach(g => stadiumGraph.nodes[g.id] = { id: g.id, name: g.name, x: g.x, y: g.y, concourseX: g.x, concourseY: g.y, level: 'gate' });
+
+    // BUILD GRAPH EDGES
+    function connectEdges(idA, idB, isVertical = false) {
+      if (stadiumGraph.nodes[idA] && stadiumGraph.nodes[idB]) {
+         stadiumGraph.edges.push({ a: idA, b: idB, dist: isVertical ? 2 : 1 });
+         stadiumGraph.edges.push({ a: idB, b: idA, dist: isVertical ? 2 : 1 });
+      }
+    }
+
+    for (let i = 0; i < numSections; i++) {
+      const nextI = (i + 1) % numSections;
+      const getSecId = (lvlName, idx) => `sec-${lvlName.includes('Suite') ? lvlName.replace('Suite ', 'S') + '-' + String(idx+1).padStart(2, '0') : lvlName.charAt(0) + String(idx+1).padStart(2, '0')}`;
+      
+      // Horizontal connections
+      levels.forEach((lvl, levelIdx) => {
+         // Outer levels (higher index) get cheaper weights (e.g. 300 level = 1, 100 level = 6)
+         // This forces the pathfinding to prefer walking horizontally on the spacious outer concourse 
+         // rather than taking stairs early and zigzagging through the thin inner suite rings.
+         const horizontalWeight = levels.length - levelIdx;
+         const idA = getSecId(lvl.name, i);
+         const idB = getSecId(lvl.name, nextI);
+         if (stadiumGraph.nodes[idA] && stadiumGraph.nodes[idB]) {
+            stadiumGraph.edges.push({ a: idA, b: idB, dist: horizontalWeight });
+            stadiumGraph.edges.push({ a: idB, b: idA, dist: horizontalWeight });
+         }
+      });
+      
+      // Vertical connections (Stairs/Escalators)
+      connectEdges(getSecId('100', i), getSecId('200', i), true);
+      connectEdges(getSecId('200', i), getSecId('300', i), true);
+      // Connect suites if they exist
+      connectEdges(getSecId('100', i), getSecId('Suite 3', i), true);
+      connectEdges(getSecId('Suite 3', i), getSecId('200', i), true);
+      connectEdges(getSecId('200', i), getSecId('Suite 5', i), true);
+      connectEdges(getSecId('Suite 5', i), getSecId('Suite 6', i), true);
+      connectEdges(getSecId('Suite 6', i), getSecId('300', i), true);
+    }
+    
+    // Connect Gates to their absolutely nearest 300-level (outermost) sections mathematically
+    gates.forEach(g => {
+       let minDist = Infinity;
+       let closestSec = null;
+       
+       for (let i = 0; i < numSections; i++) {
+          const s300 = stadiumGraph.nodes[`sec-3${String(i+1).padStart(2, '0')}`];
+          // Use concourseX/Y for distance to accurately reflect walking paths
+          const dist = Math.sqrt(Math.pow(s300.concourseX - g.x, 2) + Math.pow(s300.concourseY - g.y, 2));
+          if (dist < minDist) {
+             minDist = dist;
+             closestSec = s300;
+          }
+       }
+       
+       if (closestSec) {
+          connectEdges(g.id, closestSec.id);
+       }
+    });
+    // ==========================================
+    // SEAT DRILL-DOWN LOGIC
+    // ==========================================
+    function openSeatPanel(sectionId, level) {
+      currentSeatSectionId = "overlay-" + sectionId;
+      const isSuite = level.includes('Suite');
+      document.getElementById('sp-title').innerText = isSuite ? `${level} ${sectionId}` : `Section ${sectionId}`;
+      document.getElementById('sp-subtitle').innerText = isSuite ? `Premium Suite Level` : `${level} Level`;
+      
+      const grid = document.getElementById('seat-grid');
+      grid.innerHTML = "";
+      
+      // Dynamic rows based on realistic MetLife Stadium capacities
+      const rows = level === '100' ? 35 : level === '200' ? 15 : isSuite ? 2 : 26;
+      const seatsPerRow = level === '100' ? 20 : level === '200' ? 16 : isSuite ? 8 : 22;
+      
+      document.getElementById('sp-capacity').innerText = isSuite ? `${rows * seatsPerRow} VIP Seats` : `${rows * seatsPerRow} Seats`;
+
+      // Build full HTML string in one pass, then assign once (avoids repeated DOM re-parsing)
+      let allRowsHtml = '';
+      let seatIndex = 0;
+      for(let r = 0; r < rows; r++) {
+        // Generate alphabetic row names (A, B... Z, AA, AB...)
+        const rowName = r >= 26 
+          ? String.fromCharCode(64 + Math.floor(r/26)) + String.fromCharCode(65 + (r % 26))
+          : String.fromCharCode(65 + (r % 26));
+        
+        let rowHtml = `<div class="flex items-center gap-3">
+          <span class="w-6 text-[10px] font-bold text-slate-500 text-right">${rowName}</span>
+          <div class="flex gap-1">`;
+          
+        for(let s = 1; s <= seatsPerRow; s++) {
+          const seatColor = level === '100' ? 'hover:bg-emerald-500 hover:border-emerald-400' :
+                            level === '200' ? 'hover:bg-amber-500 hover:border-amber-400' :
+                            isSuite ? 'bg-purple-900/50 hover:bg-purple-500 hover:border-purple-400 border-purple-800' :
+                            'hover:bg-sky-500 hover:border-sky-400';
+                            
+          const seatShape = isSuite ? 'w-6 h-6 rounded-md' : 'w-3.5 h-3.5 rounded-sm';
+          
+          // Use a simple CSS star for suites instead of lucide icon to avoid re-init
+          rowHtml += `<div data-seat-idx="${seatIndex}" class="${seatShape} bg-slate-800 border border-slate-700 ${seatColor} cursor-pointer transition-colors relative group flex items-center justify-center seat-node">
+            ${isSuite ? '<span class="text-purple-400 opacity-50 group-hover:opacity-100 group-hover:text-white text-xs leading-none pointer-events-none">&#9733;</span>' : ''}
+            <div class="absolute bottom-full mb-1 left-1/2 -translate-x-1/2 bg-slate-100 text-slate-900 text-[9px] font-bold px-2 py-1 rounded hidden group-hover:block whitespace-nowrap z-10 shadow-lg pointer-events-none">
+              Row ${rowName}, Seat ${s}
+            </div>
+          </div>`;
+          seatIndex++;
+        }
+        
+        rowHtml += `</div>
+          <span class="w-6 text-[10px] font-bold text-slate-500 text-left">${rowName}</span>
+        </div>`;
+        
+        allRowsHtml += rowHtml;
+      }
+      
+      // Single DOM assignment instead of repeated innerHTML +=
+      grid.innerHTML = allRowsHtml;
+      
+      document.getElementById('seat-panel').style.transform = 'translateX(0)';
+    }
+
+    function closeSeatPanel() {
+      document.getElementById('seat-panel').style.transform = 'translateX(100%)';
+    }
+
+    // Generate Hash Marks on Football Field (batch innerHTML instead of 200 createElementNS calls)
+    const hashGroup = document.getElementById('hash-marks');
+    let hashSvg = '';
+    for (let y = 30; y <= 330; y += 3) {
+      if ((y - 30) % 30 === 0) continue;
+      hashSvg += `<line x1="60" y1="${y}" x2="64" y2="${y}" class="field-lines"/>`;
+      hashSvg += `<line x1="96" y1="${y}" x2="100" y2="${y}" class="field-lines"/>`;
+    }
+    hashGroup.innerHTML = hashSvg;
+
+    // Basic Pan/Zoom Implementation
+    const svg = document.getElementById('blueprint-svg');
+    let scale = 1;
+    let viewBox = { x: 0, y: 0, w: 1200, h: 1000 };
+    
+    function updateViewBox() {
+      svg.setAttribute("viewBox", `${viewBox.x} ${viewBox.y} ${viewBox.w} ${viewBox.h}`);
+    }
+
+    document.getElementById('btn-zoom-in').addEventListener('click', () => {
+      const zoomFactor = 0.8;
+      const dw = viewBox.w - (viewBox.w * zoomFactor);
+      const dh = viewBox.h - (viewBox.h * zoomFactor);
+      viewBox.w *= zoomFactor;
+      viewBox.h *= zoomFactor;
+      viewBox.x += dw / 2;
+      viewBox.y += dh / 2;
+      updateViewBox();
+    });
+
+    document.getElementById('btn-zoom-out').addEventListener('click', () => {
+      const zoomFactor = 1.25;
+      const dw = (viewBox.w * zoomFactor) - viewBox.w;
+      const dh = (viewBox.h * zoomFactor) - viewBox.h;
+      viewBox.w *= zoomFactor;
+      viewBox.h *= zoomFactor;
+      viewBox.x -= dw / 2;
+      viewBox.y -= dh / 2;
+      updateViewBox();
+    });
+
+    document.getElementById('btn-reset').addEventListener('click', () => {
+      viewBox = { x: 0, y: 0, w: 1200, h: 1000 };
+      updateViewBox();
+    });
+    
+    // Pan logic
+    let isPanning = false;
+    let startPoint = { x:0, y:0 };
+    let startViewBox = { x:0, y:0 };
+
+    svg.addEventListener('mousedown', (e) => {
+      isPanning = true;
+      startPoint = { x: e.clientX, y: e.clientY };
+      startViewBox = { x: viewBox.x, y: viewBox.y };
+      svg.style.cursor = "grabbing";
+    });
+
+    window.addEventListener('mouseup', () => {
+      isPanning = false;
+      svg.style.cursor = "default";
+    });
+
+    // Throttled pan handler — only fires once per animation frame
+    let panRAF = null;
+    window.addEventListener('mousemove', (e) => {
+      if (!isPanning) return;
+      if (panRAF) return; // Already scheduled
+      panRAF = requestAnimationFrame(() => {
+        panRAF = null;
+        // Calculate scale factor from screen pixels to SVG units
+        const svgRect = svg.getBoundingClientRect();
+        const scaleX = viewBox.w / svgRect.width;
+        const scaleY = viewBox.h / svgRect.height;
+        
+        const dx = (e.clientX - startPoint.x) * scaleX;
+        const dy = (e.clientY - startPoint.y) * scaleY;
+        
+        viewBox.x = startViewBox.x - dx;
+        viewBox.y = startViewBox.y - dy;
+        updateViewBox();
+      });
+    });
+
+    // Wheel zoom (throttled with RAF)
+    let wheelRAF = null;
+    svg.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      if (wheelRAF) return;
+      wheelRAF = requestAnimationFrame(() => {
+        wheelRAF = null;
+        const zoomFactor = e.deltaY > 0 ? 1.1 : 0.9;
+        
+        // Calculate mouse position relative to SVG
+        const svgRect = svg.getBoundingClientRect();
+        const mouseX = e.clientX - svgRect.left;
+        const mouseY = e.clientY - svgRect.top;
+        
+        // Convert to SVG coordinates
+        const svgX = viewBox.x + (mouseX / svgRect.width) * viewBox.w;
+        const svgY = viewBox.y + (mouseY / svgRect.height) * viewBox.h;
+        
+        viewBox.w *= zoomFactor;
+        viewBox.h *= zoomFactor;
+        
+        // Adjust x/y so the point under mouse remains stationary
+        viewBox.x = svgX - (mouseX / svgRect.width) * viewBox.w;
+        viewBox.y = svgY - (mouseY / svgRect.height) * viewBox.h;
+        
+        updateViewBox();
+      });
+    }, { passive: false });
+
+    // ==========================================
+    // ==========================================
+    // DIJKSTRA PATHFINDING & ROUTING
+    // ==========================================
+    const navPanel = document.getElementById('nav-panel');
+    const startSelect = document.getElementById('nav-start');
+    const endSelect = document.getElementById('nav-end');
+    const routeLayer = document.getElementById('route-layer');
+    
+    function populateNavDropdowns() {
+      if (startSelect.options.length === 0) {
+        const nodes = Object.values(stadiumGraph.nodes).sort((a,b) => a.name.localeCompare(b.name));
+        nodes.forEach(n => {
+          startSelect.add(new Option(n.name, n.id));
+          endSelect.add(new Option(n.name, n.id));
+        });
+      }
+    }
+
+    document.getElementById('btn-nav').addEventListener('click', () => {
+      navPanel.classList.toggle('hidden');
+      populateNavDropdowns();
+    });
+
+    document.getElementById('btn-find-route').addEventListener('click', () => {
+      const startId = startSelect.value;
+      const endId = endSelect.value;
+      
+      if (startId === endId) return;
+      
+      const status = document.getElementById('nav-status');
+      status.classList.remove('hidden');
+      
+      setTimeout(() => {
+        calculateRoute(startId, endId);
+        status.classList.add('hidden');
+      }, 50);
+    });
+
+    function calculateRoute(startId, endId) {
+      // Build Adjacency List
+      const adj = {};
+      stadiumGraph.edges.forEach(e => {
+         if (!adj[e.a]) adj[e.a] = [];
+         // Strictly shortest distance path without crowd weights
+         adj[e.a].push({ node: e.b, weight: e.dist });
+      });
+
+      // Dijkstra
+      const dist = {};
+      const prev = {};
+      const q = new Set(Object.keys(stadiumGraph.nodes));
+
+      q.forEach(n => dist[n] = Infinity);
+      dist[startId] = 0;
+
+      while (q.size > 0) {
+        let u = null;
+        for (const n of q) {
+          if (!u || dist[n] < dist[u]) u = n;
+        }
+        
+        if (dist[u] === Infinity || u === endId) break;
+        q.delete(u);
+
+        if (adj[u]) {
+          adj[u].forEach(neighbor => {
+            if (q.has(neighbor.node)) {
+              const alt = dist[u] + neighbor.weight;
+              if (alt < dist[neighbor.node]) {
+                dist[neighbor.node] = alt;
+                prev[neighbor.node] = u;
+              }
+            }
+          });
+        }
+      }
+
+      // Reconstruct Path
+      const path = [];
+      let curr = endId;
+      if (prev[curr] || curr === startId) {
+        while (curr) {
+          path.unshift(curr);
+          curr = prev[curr];
+        }
+      }
+
+      // Draw Path
+      routeLayer.innerHTML = '';
+      const stepsContainer = document.getElementById('nav-steps-container');
+      const stepsList = document.getElementById('nav-steps');
+      stepsList.innerHTML = '';
+
+      if (path.length > 0) {
+        let d = '';
+        const startNode = stadiumGraph.nodes[path[0]];
+        const endNode = stadiumGraph.nodes[path[path.length-1]];
+        
+        d += `M ${startNode.x} ${startNode.y} `;
+        if (startNode.level !== 'gate') {
+           d += `L ${startNode.concourseX} ${startNode.concourseY} `;
+        }
+        let inAisle = false;
+        
+        for (let i = 0; i < path.length - 1; i++) {
+           const curr = stadiumGraph.nodes[path[i]];
+           const next = stadiumGraph.nodes[path[i+1]];
+           
+           if (curr.level === next.level && curr.level !== 'gate') {
+              // Same-level curve (Elliptical Arc) ALONG THE CONCOURSE
+              let sweepFlag = 1;
+              let diff = next.index - curr.index;
+              if (diff === -1 || diff === 49) sweepFlag = 0; // Reverse direction
+              d += `A ${curr.concourseRx} ${curr.concourseRy} 0 0 ${sweepFlag} ${next.concourseX} ${next.concourseY} `;
+           } else if (curr.level === 'gate' || next.level === 'gate') {
+              // Direct straight line for exterior gates to avoid overlapping the elliptical stadium corners
+              const nx = next.concourseX; const ny = next.concourseY;
+              d += `L ${nx} ${ny} `;
+           } else {
+              // Vertical stairs
+              const aisleAngle = curr.angle - (Math.PI * 2 / 50) / 2;
+              const isNextVertical = (i + 2 < path.length) && (stadiumGraph.nodes[path[i+2]].index === next.index);
+              
+              if (!inAisle) {
+                 const aisleCurrX = centerX + Math.cos(aisleAngle) * curr.concourseRx;
+                 const aisleCurrY = centerY + Math.sin(aisleAngle) * curr.concourseRy;
+                 d += `A ${curr.concourseRx} ${curr.concourseRy} 0 0 0 ${aisleCurrX} ${aisleCurrY} `;
+                 inAisle = true;
+              }
+              
+              const aisleNextX = centerX + Math.cos(aisleAngle) * next.concourseRx;
+              const aisleNextY = centerY + Math.sin(aisleAngle) * next.concourseRy;
+              d += `L ${aisleNextX} ${aisleNextY} `;
+              
+              if (!isNextVertical) {
+                 d += `A ${next.concourseRx} ${next.concourseRy} 0 0 1 ${next.concourseX} ${next.concourseY} `;
+                 inAisle = false;
+              }
+           }
+        }
+        
+        if (endNode.level !== 'gate') {
+           d += `L ${endNode.x} ${endNode.y} `;
+        }
+        
+        const pathElement = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        pathElement.setAttribute("d", d);
+        pathElement.setAttribute("class", "route-line");
+        routeLayer.appendChild(pathElement);
+        
+        // Generate Detailed Textual Steps
+        stepsContainer.classList.remove('hidden');
+        const steps = [];
+        const lang = window.uiLang || 'en';
+        steps.push(`<li class="flex gap-2"><span>📍</span> <span>${uiDict.stepStartAt[lang]} <b>${stadiumGraph.nodes[path[0]].name}</b></span></li>`);
+        
+        for (let i = 0; i < path.length - 1; i++) {
+           const curr = stadiumGraph.nodes[path[i]];
+           const next = stadiumGraph.nodes[path[i+1]];
+           
+           if (curr.level !== next.level) {
+              if (curr.level === 'gate') {
+                 steps.push(`<li class="flex gap-2"><span>🚶</span> <span>${uiDict.stepEnterGate[lang]} <b>${next.name}</b></span></li>`);
+              } else if (next.level === 'gate') {
+                 steps.push(`<li class="flex gap-2"><span>🚶</span> <span>${uiDict.stepExitGate[lang]} <b>${next.name}</b></span></li>`);
+              } else {
+                 steps.push(`<li class="flex gap-2"><span>🪜</span> <span>${uiDict.stepStairs[lang]} <b>${next.name}</b></span></li>`);
+              }
+           } else {
+              // Detailed section listing
+              let walkEndIdx = i + 1;
+              const passedSections = [];
+              while (walkEndIdx + 1 < path.length && stadiumGraph.nodes[path[walkEndIdx+1]].level === curr.level) {
+                 passedSections.push(stadiumGraph.nodes[path[walkEndIdx]].name.replace('Section ', '').replace('Suite ', ''));
+                 walkEndIdx++;
+              }
+              const walkEnd = stadiumGraph.nodes[path[walkEndIdx]];
+              if (passedSections.length > 0) {
+                 const entityType = curr.level.includes('Suite') ? uiDict.stepWalkPastSuites[lang] : uiDict.stepWalkPastSections[lang];
+                 steps.push(`<li class="flex gap-2"><span>🚶</span> <span>${uiDict.stepWalkPast[lang]} ${entityType} ${passedSections.join(', ')} ${uiDict.stepToReach[lang]} <b>${walkEnd.name}</b></span></li>`);
+              } else {
+                 steps.push(`<li class="flex gap-2"><span>🚶</span> <span>${uiDict.stepWalkTo[lang]} <b>${walkEnd.name}</b></span></li>`);
+              }
+              i = walkEndIdx - 1;
+           }
+        }
+        
+        steps.push(`<li class="flex gap-2 text-emerald-400"><span>🏁</span> <span>${uiDict.stepArrive[lang]} <b>${stadiumGraph.nodes[path[path.length-1]].name}</b></span></li>`);
+        stepsList.innerHTML = steps.join('');
+      } else {
+        stepsContainer.classList.add('hidden');
+      }
+    }
+    // AI CHAT LOGIC
+    // ==========================================
+    const chatPanel = document.getElementById('chat-panel');
+    const chatHistory = document.getElementById('chat-history');
+    const chatForm = document.getElementById('chat-form');
+    const chatInput = document.getElementById('chat-input');
+
+    document.getElementById('btn-chat').addEventListener('click', () => {
+      chatPanel.classList.toggle('translate-x-full');
+      if (!chatPanel.classList.contains('translate-x-full')) {
+         setTimeout(() => chatInput.focus(), 300);
+      }
+    });
+
+    function addUserMessage(text) {
+      const msg = document.createElement('div');
+      msg.className = "self-end bg-sky-600 text-white px-4 py-2 rounded-2xl rounded-tr-sm max-w-[85%] shadow-md whitespace-pre-wrap";
+      msg.textContent = text;
+      chatHistory.appendChild(msg);
+      chatHistory.scrollTop = chatHistory.scrollHeight;
+    }
+
+    function addAiMessage(text, isHTML = false) {
+      const msg = document.createElement('div');
+      msg.className = "self-start bg-slate-800 text-slate-200 border border-slate-700 px-4 py-2 rounded-2xl rounded-tl-sm max-w-[85%] shadow-md leading-relaxed";
+      if (isHTML) {
+        msg.innerHTML = text;
+        // Only re-init icons if the message actually contains lucide data-lucide attributes
+        if (text.includes('data-lucide')) lucide.createIcons();
+      }
+      else msg.textContent = text;
+      chatHistory.appendChild(msg);
+      chatHistory.scrollTop = chatHistory.scrollHeight;
+    }
+    
+    let typingEl = null; // Reuse typing indicator element
+    function showTyping() {
+      removeTyping(); // Ensure clean state
+      typingEl = document.createElement('div');
+      typingEl.id = "typing-indicator";
+      typingEl.className = "self-start bg-slate-800 text-slate-400 border border-slate-700 px-4 py-3 rounded-2xl rounded-tl-sm max-w-[85%] flex gap-1.5 items-center";
+      typingEl.innerHTML = '<div class="w-1.5 h-1.5 bg-slate-500 rounded-full animate-bounce"></div><div class="w-1.5 h-1.5 bg-slate-500 rounded-full animate-bounce" style="animation-delay: 0.15s"></div><div class="w-1.5 h-1.5 bg-slate-500 rounded-full animate-bounce" style="animation-delay: 0.3s"></div>';
+      chatHistory.appendChild(typingEl);
+      chatHistory.scrollTop = chatHistory.scrollHeight;
+    }
+    
+    function removeTyping() {
+      if (typingEl && typingEl.parentNode) {
+        typingEl.remove();
+        typingEl = null;
+      }
+    }
+
+    const aiResponseCache = new Map([
+       ["lost fan looking for a seat.", { message: "Don't worry, I can help you find your seat! If you know your section number, I can map the shortest route from your current location. If you need immediate assistance, please head to the nearest Guest Services booth at Section 124.", action: { type: "route", startId: "gate-amex", destId: "sec-124" } }],
+       ["wheelchair user needing an accessible route.", { message: "MetLife Stadium is fully ADA accessible. I have mapped a route using the concourse elevators from the Verizon Gate to the ADA seating area at Section 139. Elevators are located at all VIP entrances.", action: { type: "route", startId: "gate-verizon", destId: "sec-139" } }],
+       ["spanish-speaking fan asking for halal food.", { message: "¡Hola! Las mejores opciones de comida Halal se encuentran en el carrito 'Halal Guys', ubicado en el nivel 100, cerca de la Sección 118. He trazado la ruta más rápida desde la puerta principal para ti.", action: { type: "route", startId: "gate-amex", destId: "sec-118" } }],
+       ["medical emergency.", { message: "<b class='text-red-500'>If this is a life-threatening emergency, please call 911 immediately.</b><br>For stadium medical assistance, First Aid stations are located on every level. I have routed you to the nearest First Aid station at Section 103.", action: { type: "route", startId: "gate-amex", destId: "sec-103" } }],
+       ["parking reroute after the match.", { message: "Post-match traffic is currently heavy near the HCLTech Gate. I recommend exiting through the Moody's Gate to access Parking Lots F and G for a faster departure. I've routed you there.", action: { type: "route", startId: "sec-110", destId: "gate-moodys" } }]
+    ]);
+
+    async function processAiResponse(query) {
+       let lang = window.uiLang || 'en';
+       const normalizedQuery = query.toLowerCase().trim();
+
+       // 1. INTENT ROUTER - CACHE LAYER
+       if (aiResponseCache.has(normalizedQuery)) {
+          const cached = aiResponseCache.get(normalizedQuery);
+          removeTyping();
+          if (cached.action && cached.action.type === 'route') {
+             populateNavDropdowns();
+             document.getElementById('nav-start').value = cached.action.startId;
+             document.getElementById('nav-end').value = cached.action.destId;
+             document.getElementById('btn-find-route').click();
+          }
+          addAiMessage(cached.message, true);
+          return;
+       }
+
+       if (!GROQ_API_KEY || GROQ_API_KEY === "YOUR_GROQ_API_KEY") {
+         removeTyping();
+         addAiMessage("Please add your Groq API Key to the index.html source code to enable the AI Assistant.", true);
+         return;
+       }
+
+       // 2. INTENT ROUTER - LLM FUNCTION CALLING
+       const nodeContext = Object.values(stadiumGraph.nodes).map(n => `'${n.id}': ${n.name}`).join(', ');
+       const systemPrompt = `You are a central Intent Router for MetLife Stadium.
+The user is viewing the stadium in language: ${lang}. You must respond in this language.
+Available routing nodes are: ${nodeContext}
+Analyze the user's intent and invoke the appropriate tool.`;
+
+       const tools = [
+         {
+           type: "function",
+           function: {
+             name: "calculate_route",
+             description: "Calculates the optimal walking route between two stadium locations. Use this when the user needs directions.",
+             parameters: {
+               type: "object",
+               properties: {
+                 startId: { type: "string", description: "The ID of the starting node (e.g. gate-amex, sec-120). If the user didn't specify a start, default to 'auto'." },
+                 destId: { type: "string", description: "The ID of the destination node." },
+                 naturalResponse: { type: "string", description: "A conversational explanation of the route, localized in the user's language. Format with HTML. E.g. 'I have mapped the closest entrance to your seat...'" }
+               },
+               required: ["startId", "destId", "naturalResponse"]
+             }
+           }
+         },
+         {
+           type: "function",
+           function: {
+             name: "answer_general",
+             description: "Answers general queries about the stadium, capacity, heatmap, or amenities when no routing is needed.",
+             parameters: {
+               type: "object",
+               properties: {
+                 naturalResponse: { type: "string", description: "The conversational response to the query, localized in the user's language. Format with HTML." }
+               },
+               required: ["naturalResponse"]
+             }
+           }
+         }
+       ];
+
+       try {
+         const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+           method: 'POST',
+           headers: { 
+             'Content-Type': 'application/json',
+             'Authorization': `Bearer ${GROQ_API_KEY}`
+           },
+           body: JSON.stringify({
+             model: 'llama-3.3-70b-versatile',
+             messages: [
+               { role: "system", content: systemPrompt },
+               { role: "user", content: query }
+             ],
+             tools: tools,
+             tool_choice: "auto"
+           })
+         });
+
+         const data = await response.json();
+         removeTyping();
+         
+         if (data.error) throw new Error(data.error.message);
+         
+         const toolCalls = data.choices[0].message.tool_calls;
+         const call = toolCalls && toolCalls.length > 0 ? toolCalls[0].function : null;
+         
+         if (call && call.name === 'calculate_route') {
+            const args = JSON.parse(call.arguments);
+            let finalStartId = args.startId;
+            
+            // Auto-calculate closest gate if unspecified
+            if (finalStartId === 'auto' || !stadiumGraph.nodes[finalStartId]) {
+               const gates = ['gate-amex', 'gate-hcl', 'gate-verizon', 'gate-metlife', 'gate-moodys'];
+               let bestGate = 'gate-amex';
+               let minAvgDist = Infinity;
+               const destNode = stadiumGraph.nodes[args.destId];
+               
+               if (destNode) {
+                  gates.forEach(g => {
+                     const gateNode = stadiumGraph.nodes[g];
+                     const dist = Math.hypot(gateNode.x - destNode.x, gateNode.y - destNode.y);
+                     if (dist < minAvgDist) {
+                        minAvgDist = dist;
+                        bestGate = g;
+                     }
+                  });
+               }
+               finalStartId = bestGate;
+            }
+
+            if (stadiumGraph.nodes[finalStartId] && stadiumGraph.nodes[args.destId]) {
+               populateNavDropdowns();
+               document.getElementById('nav-start').value = finalStartId;
+               document.getElementById('nav-end').value = args.destId;
+               document.getElementById('btn-find-route').click();
+            }
+            
+            // Save to cache for next time
+            aiResponseCache.set(normalizedQuery, { message: args.naturalResponse, action: { type: "route", startId: finalStartId, destId: args.destId } });
+            addAiMessage(args.naturalResponse, true);
+         } else if (call && call.name === 'answer_general') {
+            const args = JSON.parse(call.arguments);
+            // Save to cache
+            aiResponseCache.set(normalizedQuery, { message: args.naturalResponse });
+            addAiMessage(args.naturalResponse, true);
+         } else {
+            // Groq might just return standard content if it decides not to use a tool
+            const textResponse = data.choices[0].message.content;
+            if (textResponse) {
+               addAiMessage(textResponse, true);
+            } else {
+               addAiMessage("I couldn't quite understand that. Could you rephrase your request?", true);
+            }
+         }
+
+       } catch (err) {
+         console.error("Gemini API Error:", err);
+         removeTyping();
+         
+         // 3. INTENT ROUTER - OFFLINE FALLBACK
+         const q = query.toLowerCase();
+         let mentionedNodes = [];
+         Object.values(stadiumGraph.nodes).forEach(n => {
+            const nameLower = n.name.toLowerCase();
+            const numMatch = n.level !== 'gate' ? n.name.match(/\d{2,3}/) : null;
+            let idx = q.indexOf(nameLower);
+            if (idx === -1 && numMatch && q.match(new RegExp(`\\b${numMatch[0]}\\b`))) idx = q.search(new RegExp(`\\b${numMatch[0]}\\b`));
+            if (idx > -1) mentionedNodes.push({ id: n.id, idx });
+         });
+         mentionedNodes.sort((a,b) => a.idx - b.idx);
+         mentionedNodes = mentionedNodes.filter((v,i,a)=>a.findIndex(t=>(t.id === v.id))===i);
+
+         if (mentionedNodes.length > 0) {
+            let startId = 'gate-amex';
+            let destId = mentionedNodes[0].id;
+            if (mentionedNodes.length >= 2) {
+               startId = mentionedNodes[0].id;
+               destId = mentionedNodes[mentionedNodes.length-1].id;
+            }
+            if (stadiumGraph.nodes[startId] && stadiumGraph.nodes[destId]) {
+               populateNavDropdowns();
+               document.getElementById('nav-start').value = startId;
+               document.getElementById('nav-end').value = destId;
+               document.getElementById('btn-find-route').click();
+               addAiMessage(`(API Limit Reached - Offline Fallback Route) I have calculated the path from <b>${stadiumGraph.nodes[startId].name}</b> to <b>${stadiumGraph.nodes[destId].name}</b> for you!`, true);
+               return;
+            }
+         }
+         
+         const dict = {
+            heatmap: { en: "The <b class='text-amber-400'>Live Heatmap</b> uses a deterministic data engine. Click the flame icon to toggle it.", es: "El <b class='text-amber-400'>Mapa de Calor</b> utiliza un motor de datos determinista.", fr: "La <b class='text-amber-400'>Carte de Chaleur</b> utilise un moteur de données déterministe." },
+            route: { en: "Our <b class='text-sky-400'>Smart Routing System</b> uses Dijkstra's Algorithm.", es: "Nuestro <b class='text-sky-400'>Sistema de Rutas</b> usa el Algoritmo de Dijkstra.", fr: "Notre <b class='text-sky-400'>Système d'Itinéraire</b> utilise l'Algorithme de Dijkstra." },
+            seat: { en: "You can click on any section or VIP suite on the map to view a <b class='text-emerald-400'>drill-down</b>.", es: "Puedes hacer clic en cualquier sección o suite VIP para ver los <b class='text-emerald-400'>detalles</b>.", fr: "Vous pouvez cliquer sur n'importe quelle section ou suite VIP pour voir les <b class='text-emerald-400'>détails</b>." },
+            default: { en: "I'm experiencing high API traffic right now and hit my rate limit! However, I can still map basic routes if you name two sections, or you can ask about <b>routes</b>, <b>heatmap</b>, or <b>seats</b>.", es: "¡Estoy experimentando un alto tráfico de API en este momento! Sin embargo, todavía puedo mapear rutas básicas si nombras dos secciones.", fr: "Je rencontre actuellement un trafic élevé et j'ai atteint une limite d'API! Cependant, je peux toujours tracer des itinéraires de base." }
+         };
+         
+         let response = dict.default[lang] || dict.default.en;
+         if (q.includes('heatmap') || q.includes('crowd') || q.includes('calor')) response = dict.heatmap[lang] || dict.heatmap.en;
+         else if (q.includes('route') || q.includes('path') || q.includes('ruta') || q.includes('chemin')) response = dict.route[lang] || dict.route.en;
+         else if (q.includes('seat') || q.includes('section') || q.includes('asiento') || q.includes('siège')) response = dict.seat[lang] || dict.seat.en;
+         
+         addAiMessage(response, true);
+       }
+    }
+
+    chatForm.addEventListener('submit', (e) => {
+       e.preventDefault();
+       const text = chatInput.value.trim();
+       if (!text) return;
+       
+       addUserMessage(text);
+       chatInput.value = '';
+       
+       setTimeout(showTyping, 300);
+       processAiResponse(text);
+    });
+
+  </script>
+
+  <!-- Crowd Data Service (loaded after DOM is ready) -->
+  <script src="/js/crowdDataService.js"></script>
+  <script>
+    // ==========================================
+    // HEATMAP ENGINE — Powered by CrowdDataService
+    // ==========================================
+    let isHeatmapActive = false;
+    let currentSeatSectionId = null;
+
+    // Color mapping: density (0-1) → HSL hue (blue → yellow → red)
+    function densityToColor(density, alpha = 0.6) {
+      // 0.0 = blue(220), 0.5 = yellow(50), 1.0 = red(0)
+      const hue = Math.round(220 - (density * 220));
+      const saturation = 80 + (density * 20);
+      const lightness = 40 + (density * 15);
+      return `hsla(${hue}, ${saturation}%, ${lightness}%, ${alpha})`;
+    }
+
+    function renderHeatmap(data) {
+      if (!isHeatmapActive || !data) return;
+
+      const svgEl = document.getElementById('blueprint-svg');
+      svgEl.classList.add('heatmap-mode');
+
+      // ── Paint section wedges ──────────────────────────────
+      // We paint ALL 50 sections across all levels
+      const levelPrefixes = ['1', '2', '3']; // 100, 200, 300 level prefixes
+      for (let i = 1; i <= 50; i++) {
+        const baseDensity = data.sectionDensity[`sec-1${String(i).padStart(2, '0')}`] || data.fillPercentage / 100;
+
+        levelPrefixes.forEach((prefix, lvlIdx) => {
+          const secId = `sec-${prefix}${String(i).padStart(2, '0')}`;
+          const el = document.getElementById(secId);
+          if (el) {
+            // Upper levels tend to fill slower
+            const levelModifier = 1 - (lvlIdx * 0.08);
+            const adjustedDensity = Math.min(1, baseDensity * levelModifier);
+            el.setAttribute('fill', densityToColor(adjustedDensity, 0.55));
+          }
+        });
+
+        // Suites — premium areas fill first
+        ['S3', 'S5', 'S6'].forEach(suitePrefix => {
+          const secId = `sec-${suitePrefix}-${String(i).padStart(2, '0')}`;
+          const el = document.getElementById(secId);
+          if (el) {
+            const suiteDensity = Math.min(1, (baseDensity || 0) * 1.15);
+            el.setAttribute('fill', densityToColor(suiteDensity, 0.65));
+          }
+        });
+      }
+
+      // ── Paint gate overlays ───────────────────────────────
+      Object.entries(data.gates).forEach(([gateId, gateInfo]) => {
+        const overlay = document.getElementById(`overlay-${gateId}`);
+        const trafficText = document.getElementById(`traffic-${gateId}`);
+
+        if (overlay) {
+          const intensity = Math.min(1, gateInfo.trafficPerMin / 200);
+          overlay.style.fill = densityToColor(intensity, 0.7);
+          overlay.style.opacity = '0.8';
+          // Pulse radius based on traffic
+          const pulseR = 35 + (intensity * 25);
+          overlay.setAttribute('r', String(Math.round(pulseR)));
+        }
+
+        if (trafficText) {
+          trafficText.textContent = `${gateInfo.trafficPerMin}/min • ~${gateInfo.waitTimeMin}m wait`;
+        }
+      });
+
+      // ── Update HUD ────────────────────────────────────────
+      const hud = document.getElementById('crowd-hud');
+      if (hud) {
+        document.getElementById('hud-attendance').textContent = data.totalAttendance.toLocaleString();
+        document.getElementById('hud-capacity').textContent = data.capacity.toLocaleString();
+        document.getElementById('hud-fill-bar').style.width = `${data.fillPercentage}%`;
+        document.getElementById('hud-fill-pct').textContent = `${data.fillPercentage}% Full`;
+
+        const phaseLabels = {
+          'pre-open': '🏟️ Pre-Open',
+          'early-arrival': '🚶 Early Arrivals',
+          'steady-flow': '🚶‍♂️ Steady Flow',
+          'rush-hour': '🔥 Rush Hour',
+          'final-surge': '⚡ Final Surge',
+          'match-live': '⚽ Match Live',
+          'post-match': '🚪 Post-Match Exit'
+        };
+        document.getElementById('hud-phase').textContent = phaseLabels[data.phase] || data.phase;
+
+        if (data.minutesToKickoff > 0) {
+          const h = Math.floor(data.minutesToKickoff / 60);
+          const m = data.minutesToKickoff % 60;
+          document.getElementById('hud-kickoff').textContent = `Kickoff: ${h}h ${m}m`;
+        } else {
+          document.getElementById('hud-kickoff').textContent = `Kickoff: LIVE`;
+        }
+
+        document.getElementById('hud-match').textContent = `${data.matchInfo.homeTeam} vs ${data.matchInfo.awayTeam}`;
+        document.getElementById('hud-source').textContent = data.matchInfo.apiSource
+          ? '📡 Source: API-Football'
+          : '🔄 Source: Synthetic Simulation';
+      }
+    }
+
+    function clearHeatmap() {
+      const svgEl = document.getElementById('blueprint-svg');
+      svgEl.classList.remove('heatmap-mode');
+
+      // Reset wedge colors to original level fills
+      const levelColors = {
+        '1': 'rgba(16, 185, 129, 0.15)',
+        '2': 'rgba(245, 158, 11, 0.15)',
+        '3': 'rgba(2, 6, 23, 0.8)',
+        'S3': 'rgba(244, 63, 94, 0.2)',
+        'S5': 'rgba(168, 85, 247, 0.2)',
+        'S6': 'rgba(99, 102, 241, 0.2)'
+      };
+
+      for (let i = 1; i <= 50; i++) {
+        Object.entries(levelColors).forEach(([prefix, color]) => {
+          const secId = prefix.startsWith('S')
+            ? `sec-${prefix}-${String(i).padStart(2, '0')}`
+            : `sec-${prefix}${String(i).padStart(2, '0')}`;
+          const el = document.getElementById(secId);
+          if (el) el.setAttribute('fill', color);
+        });
+      }
+
+      // Reset gate overlays
+      ['gate-amex', 'gate-hcl', 'gate-verizon', 'gate-metlife', 'gate-moodys'].forEach(gateId => {
+        const overlay = document.getElementById(`overlay-${gateId}`);
+        const trafficText = document.getElementById(`traffic-${gateId}`);
+        if (overlay) { overlay.style.opacity = '0'; overlay.setAttribute('r', '35'); }
+        if (trafficText) trafficText.textContent = 'Traffic: 0/min';
+      });
+
+      // Hide HUD
+      document.getElementById('crowd-hud')?.classList.add('hidden');
+    }
+
+
+    let currentCrowdData = null;
+
+    // ── Toggle Button ───────────────────────────────────────
+    document.getElementById('btn-heatmap').addEventListener('click', async () => {
+      isHeatmapActive = !isHeatmapActive;
+      const btn = document.getElementById('btn-heatmap');
+
+      if (isHeatmapActive) {
+        btn.classList.add('heatmap-active');
+
+        // Initialize service if first time
+        if (!CrowdDataService.getCurrentData()) {
+          await CrowdDataService.init();
+        }
+
+        currentCrowdData = CrowdDataService.getCurrentData();
+        renderHeatmap(currentCrowdData);
+        document.getElementById('crowd-hud')?.classList.remove('hidden');
+
+        // Start live polling
+        CrowdDataService.onUpdate((data) => {
+          currentCrowdData = data;
+          renderHeatmap(data);
+        });
+        CrowdDataService.startLiveUpdates(3000);
+      } else {
+        btn.classList.remove('heatmap-active');
+        CrowdDataService.stopLiveUpdates();
+        clearHeatmap();
+      }
+    });
+  </script>
+</body>
+</html>

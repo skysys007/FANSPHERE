@@ -142,6 +142,118 @@ const TRANSIT_SCHEDULE = {
   }
 };
 
+// Dietary-Aware Food Stalls (Real-world data mapped to stadium)
+const FOOD_STALLS = [
+  {
+    id: "fs_shahs_halal",
+    name: "Shah's Halal",
+    section: "node-126",
+    category: "Halal",
+    tags: ["halal", "dairy-free", "nut-free"],
+    waitTimeMin: 8,
+    description: "Halal Chicken, Beef, and Falafel Gyros and Platters."
+  },
+  {
+    id: "fs_kosher_grill",
+    name: "Kosher Stand",
+    section: "node-123",
+    category: "Kosher",
+    tags: ["kosher", "dairy-free", "nut-free"],
+    waitTimeMin: 5,
+    description: "Kosher Hot Dogs, Pretzels, Chicken Nuggets, and Knish."
+  },
+  {
+    id: "fs_petite_greens",
+    name: "Petite Greens",
+    section: "node-144",
+    category: "Healthy/Salads",
+    tags: ["vegetarian", "gluten-free", "vegan"],
+    waitTimeMin: 4,
+    description: "Chop Salad, Veggie Wraps, Quinoa Bowls, and Fruit Cups. Gluten Free options available."
+  },
+  {
+    id: "fs_tacos_raqueros",
+    name: "Taco’s Raqueros",
+    section: "node-217",
+    category: "Mexican",
+    tags: ["vegetarian"],
+    waitTimeMin: 12,
+    description: "Tacos, Burritos (Chicken, Beef, Pork, Veggie), Rice & Beans, Loaded Nachos."
+  },
+  {
+    id: "fs_pattys_burger",
+    name: "Patty's Burger",
+    section: "node-106",
+    category: "Grill",
+    tags: ["gluten-free", "nut-free"],
+    waitTimeMin: 15,
+    description: "Classic Burgers, Chicken Tender Basket, and Hot Dogs. Gluten Free Buns available upon request."
+  },
+  {
+    id: "fs_boardwalk_fryer",
+    name: "Boardwalk Fryer",
+    section: "node-135",
+    category: "Traditional",
+    tags: ["nut-free"],
+    waitTimeMin: 10,
+    description: "Chicken Tender Basket, Fried Clams, Thumann’s Hot Dogs, Fries, Cheese Fries."
+  },
+  {
+    id: "fs_fuku_chicken",
+    name: "Fuku Chicken Sando",
+    section: "node-330",
+    category: "Chicken",
+    tags: ["nut-free"],
+    waitTimeMin: 18,
+    description: "Fuku Spicy Chicken Sando, Fuku Fingers & Fries."
+  },
+  {
+    id: "fs_nonna_fusco",
+    name: "Nonna Fusco’s Kitchen",
+    section: "node-118",
+    category: "Italian",
+    tags: ["nut-free"],
+    waitTimeMin: 14,
+    description: "Meatball Sandwich, Chicken Cutlet Sandwich, Fresh Pasta Options, and Zeppoles."
+  },
+  {
+    id: "fs_mr_tot",
+    name: "Mr. Tot",
+    section: "node-339",
+    category: "Snacks",
+    tags: ["vegetarian", "nut-free"],
+    waitTimeMin: 6,
+    description: "Loaded Tots, Burnt Ends Chili Tots. Vegetarian options available."
+  },
+  {
+    id: "fs_mrs_fields",
+    name: "Mrs. Fields",
+    section: "node-103",
+    category: "Dessert",
+    tags: ["vegetarian"],
+    waitTimeMin: 3,
+    description: "Freshly baked Cookies and Brownies."
+  },
+  {
+    id: "fs_fresh_fruit",
+    name: "Fresh Fruit Grab & Go",
+    section: "node-116",
+    category: "Snacks",
+    tags: ["vegan", "vegetarian", "gluten-free", "dairy-free", "kosher", "halal"],
+    waitTimeMin: 1,
+    description: "Fresh fruit cups and light snacks."
+  },
+  {
+    id: "fs_premio_sausage",
+    name: "Premio Sausage",
+    section: "node-215",
+    category: "Grill",
+    tags: ["gluten-free"],
+    waitTimeMin: 9,
+    description: "Premio Sausage Sandwich. Gluten Free buns available."
+  }
+];
+
 // Multilingual translations database
 const TRANSLATIONS = {
   en: {
@@ -161,22 +273,8 @@ const TRANSLATIONS = {
     wheelchairFriendly: "Wheelchair-Accessible Route",
     calculateRoute: "Calculate Shortest Path",
     routeDetails: "Route Navigation Path",
-    crowdHeatmap: "Real-Time Crowd Density Heatmap",
-    crowdLow: "Low Congestion (<40%)",
-    crowdMedium: "Moderate Congestion (40-75%)",
-    crowdHigh: "High Congestion (>75%)",
-    chatPlaceholder: "Ask SmartStadium AI... (e.g., 'Where is EcoEats?', 'How to reach Section A1 avoiding crowds?')",
+    chatPlaceholder: "Ask SmartStadium AI... (e.g., 'Where is EcoEats?', 'How to reach Section A1?')",
     chatbotTitle: "SmartStadium AI Chatbot",
-    staffTitle: "FIFA 2026 Staff Operations Center",
-    aiSituationSummary: "GenAI Real-Time Operations Summary",
-    simulationControls: "Simulation Dashboard Controls",
-    simSpeed: "Simulation Speed",
-    activeIncidents: "Active Incident Center",
-    aiDecisions: "GenAI Operational Recommendations",
-    sustainabilityReport: "Sustainability & Transit Live Analytics",
-    wasteCapacity: "Smart Bin Recyclables",
-    energyUsage: "Solar Energy Grid Load",
-    shuttleWait: "Shuttle Bus Wait Time",
     send: "Send",
     language: "Language"
   },
@@ -197,22 +295,8 @@ const TRANSLATIONS = {
     wheelchairFriendly: "Ruta Accesible para Silla de Ruedas",
     calculateRoute: "Calcular Ruta Más Corta",
     routeDetails: "Detalles de la Ruta",
-    crowdHeatmap: "Mapa de Calor de Densidad en Tiempo Real",
-    crowdLow: "Congestión Baja (<40%)",
-    crowdMedium: "Congestión Moderada (40-75%)",
-    crowdHigh: "Congestión Alta (>75%)",
-    chatPlaceholder: "Pregunte a SmartStadium AI... (ej. '¿Dónde está EcoEats?', '¿Cómo llego a la A1 sin multitudes?')",
+    chatPlaceholder: "Pregunte a SmartStadium AI... (ej. '¿Dónde está EcoEats?', '¿Cómo llego a la A1?')",
     chatbotTitle: "Asistente Virtual SmartStadium",
-    staffTitle: "Centro de Operaciones FIFA 2026",
-    aiSituationSummary: "Resumen de Operaciones Generado por IA",
-    simulationControls: "Controles de Simulación",
-    simSpeed: "Velocidad de Simulación",
-    activeIncidents: "Centro de Incidentes Activos",
-    aiDecisions: "Recomendaciones Operativas de la IA",
-    sustainabilityReport: "Métricas de Sostenibilidad y Tránsito",
-    wasteCapacity: "Contenedores de Reciclaje",
-    energyUsage: "Carga de Red Energía Solar",
-    shuttleWait: "Espera de Autobús Lanzadera",
     send: "Enviar",
     language: "Idioma"
   },
@@ -233,22 +317,8 @@ const TRANSLATIONS = {
     wheelchairFriendly: "व्हीलचेयर अनुकूल मार्ग",
     calculateRoute: "सबसे छोटा मार्ग खोजें",
     routeDetails: "मार्ग का विवरण",
-    crowdHeatmap: "भीड़ घनत्व हीटमैप",
-    crowdLow: "कम भीड़ (<40%)",
-    crowdMedium: "मध्यम भीड़ (40-75%)",
-    crowdHigh: "अत्यधिक भीड़ (>75%)",
     chatPlaceholder: "स्मार्टस्टेडियम एआई से पूछें... (उदा., 'इकोईट्स कहाँ है?')",
     chatbotTitle: "स्मार्टस्टेडियम एआई चैटबॉट",
-    staffTitle: "फीफा 2026 संचालन केंद्र",
-    aiSituationSummary: "एआई वास्तविक समय स्थिति सारांश",
-    simulationControls: "सिमुलेशन नियंत्रण",
-    simSpeed: "सिमुलेशन गति",
-    activeIncidents: "सक्रिय घटना नियंत्रण",
-    aiDecisions: "एआई परिचालन अनुशंसाएं",
-    sustainabilityReport: "स्थिरता और पारगमन लाइव विश्लेषण",
-    wasteCapacity: "स्मार्ट कचरा पेटी क्षमता",
-    energyUsage: "सौर ऊर्जा ग्रिड लोड",
-    shuttleWait: "शटल बस प्रतीक्षा समय",
     send: "भेजें",
     language: "भाषा"
   },
@@ -269,22 +339,8 @@ const TRANSLATIONS = {
     wheelchairFriendly: "Itinéraire Accessible aux Fauteuils",
     calculateRoute: "Calculer le Chemin le Plus Court",
     routeDetails: "Détails de l'Itinéraire",
-    crowdHeatmap: "Carte thermique d'affluence en temps réel",
-    crowdLow: "Faible Affluence (<40%)",
-    crowdMedium: "Affluence Modérée (40-75%)",
-    crowdHigh: "Forte Affluence (>75%)",
     chatPlaceholder: "Demander à SmartStadium AI... (ex. 'Où sont les toilettes?')",
     chatbotTitle: "Assistant Virtuel SmartStadium",
-    staffTitle: "Centre d'Opérations FIFA 2026",
-    aiSituationSummary: "Synthèse Opérationnelle par IA",
-    simulationControls: "Contrôles de la Simulation",
-    simSpeed: "Vitesse de Simulation",
-    activeIncidents: "Gestion des Incidents",
-    aiDecisions: "Recommandations Stratégiques IA",
-    sustainabilityReport: "Analyses de Transit & Durabilité",
-    wasteCapacity: "Bacs de Recyclage Connectés",
-    energyUsage: "Charge Solaire du Réseau",
-    shuttleWait: "Attente Navette Bus",
     send: "Envoyer",
     language: "Langue"
   },
@@ -305,22 +361,8 @@ const TRANSLATIONS = {
     wheelchairFriendly: "Rota Acessível para Cadeirantes",
     calculateRoute: "Calcular Rota Mais Curta",
     routeDetails: "Detalhes do Trajeto",
-    crowdHeatmap: "Mapa de Calor de Público em Tempo Real",
-    crowdLow: "Congestionamento Baixo (<40%)",
-    crowdMedium: "Congestionamento Médio (40-75%)",
-    crowdHigh: "Congestionamento Alto (>75%)",
     chatPlaceholder: "Pergunte ao SmartStadium AI... (ex. 'Como chego ao Setor A1?')",
     chatbotTitle: "Assistente SmartStadium AI",
-    staffTitle: "Centro de Operações FIFA 2026",
-    aiSituationSummary: "Resumo Operacional Gerado por IA",
-    simulationControls: "Controles de Simulação",
-    simSpeed: "Velocidade de Simulação",
-    activeIncidents: "Painel de Incidentes Ativos",
-    aiDecisions: "Sugestões de Decisão com IA",
-    sustainabilityReport: "Painel de Sustentabilidade e Trânsito",
-    wasteCapacity: "Lixeiras Inteligentes",
-    energyUsage: "Energia Solar Consumida",
-    shuttleWait: "Espera de Ônibus",
     send: "Enviar",
     language: "Idioma"
   }

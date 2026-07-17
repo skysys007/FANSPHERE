@@ -34,6 +34,7 @@
         bot: '<path d="M12 8V4H8"/><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 16v2a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h2"/>',
         send: '<line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>',
         database: '<ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>',
+        'hard-drive': '<line x1="22" y1="12" x2="2" y2="12"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/><line x1="6" y1="16" x2="6.01" y2="16"/><line x1="10" y1="16" x2="10.01" y2="16"/>',
         coffee: '<path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" x2="6" y1="2" y2="4"/><line x1="10" x2="10" y1="2" y2="4"/><line x1="14" x2="14" y1="2" y2="4"/>'
       },
       createIcons: function() {
@@ -524,6 +525,9 @@
     <button class="btn-control" id="btn-nav" data-i18n-title="btnNav" title="Navigation"><i data-lucide="map" class="w-5 h-5"></i></button>
     <button class="btn-control" id="btn-food" title="Dietary Food Stalls"><i data-lucide="coffee" class="w-5 h-5"></i></button>
     <button class="btn-control" id="btn-chat" data-i18n-title="btnChat" title="AI Assistant"><i data-lucide="message-square" class="w-5 h-5"></i></button>
+    <button class="btn-control text-amber-500 border-amber-500/50 bg-amber-500/10 hover:bg-amber-500/20" id="btn-sim" title="Simulation Debug"><i data-lucide="flame" class="w-5 h-5"></i></button>
+    <button class="btn-control text-purple-400 border-purple-400/50 bg-purple-500/10 hover:bg-purple-500/20" id="btn-crowd-intel" title="Crowd Intelligence"><i data-lucide="database" class="w-5 h-5"></i></button>
+    <button class="btn-control text-emerald-400 border-emerald-400/50 bg-emerald-500/10 hover:bg-emerald-500/20" id="btn-data-config" title="Data Sources"><i data-lucide="hard-drive" class="w-5 h-5"></i></button>
     <div class="w-px bg-slate-700 mx-1"></div>
     <button class="btn-control" id="btn-zoom-in" data-i18n-title="btnZoomIn" title="Zoom In"><i data-lucide="zoom-in" class="w-5 h-5"></i></button>
     <button class="btn-control" id="btn-zoom-out" data-i18n-title="btnZoomOut" title="Zoom Out"><i data-lucide="zoom-out" class="w-5 h-5"></i></button>
@@ -537,6 +541,15 @@
       <h3 class="text-xl font-outfit font-black text-white" data-i18n="navTitle">Smart Routing</h3>
     </div>
     <div class="space-y-4">
+      <div>
+        <label class="block text-[10px] text-sky-400 font-mono tracking-widest uppercase mb-1" data-i18n="navMode">Routing Mode</label>
+        <select id="nav-mode" class="w-full bg-slate-950 border border-slate-700 text-sm text-slate-200 rounded p-2 focus:border-sky-500 focus:outline-none mb-4">
+          <option value="balanced">Balanced (Optimal Speed & Safety)</option>
+          <option value="fastest">Fastest (Minimum Travel Time)</option>
+          <option value="least_crowded">Least Crowded (Avoid Density)</option>
+          <option value="safest">Safest (Avoid High-Risk Areas)</option>
+        </select>
+      </div>
       <div>
         <label class="block text-[10px] text-sky-400 font-mono tracking-widest uppercase mb-1" data-i18n="navStart">Start Location</label>
         <select id="nav-start" class="w-full bg-slate-950 border border-slate-700 text-sm text-slate-200 rounded p-2 focus:border-sky-500 focus:outline-none"></select>
@@ -611,6 +624,147 @@
     </div>
   </div>
 
+  <!-- SIMULATION DEBUG PANEL -->
+  <div id="sim-debug-panel" class="absolute top-20 left-4 sm:top-24 sm:left-8 w-11/12 max-w-[320px] bg-slate-900/95 border border-amber-500/50 rounded-lg p-5 hidden z-40 shadow-[0_0_15px_rgba(245,158,11,0.2)]">
+    <div class="flex items-center gap-2 mb-4 justify-between">
+      <div class="flex items-center gap-2">
+        <i data-lucide="flame" class="w-5 h-5 text-amber-500"></i>
+        <h3 class="text-xl font-outfit font-black text-white">Sim Debug</h3>
+      </div>
+      <button onclick="document.getElementById('sim-debug-panel').classList.add('hidden')" class="text-slate-400 hover:text-white">
+        <i data-lucide="x" class="w-4 h-4"></i>
+      </button>
+    </div>
+    <div class="space-y-4 text-sm text-slate-300">
+      <p>The simulation runs automatically every 5 seconds, updating gate queues and section densities.</p>
+      
+      <div>
+        <label class="block text-[10px] text-amber-400 font-mono tracking-widest uppercase mb-1">Current Match Phase</label>
+        <div class="flex gap-2">
+          <button id="sim-phase-pre" class="flex-1 py-1 px-2 border border-slate-700 rounded text-xs hover:bg-slate-800 transition-colors">Pre</button>
+          <button id="sim-phase-during" class="flex-1 py-1 px-2 border border-slate-700 rounded text-xs hover:bg-slate-800 transition-colors">During</button>
+          <button id="sim-phase-post" class="flex-1 py-1 px-2 border border-slate-700 rounded text-xs hover:bg-slate-800 transition-colors">Post</button>
+        </div>
+      </div>
+      
+      <div id="sim-live-stats" class="font-mono text-xs space-y-1 p-2 bg-slate-950 rounded border border-slate-800">
+        Waiting for next tick...
+      </div>
+    </div>
+  </div>
+
+  <!-- DATA SOURCE CONFIG PANEL -->
+  <div id="data-config-panel" class="absolute top-20 left-4 sm:top-24 sm:left-8 w-11/12 max-w-[320px] bg-slate-900/95 border border-emerald-500/50 rounded-lg p-5 hidden z-40 shadow-[0_0_15px_rgba(16,185,129,0.2)]">
+    <div class="flex items-center gap-2 mb-4 justify-between">
+      <div class="flex items-center gap-2">
+        <i data-lucide="hard-drive" class="w-5 h-5 text-emerald-400"></i>
+        <h3 class="text-xl font-outfit font-black text-white">Data Sources</h3>
+      </div>
+      <button onclick="document.getElementById('data-config-panel').classList.add('hidden')" class="text-slate-400 hover:text-white">
+        <i data-lucide="x" class="w-4 h-4"></i>
+      </button>
+    </div>
+    <div class="space-y-4 text-sm text-slate-300">
+      <p>Override the internal math model with your own dataset or live API.</p>
+      
+      <div>
+        <label class="block text-[10px] text-emerald-400 font-mono tracking-widest uppercase mb-1">Active Engine</label>
+        <select id="data-engine-select" class="w-full bg-slate-950 border border-slate-700 text-sm text-slate-200 rounded p-2 focus:border-emerald-500 focus:outline-none mb-2">
+          <option value="math">Internal Math Simulation</option>
+          <option value="file">File Upload (.json)</option>
+          <option value="api">Live API (WebSocket)</option>
+        </select>
+      </div>
+
+      <!-- File Upload Config -->
+      <div id="data-config-file" class="hidden space-y-2">
+        <label class="block text-[10px] text-slate-400 font-mono uppercase">Upload Dataset</label>
+        <input type="file" id="data-file-input" accept=".json" class="w-full text-xs bg-slate-950 border border-slate-700 text-slate-200 rounded p-2">
+        <div class="text-[10px] text-slate-500">Expects an array of frame objects.</div>
+      </div>
+
+      <!-- Live API Config -->
+      <div id="data-config-api" class="hidden space-y-2">
+        <label class="block text-[10px] text-slate-400 font-mono uppercase">WebSocket URL</label>
+        <div class="flex gap-2">
+          <input type="url" id="data-api-url" placeholder="wss://..." class="flex-1 text-xs bg-slate-950 border border-slate-700 text-slate-200 rounded p-2 focus:border-emerald-500 focus:outline-none">
+          <button id="btn-api-connect" class="bg-emerald-500/20 hover:bg-emerald-500/40 text-emerald-400 border border-emerald-500/50 rounded px-3 text-xs font-bold transition-colors">Connect</button>
+        </div>
+      </div>
+
+      <div id="data-status" class="font-mono text-xs p-2 bg-slate-950 rounded border border-slate-800 text-slate-400">
+        Status: Math Engine Running
+      </div>
+    </div>
+  </div>
+
+  <!-- CROWD INTELLIGENCE DASHBOARD -->
+  <div id="crowd-intel-panel" class="fixed inset-0 z-[100] bg-slate-950/95 backdrop-blur-xl hidden flex-col font-outfit text-white overflow-hidden">
+    <!-- Header -->
+    <div class="flex items-center justify-between p-6 border-b border-slate-800 bg-slate-900/50">
+      <div class="flex items-center gap-4">
+        <div class="p-2 bg-purple-500/20 rounded-lg border border-purple-500/30">
+          <i data-lucide="activity" class="w-6 h-6 text-purple-400"></i>
+        </div>
+        <div>
+          <h2 class="text-2xl font-black tracking-tight text-white">Stadium Operations Center</h2>
+          <div class="text-sm text-slate-400 font-mono flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            LIVE METRICS ACTIVE
+          </div>
+        </div>
+      </div>
+      <button onclick="document.getElementById('crowd-intel-panel').classList.add('hidden')" class="p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors">
+        <i data-lucide="x" class="w-6 h-6"></i>
+      </button>
+    </div>
+    
+    <!-- Top KPIs -->
+    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4 p-6 border-b border-slate-800 bg-slate-900/20" id="ci-kpi-bar">
+      <!-- Populated by JS -->
+    </div>
+
+    <!-- Main Content -->
+    <div class="flex-1 flex overflow-hidden">
+      <!-- Zone Grid -->
+      <div class="flex-1 border-r border-slate-800 p-6 flex flex-col overflow-hidden">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-lg font-bold text-slate-200">Zone Crowd Overview</h3>
+          <div class="text-xs font-mono text-slate-500">Auto-refresh: 5s</div>
+        </div>
+        <div class="flex-1 overflow-y-auto pr-2 custom-scrollbar">
+          <div id="ci-zone-grid" class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
+             <!-- Populated by JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Sidebar: Incidents & Trends -->
+      <div class="w-96 flex flex-col bg-slate-900/30 overflow-hidden">
+        <div class="flex-1 p-6 flex flex-col overflow-hidden border-b border-slate-800">
+          <div class="flex items-center gap-2 mb-4">
+            <i data-lucide="alert-triangle" class="w-4 h-4 text-amber-500"></i>
+            <h3 class="text-lg font-bold text-slate-200">Incident Feed</h3>
+          </div>
+          <div id="ci-alerts" class="flex-1 overflow-y-auto space-y-4 pr-2 custom-scrollbar">
+             <!-- Populated by JS -->
+          </div>
+        </div>
+        <div class="h-1/3 p-6 flex flex-col overflow-hidden">
+          <div class="flex items-center gap-2 mb-4">
+            <i data-lucide="history" class="w-4 h-4 text-sky-400"></i>
+            <h3 class="text-lg font-bold text-slate-200">Action History</h3>
+          </div>
+          <div id="ci-action-log" class="flex-1 overflow-y-auto space-y-2 pr-2 custom-scrollbar">
+             <!-- Populated by JS -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/crowdIntelligence.js"></script>
+  <script src="js/simulation.js"></script>
   <script>
     // ==========================================
     // API KEY CONFIGURATION
@@ -1065,6 +1219,27 @@
     });
     /* Seat drill-down removed for performance */
 
+    // Initialize and Populate Stadium Simulation
+    if (typeof StadiumSimulation !== 'undefined') {
+      window.stadiumSim = new StadiumSimulation(12345);
+      
+      // Auto-populate from stadiumGraph
+      Object.values(stadiumGraph.nodes).forEach(node => {
+        if (node.level === 'gate') {
+          window.stadiumSim.addEntryGate(node.id, node.name, 1000); // generic capacity
+          window.stadiumSim.addExitGate(node.id + '-exit', node.name + ' Exit', 1000);
+        } else if (node.level && node.level.includes('Suite')) {
+          window.stadiumSim.addSuite(node.id, node.name, 30);
+        } else {
+          window.stadiumSim.addSection(node.id, node.name, 500);
+        }
+      });
+      
+      window.stadiumSim.setPhase('pre_match');
+      window.stadiumSim.start();
+      console.log('Stadium Simulation Initialized and running.');
+    }
+
     // Generate Hash Marks on Football Field (batch innerHTML instead of 200 createElementNS calls)
     const hashGroup = document.getElementById('hash-marks');
     let hashSvg = '';
@@ -1284,7 +1459,23 @@
         
         drawChamferedPath(ctx, centerX, centerY, node.inRx, node.inRy, node.outRx, node.outRy, startA, endA);
         
-        ctx.fillStyle = "#1e293b"; // Slightly lighter section fill for contrast
+        let density = 0;
+        if (typeof window.stadiumSim !== 'undefined') {
+           const simSec = window.stadiumSim.sections.get(node.id);
+           const simSuite = window.stadiumSim.suites.get(node.id);
+           if (simSec) density = simSec.crowdDensity;
+           else if (simSuite) density = simSuite.occupancyRate;
+        }
+
+        if (density > 0.05) {
+           // Heatmap: Slate Blue (220) -> Green -> Yellow -> Red (0) based on density
+           // We'll use a hue range of 200 down to 0
+           const hue = 200 - (Math.min(density, 1) * 200);
+           ctx.fillStyle = `hsla(${hue}, 70%, 35%, 0.85)`;
+        } else {
+           ctx.fillStyle = "#1e293b"; // Default empty slate
+        }
+        
         ctx.fill();
         ctx.strokeStyle = "#475569"; // Crisper section border
         ctx.lineWidth = 1;
@@ -1311,14 +1502,43 @@
 
       // Gates
       gates.forEach(g => {
+        let gateDensity = 0;
+        let isCongested = false;
+        
+        if (typeof window.stadiumSim !== 'undefined' && window.stadiumSim.entryGates) {
+           const simGate = window.stadiumSim.entryGates.get(g.id);
+           if (simGate) {
+              gateDensity = simGate.density;
+              isCongested = simGate.status === 'congested';
+           }
+        }
+      
         ctx.fillStyle = "#0f172a"; ctx.beginPath(); ctx.arc(g.x, g.y, 25, 0, 2*Math.PI); ctx.fill();
-        ctx.fillStyle = "rgba(56, 189, 248, 0.2)"; ctx.beginPath(); ctx.arc(g.x, g.y, 15, 0, 2*Math.PI); ctx.fill();
+        
+        // Heatmap color based on simulation density
+        if (gateDensity > 0.1) {
+           ctx.fillStyle = `hsla(${120 - (gateDensity * 120)}, 90%, 50%, ${0.2 + gateDensity * 0.4})`;
+        } else {
+           ctx.fillStyle = "rgba(56, 189, 248, 0.2)";
+        }
+        
+        ctx.beginPath(); ctx.arc(g.x, g.y, 15 + (gateDensity * 5), 0, 2*Math.PI); ctx.fill();
+        
+        if (isCongested) {
+           ctx.strokeStyle = "rgba(239, 68, 68, 0.8)";
+           ctx.lineWidth = 2;
+           ctx.stroke();
+        }
         
         ctx.fillStyle = "#1e293b"; // Dark text for light background
         ctx.font = "bold 12px sans-serif";
         ctx.textAlign = (g.x > 600) ? "right" : "left";
         const tx = g.x > 600 ? g.x - 35 : g.x + 35;
         const ty = (g.y < 500) ? g.y - 15 : g.y + 25;
+        
+        if (gateDensity > 0) {
+           ctx.fillStyle = `hsl(${120 - (gateDensity * 120)}, 90%, 60%)`;
+        }
         ctx.fillText(g.name, tx, ty);
       });
 
@@ -1472,21 +1692,62 @@
       status.classList.remove('hidden');
       
       setTimeout(() => {
-        calculateRoute(startId, endId);
+        const primaryPath = calculateRoute(startId, endId);
+        
+        let altPath = [];
+        if (primaryPath.length > 2) {
+           const midIdx = Math.floor(primaryPath.length / 2);
+           altPath = calculateRoute(startId, endId, [{a: primaryPath[midIdx], b: primaryPath[midIdx+1]}]);
+        }
+        
+        renderRouteUI(primaryPath, altPath);
+        
+        // Draw Path
+        activeRoute = primaryPath;
+        requestRender();
+        
         status.classList.add('hidden');
       }, 50);
     });
 
-    function calculateRoute(startId, endId) {
-      // Build Adjacency List
+    function calculateRoute(startId, endId, skipEdges = []) {
       const adj = {};
+      const routeMode = document.getElementById('nav-mode') ? document.getElementById('nav-mode').value : 'balanced';
+      
       stadiumGraph.edges.forEach(e => {
+         if (skipEdges.some(se => (se.a === e.a && se.b === e.b) || (se.a === e.b && se.b === e.a))) return;
          if (!adj[e.a]) adj[e.a] = [];
-         // Strictly shortest distance path without crowd weights
-         adj[e.a].push({ node: e.b, weight: e.dist });
+         
+         let densityWeight = 0;
+         let queueWeight = 0;
+         
+         if (window.stadiumSim) {
+           const nodeB = stadiumGraph.nodes[e.b];
+           if (nodeB && nodeB.level === 'gate' && window.stadiumSim.entryGates.has(e.b)) {
+             queueWeight = window.stadiumSim.entryGates.get(e.b).queueLength;
+           } else if (nodeB && nodeB.level !== 'gate' && window.stadiumSim.sections.has(e.b)) {
+             densityWeight = window.stadiumSim.sections.get(e.b).occupancyRate * 100;
+           }
+         }
+         
+         let weight = e.dist;
+         switch(routeMode) {
+           case 'fastest':
+             weight = (e.dist * 0.7) + (queueWeight * 0.3);
+             break;
+           case 'least_crowded':
+             weight = (e.dist * 0.2) + (densityWeight * 0.8);
+             break;
+           case 'safest':
+             weight = densityWeight > 80 ? e.dist * 100 : (e.dist * 0.5) + (densityWeight * 0.5);
+             break;
+           case 'balanced':
+           default:
+             weight = (e.dist * 0.25) + (densityWeight * 0.35) + (queueWeight * 0.20) + (densityWeight * 0.20);
+         }
+         adj[e.a].push({ node: e.b, weight: weight });
       });
 
-      // Dijkstra
       const dist = {};
       const prev = {};
       const q = new Set(Object.keys(stadiumGraph.nodes));
@@ -1516,7 +1777,6 @@
         }
       }
 
-      // Reconstruct Path
       const path = [];
       let curr = endId;
       if (prev[curr] || curr === startId) {
@@ -1525,21 +1785,27 @@
           curr = prev[curr];
         }
       }
-
-      // Draw Path
-      activeRoute = path;
-      requestRender();
-      
+      return path;
+    }
+    
+    function renderRouteUI(path, altPath) {
       const stepsContainer = document.getElementById('nav-steps-container');
       const stepsList = document.getElementById('nav-steps');
       stepsList.innerHTML = '';
 
       if (path.length > 0) {
-        
-        // Generate Detailed Textual Steps
         stepsContainer.classList.remove('hidden');
         const steps = [];
-        const lang = 'en'; // Force English generation for extraction
+        const lang = 'en'; 
+        
+        // Travel time estimation (rough logic based on edges + queue length)
+        const travelTimeMin = Math.max(1, Math.floor(path.length * 1.5));
+        
+        steps.push(`<div class="mb-3 p-2 bg-slate-800 border border-slate-700 rounded text-xs">
+          <div class="text-sky-400 font-bold mb-1">Primary Route (~${travelTimeMin} min)</div>
+          <div class="text-slate-300">Using selected routing mode.</div>
+        </div>`);
+        
         steps.push(`<li class="flex gap-2"><span>📍</span> <span data-i18n-dyn="true">${uiDict.stepStartAt[lang]} <b>${stadiumGraph.nodes[path[0]].name}</b></span></li>`);
         
         for (let i = 0; i < path.length - 1; i++) {
@@ -1574,6 +1840,15 @@
         }
         
         steps.push(`<li class="flex gap-2 text-emerald-400"><span>🏁</span> <span data-i18n-dyn="true">${uiDict.stepArrive[lang]} <b>${stadiumGraph.nodes[path[path.length-1]].name}</b></span></li>`);
+        
+        if (altPath && altPath.length > 0) {
+           const altTravelTime = Math.max(1, Math.floor(altPath.length * 1.5)) + 2; // slightly longer
+           steps.push(`<div class="mt-4 p-2 bg-slate-900 border border-slate-700 rounded text-xs opacity-75 hover:opacity-100 transition-opacity cursor-pointer">
+             <div class="text-amber-400 font-bold mb-1">Alternative Route (~${altTravelTime} min)</div>
+             <div class="text-slate-400">Avoids center bottlenecks.</div>
+           </div>`);
+        }
+        
         stepsList.innerHTML = steps.join('');
         translateDynamicNodes(stepsList);
       } else {
@@ -1593,6 +1868,66 @@
          setTimeout(() => chatInput.focus(), 300);
       }
     });
+
+    // Sim Panel Toggle
+    document.getElementById('btn-sim').addEventListener('click', () => {
+       const panel = document.getElementById('sim-debug-panel');
+       panel.classList.toggle('hidden');
+       requestRender(); // Ensure render loop is active to pick up colors
+    });
+    
+    // Sim Phase Listeners
+    const simBtns = {
+       'pre_match': document.getElementById('sim-phase-pre'),
+       'during_match': document.getElementById('sim-phase-during'),
+       'post_match': document.getElementById('sim-phase-post')
+    };
+    
+    function updateSimPhaseUI(phase) {
+       Object.values(simBtns).forEach(b => {
+          b.classList.remove('bg-amber-500/20', 'border-amber-500', 'text-amber-400');
+          b.classList.add('border-slate-700');
+       });
+       if (simBtns[phase]) {
+          simBtns[phase].classList.add('bg-amber-500/20', 'border-amber-500', 'text-amber-400');
+          simBtns[phase].classList.remove('border-slate-700');
+       }
+       
+       if (typeof window.stadiumSim !== 'undefined') {
+          window.stadiumSim.setPhase(phase);
+          requestRender();
+       }
+    }
+    
+    simBtns['pre_match'].addEventListener('click', () => updateSimPhaseUI('pre_match'));
+    simBtns['during_match'].addEventListener('click', () => updateSimPhaseUI('during_match'));
+    simBtns['post_match'].addEventListener('click', () => updateSimPhaseUI('post_match'));
+
+    // Interval to update sim live stats panel (every 1s is enough, sim runs every 5s)
+    setInterval(() => {
+       if (typeof window.stadiumSim !== 'undefined' && !document.getElementById('sim-debug-panel').classList.contains('hidden')) {
+          const s = window.stadiumSim;
+          let html = `<div class="text-[10px] text-slate-500 mb-1 border-b border-slate-800 pb-1">TICK: ${s.tickCount} | PHASE: ${s.phase}</div>`;
+          html += `<div class="grid grid-cols-2 gap-x-2 gap-y-1 mt-2">`;
+          
+          // Combine entry and exit gates, making sure we don't duplicate names if they share ids
+          const gatesList = [...s.entryGates.values(), ...s.exitGates.values()];
+          const uniqueGates = new Map();
+          gatesList.forEach(g => uniqueGates.set(g.name, g));
+          
+          Array.from(uniqueGates.values()).forEach(g => {
+             html += `<div>${g.name.replace('Gate', '').trim()}: <span class="${g.density > 0.7 ? 'text-red-400 font-bold' : 'text-emerald-400'}">${g.queueLength}</span></div>`;
+          });
+          html += `</div>`;
+          document.getElementById('sim-live-stats').innerHTML = html;
+          
+          // Re-render canvas to show breathing heatmap colors
+          requestRender();
+       }
+    }, 1000);
+    
+    // Default initial selection
+    updateSimPhaseUI('pre_match');
 
     // FOOD STALLS LOGIC
     // ==========================================
@@ -2098,6 +2433,481 @@ ALWAYS respond in the user's language (${lang}). Ensure your tool parameters are
 
   </script>
 
+  <script>
+    // Crowd Intelligence UI Integration
+    document.addEventListener('DOMContentLoaded', () => {
+      const btnIntel = document.getElementById('btn-crowd-intel');
+      const intelPanel = document.getElementById('crowd-intel-panel');
+      
+      if (btnIntel && intelPanel) {
+        btnIntel.addEventListener('click', () => {
+          intelPanel.classList.toggle('hidden');
+          if (!intelPanel.classList.contains('hidden')) {
+            intelPanel.style.display = 'flex';
+          } else {
+            intelPanel.style.display = '';
+          }
+        });
+      }
+    });
 
+    window.addEventListener('crowdIntelligenceUpdated', (e) => {
+      const data = e.detail;
+      const kpiBar = document.getElementById('ci-kpi-bar');
+      const alertsEl = document.getElementById('ci-alerts');
+      const zoneGrid = document.getElementById('ci-zone-grid');
+      const actionLogEl = document.getElementById('ci-action-log');
+      
+      if (!kpiBar) return;
+      
+      // Compute Totals
+      const totalEntering = data.sections.reduce((sum, s) => sum + s.enteringPerMin, 0);
+      const totalLeaving = data.sections.reduce((sum, s) => sum + s.leavingPerMin, 0);
+      const avgSpeed = (data.sections.reduce((sum, s) => sum + parseFloat(s.movementSpeed), 0) / (data.sections.length || 1)).toFixed(1);
+      const criticalZones = data.sections.filter(s => s.riskLevel === 'Critical').length;
+      
+      // Update Top KPIs
+      kpiBar.innerHTML = `
+        <div class="bg-slate-800/40 p-3 rounded-lg border border-slate-700/50 backdrop-blur">
+           <div class="text-[10px] text-slate-400 uppercase tracking-wider font-bold">Total Capacity</div>
+           <div class="text-xl font-black text-white">82,500</div>
+        </div>
+        <div class="bg-slate-800/40 p-3 rounded-lg border border-slate-700/50 backdrop-blur">
+           <div class="text-[10px] text-slate-400 uppercase tracking-wider font-bold">Overall Occupancy</div>
+           <div class="text-xl font-black text-sky-400">${data.stadiumSummary.occupancyPercentage.toFixed(1)}%</div>
+        </div>
+        <div class="bg-slate-800/40 p-3 rounded-lg border border-slate-700/50 backdrop-blur">
+           <div class="text-[10px] text-slate-400 uppercase tracking-wider font-bold">Overall Risk</div>
+           <div class="text-xl font-black ${data.stadiumSummary.overallRisk === 'Critical' ? 'text-red-400' : 'text-emerald-400'}">${data.stadiumSummary.overallRisk}</div>
+        </div>
+        <div class="bg-slate-800/40 p-3 rounded-lg border border-slate-700/50 backdrop-blur">
+           <div class="text-[10px] text-slate-400 uppercase tracking-wider font-bold">People Moving / Min</div>
+           <div class="text-xl font-black text-white">${totalEntering + totalLeaving}</div>
+        </div>
+        <div class="bg-slate-800/40 p-3 rounded-lg border border-slate-700/50 backdrop-blur">
+           <div class="text-[10px] text-slate-400 uppercase tracking-wider font-bold">Avg Movement Speed</div>
+           <div class="text-xl font-black text-amber-400">${avgSpeed} m/s</div>
+        </div>
+        <div class="bg-slate-800/40 p-3 rounded-lg border border-slate-700/50 backdrop-blur">
+           <div class="text-[10px] text-slate-400 uppercase tracking-wider font-bold">Critical Zones</div>
+           <div class="text-xl font-black ${criticalZones > 0 ? 'text-red-500 animate-pulse' : 'text-slate-500'}">${criticalZones}</div>
+        </div>
+      `;
+      
+      // Update Action Log
+      if (data.actionLog && data.actionLog.length > 0) {
+        actionLogEl.innerHTML = data.actionLog.map(log => `
+          <div class="text-xs text-slate-300 p-2 bg-slate-800/50 rounded border border-slate-700/50">
+            <div class="flex justify-between items-center mb-1">
+               <span class="font-mono text-[10px] text-slate-500">${log.time}</span>
+               <span class="text-[10px] uppercase font-bold text-emerald-400">${log.status}</span>
+            </div>
+            <div class="text-sky-400 font-bold">${log.action}</div>
+            <div class="text-[10px] text-slate-400 mt-0.5">Location: ${log.location}</div>
+          </div>
+        `).reverse().join('');
+      }
+      
+      // Delegate action clicks
+      if (!window.actionLogDelegated) {
+        alertsEl.addEventListener('click', (ev) => {
+          if (ev.target.tagName === 'BUTTON' && ev.target.dataset.actionId) {
+             const actionId = ev.target.dataset.actionId;
+             const locationsStr = ev.target.dataset.location;
+             if (window.stadiumSim && locationsStr) {
+                const locations = locationsStr.split(',');
+                locations.forEach(loc => {
+                   window.stadiumSim.intelligenceEngine.executeAction(window.stadiumSim, actionId, loc.trim());
+                });
+                ev.target.textContent = 'Executed';
+                ev.target.className = 'w-full py-2 mt-2 text-xs font-bold rounded-lg bg-emerald-500/20 text-emerald-400 border border-emerald-500/30';
+                ev.target.disabled = true;
+             }
+          }
+        });
+        window.actionLogDelegated = true;
+      }
+      
+      // Update Alerts (Incident Feed)
+      if (data.alerts.length === 0) {
+        alertsEl.innerHTML = '<div class="p-4 bg-slate-800/30 border border-slate-700/30 rounded-lg text-center text-sm text-emerald-500 font-bold"><i data-lucide="check-circle" class="w-6 h-6 mx-auto mb-2 opacity-50"></i>No Critical Incidents</div>';
+      } else {
+        alertsEl.innerHTML = data.alerts.map(a => {
+          if (a.lifecyclePhase) {
+            if (a.lifecyclePhase === 'taking_action') {
+              return `
+                <div class="p-3 bg-orange-950/40 border border-orange-500/50 rounded-lg backdrop-blur">
+                  <div class="font-bold text-orange-400 text-sm flex items-center justify-between mb-1">
+                    <span>${a.location}</span>
+                    <span class="animate-pulse text-[10px] uppercase tracking-wide bg-orange-500/20 px-2 py-0.5 rounded">Deploying</span>
+                  </div>
+                  <div class="text-xs text-orange-200 mt-1 leading-relaxed">${a.message}</div>
+                </div>`;
+            } else if (a.lifecyclePhase === 'resolving') {
+              return `
+                <div class="p-3 bg-sky-950/40 border border-sky-500/50 rounded-lg backdrop-blur">
+                  <div class="font-bold text-sky-400 text-sm flex items-center justify-between mb-1">
+                    <span>${a.location}</span>
+                    <span class="text-[10px] uppercase tracking-wide bg-sky-500/20 px-2 py-0.5 rounded">Resolving</span>
+                  </div>
+                  <div class="text-xs text-sky-200 mt-1 leading-relaxed">${a.message}</div>
+                  <div class="w-full bg-slate-800/80 h-1.5 mt-3 rounded-full overflow-hidden">
+                    <div class="bg-sky-500 h-full transition-all duration-1000" style="width: ${a.progress}%"></div>
+                  </div>
+                </div>`;
+            } else if (a.lifecyclePhase === 'resolved') {
+              return `
+                <div class="p-3 bg-emerald-950/40 border border-emerald-500/50 rounded-lg backdrop-blur transition-all">
+                  <div class="font-bold text-emerald-400 text-sm">${a.location}</div>
+                  <div class="text-xs text-emerald-200 mt-1">${a.message}</div>
+                </div>`;
+            }
+          }
+          
+          return `
+            <div class="p-3 bg-slate-900/80 border border-red-500/40 rounded-lg backdrop-blur shadow-[0_0_15px_rgba(239,68,68,0.1)]">
+              <div class="font-bold text-red-400 text-sm flex items-center justify-between">
+                 ${a.location}
+                 <span class="text-[10px] uppercase bg-red-500/20 px-2 py-0.5 rounded tracking-wide font-black">${a.severity}</span>
+              </div>
+              <div class="text-xs text-slate-300 mt-2 leading-relaxed border-l-2 border-red-500/30 pl-2">${a.aiExplanation || a.message}</div>
+              <div class="text-[10px] text-sky-400 mt-3 border-t border-slate-700/50 pt-2 flex flex-col gap-1">
+                <span class="font-bold uppercase tracking-wider text-slate-500">AI Recommendation</span>
+                <span>${a.recommendedAction}</span>
+                ${a.actionImpact ? `<span class="text-emerald-400 font-mono mt-1">EST. IMPACT: -${a.actionImpact.occupancyReduction || a.actionImpact.congestionReduction}</span>` : ''}
+              </div>
+              ${a.actionId ? `<button data-action-id="${a.actionId}" data-location="${a.location}" class="w-full py-2 mt-3 text-xs font-black tracking-wider uppercase rounded-lg bg-purple-500/20 hover:bg-purple-500/40 text-purple-400 border border-purple-500/40 transition-all shadow-[0_0_10px_rgba(168,85,247,0.1)]">Take Action</button>` : ''}
+            </div>
+          `;
+        }).join('');
+      }
+      
+      // Format gates so they fit cleanly into the sections grid
+      const gateNames = {
+         'gate-amex': 'AMEX Gate', 'gate-hcl': 'HCLTech Gate', 
+         'gate-verizon': 'Verizon Gate', 'gate-metlife': 'MetLife Gate', 
+         'gate-moodys': "Moody's Gate"
+      };
+      const formattedGates = (data.gates || []).map(g => {
+         const isCrit = g.queueLength > 80;
+         const isCong = g.queueLength > 50;
+         const isBusy = g.queueLength > 20;
+         const gateName = gateNames[g.id] || g.id;
+         return {
+            id: g.id,
+            displayName: `${gateName} (${g.type})`,
+            isGate: true,
+            crowdStatus: isCrit ? 'Critical' : (isCong ? 'Congested' : (isBusy ? 'Busy' : 'Comfortable')),
+            riskLevel: isCrit ? 'Critical' : (isCong ? 'High' : (isBusy ? 'Medium' : 'Low')),
+            occupancyPercentage: Math.min(100, (g.queueLength / 120) * 100),
+            congestionPercentage: (() => {
+               const gaussian = (mean, stdev) => {
+                   const u = 1 - Math.random();
+                   const v = Math.random();
+                   return mean + stdev * Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+               };
+               
+               const occ = Math.min(100, (g.queueLength / 120) * 100);
+               let meanCongestion = occ < 60 ? 12 : (occ < 82 ? 45 : 88);
+               let variance = occ < 60 ? 15 : (occ < 82 ? 30 : 25);
+               
+               // Global chaos modifier: ensure extreme variance is possible regardless of phase
+               if (window.stadiumSim) {
+                   meanCongestion += 25; 
+                   variance += 15;
+               }
+               
+               const entering = g.type === 'Entry' ? Math.floor(g.queueLength / 2) : 0;
+               const leaving = g.type === 'Exit' ? Math.floor(g.queueLength / 2) : 0;
+               const flowImpact = ((entering - leaving) / 10) * 6;
+               
+               meanCongestion += flowImpact;
+               meanCongestion *= 2.0; // Gates * 2.0 multiplier
+               variance *= 1.5;
+               
+               let finalCongestion = gaussian(meanCongestion, variance);
+               if (finalCongestion > 95) {
+                   finalCongestion = 90 + Math.random() * 5.8;
+               }
+               
+               let target = Math.max(0, finalCongestion);
+               
+               // Temporal smoothing using the backend sim state
+               if (window.stadiumSim) {
+                   const simGate = window.stadiumSim.entryGates.get(g.id) || window.stadiumSim.exitGates.get(g.id);
+                   if (simGate) {
+                       const prev = simGate._lastUI_Congestion !== undefined ? simGate._lastUI_Congestion : target;
+                       target = (prev * 0.85) + (target * 0.15);
+                       simGate._lastUI_Congestion = target;
+                   }
+               }
+               return target;
+            })(),
+            queueLength: g.queueLength,
+            enteringPerMin: g.type === 'Entry' ? Math.floor(g.queueLength / 2) : 0,
+            leavingPerMin: g.type === 'Exit' ? Math.floor(g.queueLength / 2) : 0,
+            movementSpeed: isCong ? '0.2' : '1.0'
+         };
+      });
+      
+      // Update Zone Grid
+      const allZones = [...data.sections, ...formattedGates]; 
+      
+      // Sort by risk so critical ones are guaranteed to be on top
+      allZones.sort((a,b) => {
+         const scoreA = a.riskLevel === 'Critical' ? 1000 : (a.riskLevel === 'High' ? 500 : a.congestionPercentage);
+         const scoreB = b.riskLevel === 'Critical' ? 1000 : (b.riskLevel === 'High' ? 500 : b.congestionPercentage);
+         return scoreB - scoreA;
+      });
+      
+      zoneGrid.innerHTML = allZones.map(s => {
+        let riskColor = 'text-emerald-400';
+        let barColorOcc = s.occupancyPercentage > 85 ? 'bg-orange-500' : 'bg-emerald-500';
+        let barColorCong = 'bg-emerald-500';
+        
+        if (s.crowdStatus === 'Busy') riskColor = 'text-amber-400';
+        if (s.crowdStatus === 'Full') riskColor = 'text-orange-400';
+        if (s.crowdStatus === 'Crowded') riskColor = 'text-orange-400'; // Fallback
+        if (s.crowdStatus === 'Congested') { riskColor = 'text-red-400'; barColorCong = 'bg-red-500'; }
+        if (s.crowdStatus === 'Critical') { riskColor = 'text-red-500 font-black animate-pulse'; barColorCong = 'bg-red-600'; }
+        
+        return `
+        <div class="p-4 bg-slate-800/30 border ${s.isGate ? 'border-cyan-700/40' : 'border-slate-700/50'} rounded-xl backdrop-blur hover:bg-slate-800/50 transition-colors">
+          <div class="flex justify-between items-center mb-3 border-b border-slate-700/50 pb-2">
+            <div class="font-bold text-slate-100 text-lg">${s.displayName || 'Section ' + s.id}${s.isGate ? ' <span class="text-[9px] text-cyan-400 bg-cyan-950/50 px-1.5 py-0.5 rounded ml-2 uppercase">Gate</span>' : ''}</div>
+            <div class="${riskColor} text-xs font-bold uppercase tracking-wider">${s.crowdStatus}</div>
+          </div>
+          
+          <div class="grid grid-cols-2 gap-4 mb-4">
+             <div>
+                <div class="flex justify-between text-[10px] text-slate-400 uppercase font-bold mb-1">
+                   <span>Occupancy</span>
+                   <span>${s.occupancyPercentage.toFixed(0)}%</span>
+                </div>
+                <div class="w-full bg-slate-900 rounded-full h-1.5 overflow-hidden">
+                   <div class="${barColorOcc} h-full transition-all" style="width: ${Math.min(100, s.occupancyPercentage)}%"></div>
+                </div>
+             </div>
+             <div>
+                <div class="flex justify-between text-[10px] text-slate-400 uppercase font-bold mb-1">
+                   <span>Congestion</span>
+                   <span>${s.congestionPercentage.toFixed(0)}%</span>
+                </div>
+                <div class="w-full bg-slate-900 rounded-full h-1.5 overflow-hidden">
+                   <div class="${barColorCong} h-full transition-all" style="width: ${Math.min(100, s.congestionPercentage)}%"></div>
+                </div>
+             </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-y-2 gap-x-4 text-xs">
+             <div class="flex flex-col">
+                <span class="text-[9px] text-slate-500 uppercase tracking-widest font-bold">Speed</span>
+                <span class="text-slate-300 font-mono">${s.movementSpeed} m/s</span>
+             </div>
+             <div class="flex flex-col">
+                <span class="text-[9px] text-slate-500 uppercase tracking-widest font-bold">Direction</span>
+                <span class="text-slate-300 font-mono">${s.movementDirection}</span>
+             </div>
+             <div class="flex flex-col">
+                <span class="text-[9px] text-slate-500 uppercase tracking-widest font-bold">In Flow</span>
+                <span class="text-slate-300 font-mono text-emerald-400">+${s.enteringPerMin}/m</span>
+             </div>
+             <div class="flex flex-col">
+                <span class="text-[9px] text-slate-500 uppercase tracking-widest font-bold">Out Flow</span>
+                <span class="text-slate-300 font-mono text-sky-400">-${s.leavingPerMin}/m</span>
+             </div>
+          </div>
+        </div>
+        `;
+      }).join('');
+      
+      // Re-trigger feather/lucide icons if necessary
+      if (typeof lucide !== 'undefined') {
+         lucide.createIcons();
+      }
+    });
+
+    // ==========================================
+    // DATA SOURCE CONFIGURATION LOGIC
+    // ==========================================
+    document.getElementById('btn-data-config').addEventListener('click', () => {
+      document.getElementById('data-config-panel').classList.toggle('hidden');
+    });
+
+    const engineSelect = document.getElementById('data-engine-select');
+    const configFileInput = document.getElementById('data-config-file');
+    const configApiInput = document.getElementById('data-config-api');
+    const dataStatus = document.getElementById('data-status');
+    
+    let externalDatasetFrames = [];
+    let externalDatasetIndex = 0;
+    let externalDatasetTimer = null;
+    let activeWebSocket = null;
+
+    function stopInternalSimulation() {
+       if (window.stadiumSim) {
+          window.stadiumSim.stop();
+       }
+    }
+
+    function startInternalSimulation() {
+       if (window.stadiumSim) {
+          window.stadiumSim.start();
+       }
+    }
+
+    function cleanupExternalSources() {
+       if (externalDatasetTimer) {
+          clearInterval(externalDatasetTimer);
+          externalDatasetTimer = null;
+       }
+       if (activeWebSocket) {
+          activeWebSocket.close();
+          activeWebSocket = null;
+       }
+    }
+
+    function applyExternalData(data) {
+       if (!window.stadiumSim) return;
+       
+       const sim = window.stadiumSim;
+       
+       if (data.gates) {
+          data.gates.forEach(g => {
+             const gate = sim.entryGates.get(g.id) || sim.exitGates.get(g.id);
+             if (gate) {
+                gate.queueLength = g.queueLength !== undefined ? g.queueLength : gate.queueLength;
+                gate.occupancy = g.occupancy !== undefined ? g.occupancy : gate.queueLength;
+                gate.waitTime = g.waitTime !== undefined ? g.waitTime : Math.floor(gate.queueLength * 0.15);
+                gate.density = Math.min(1, gate.queueLength / gate.capacity);
+                gate.status = gate.queueLength > 80 ? 'congested' : (gate.queueLength > 2 ? 'open' : 'closed');
+             }
+          });
+       }
+       
+       if (data.sections) {
+          data.sections.forEach(s => {
+             const sec = sim.sections.get(s.id);
+             if (sec) {
+                sec.occupancyRate = s.occupancyRate !== undefined ? s.occupancyRate : sec.occupancyRate;
+                sec.occupiedSeats = Math.floor(sec.capacity * sec.occupancyRate);
+                sec.movementSpeed = s.movementSpeed !== undefined ? s.movementSpeed : sec.movementSpeed;
+                sec.peopleEnteringPerMin = s.peopleEnteringPerMin !== undefined ? s.peopleEnteringPerMin : sec.peopleEnteringPerMin;
+                sec.peopleLeavingPerMin = s.peopleLeavingPerMin !== undefined ? s.peopleLeavingPerMin : sec.peopleLeavingPerMin;
+                sec.crowdDensity = s.crowdDensity !== undefined ? s.crowdDensity : sec.occupancyRate;
+             }
+          });
+       }
+       
+       // Trigger intelligence engine processing explicitly
+       if (sim.intelligenceEngine) {
+          const intelOutput = sim.intelligenceEngine.process(sim);
+          const event = new CustomEvent('crowdIntelligenceUpdated', { detail: intelOutput });
+          window.dispatchEvent(event);
+       }
+       
+       requestRender();
+    }
+
+    engineSelect.addEventListener('change', (e) => {
+       const mode = e.target.value;
+       configFileInput.classList.add('hidden');
+       configApiInput.classList.add('hidden');
+       cleanupExternalSources();
+       
+       if (mode === 'math') {
+          startInternalSimulation();
+          dataStatus.textContent = 'Status: Math Engine Running';
+       } else if (mode === 'file') {
+          stopInternalSimulation();
+          configFileInput.classList.remove('hidden');
+          dataStatus.textContent = 'Status: Waiting for file upload...';
+       } else if (mode === 'api') {
+          stopInternalSimulation();
+          configApiInput.classList.remove('hidden');
+          dataStatus.textContent = 'Status: Disconnected';
+       }
+    });
+
+    document.getElementById('data-file-input').addEventListener('change', (e) => {
+       const file = e.target.files[0];
+       if (!file) return;
+       
+       const reader = new FileReader();
+       reader.onload = (ev) => {
+          try {
+             const json = JSON.parse(ev.target.result);
+             if (Array.isArray(json)) {
+                externalDatasetFrames = json;
+                externalDatasetIndex = 0;
+                dataStatus.textContent = `Status: Replaying ${externalDatasetFrames.length} frames...`;
+                
+                // Replay at 5 second intervals to match normal tick rate
+                externalDatasetTimer = setInterval(() => {
+                   if (externalDatasetIndex < externalDatasetFrames.length) {
+                      applyExternalData(externalDatasetFrames[externalDatasetIndex]);
+                      dataStatus.textContent = `Status: Frame ${externalDatasetIndex + 1} of ${externalDatasetFrames.length}`;
+                      externalDatasetIndex++;
+                   } else {
+                      // Loop
+                      externalDatasetIndex = 0;
+                   }
+                }, 5000);
+                
+                // Immediately apply first frame
+                applyExternalData(externalDatasetFrames[0]);
+                externalDatasetIndex++;
+             } else {
+                dataStatus.textContent = 'Error: JSON must be an array of frames';
+             }
+          } catch(err) {
+             dataStatus.textContent = 'Error: Invalid JSON file';
+          }
+       };
+       reader.readAsText(file);
+    });
+
+    document.getElementById('btn-api-connect').addEventListener('click', () => {
+       const url = document.getElementById('data-api-url').value;
+       if (!url) return;
+       
+       if (activeWebSocket) {
+          activeWebSocket.close();
+       }
+       
+       dataStatus.textContent = 'Status: Connecting...';
+       
+       try {
+          activeWebSocket = new WebSocket(url);
+          
+          activeWebSocket.onopen = () => {
+             dataStatus.textContent = 'Status: Connected';
+             document.getElementById('btn-api-connect').textContent = 'Disconnect';
+          };
+          
+          activeWebSocket.onmessage = (e) => {
+             try {
+                const data = JSON.parse(e.data);
+                applyExternalData(data);
+                dataStatus.textContent = 'Status: Receiving Telemetry...';
+             } catch(err) {
+                console.error("Failed to parse websocket message", err);
+             }
+          };
+          
+          activeWebSocket.onclose = () => {
+             dataStatus.textContent = 'Status: Disconnected';
+             document.getElementById('btn-api-connect').textContent = 'Connect';
+             activeWebSocket = null;
+          };
+          
+          activeWebSocket.onerror = (err) => {
+             dataStatus.textContent = 'Status: Connection Error';
+          };
+       } catch (err) {
+          dataStatus.textContent = 'Error: Invalid URL';
+       }
+    });
+  </script>
 </body>
 </html>

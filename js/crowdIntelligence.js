@@ -367,16 +367,24 @@ class CrowdIntelligenceEngine {
           progress: activeAction.progress
         });
       } else if (gate.queueLength > 60) {
-        // Gates use higher queue threshold for critical
+        const formattedWait = (() => {
+          if (gate.estimatedWaitTime === null || gate.estimatedWaitTime === undefined || isNaN(gate.estimatedWaitTime)) return '—';
+          const totalSeconds = Math.round(gate.estimatedWaitTime * 60);
+          const min = Math.floor(totalSeconds / 60);
+          const sec = totalSeconds % 60;
+          return min > 0 ? `${min} min ${sec} sec` : `${sec} sec`;
+        })();
+        const formattedQueue = isNaN(gate.queueLength) ? '—' : `${Math.round(gate.queueLength)} people`;
+        
         newAlerts.push({
           severity: "Critical",
           score: gate.queueLength * 3,
           location: locationKey,
-          message: `Queue length critical (${gate.queueLength}). Wait time: ~${gate.estimatedWaitTime}m.`,
+          message: `Queue length critical (${formattedQueue}). Wait time: ~${formattedWait}.`,
           recommendedAction: "Open additional gate or route visitors to another gate.",
           actionId: "openGate",
           aiExplanation: `Queue at ${gate.type} Gate ${gate.id} is unsafely long. Opening an additional gate is expected to reduce wait times by 40%.`,
-          actionImpact: { queueReduction: "40%", travelTimeReduction: "5m" }
+          actionImpact: { queueReduction: "40%", travelTimeReduction: "5 min" }
         });
       }
     });
@@ -408,9 +416,10 @@ class CrowdIntelligenceEngine {
        });
        
        mergedIncidents.forEach((data, key) => {
-          let explanation = `Crowd congestion developing in ${key}. Movement speed dropped to ${data.minSpeed} m/s.`;
+          const formatSpeed = (val) => isNaN(val) ? '—' : `${parseFloat(val).toFixed(2)} m/s`;
+          let explanation = `Crowd congestion developing in ${key}. Movement speed dropped to ${formatSpeed(data.minSpeed)}.`;
           if (data.count > 1) {
-             explanation = `Widespread congestion across ${data.count} sections in ${key}. Movement speed dropped to ${data.minSpeed} m/s.`;
+             explanation = `Widespread congestion across ${data.count} sections in ${key}. Movement speed dropped to ${formatSpeed(data.minSpeed)}.`;
           }
           
           newAlerts.push({

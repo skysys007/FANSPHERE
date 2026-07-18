@@ -13,6 +13,7 @@
     "vite": "^5.2.0"
   },
   "dependencies": {
+    "puppeteer": "^25.3.0",
     "ws": "^8.21.1"
   }
 }

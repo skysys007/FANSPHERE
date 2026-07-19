@@ -1,13 +1,17 @@
 import './js/crowdIntelligence.js';
 import './js/simulation.js';
 import './js/parking.js';
+import DOMPurify from 'dompurify';
+
 // ==========================================
 // API KEY CONFIGURATION
 // ==========================================
 // Replace these placeholder strings with your actual API keys.
 // Since there is no backend server, these must be defined here for the frontend to use.
-const GOOGLE_TRANSLATE_API_KEY = 'YOUR_GOOGLE_TRANSLATE_API_KEY';
-const GROQ_API_KEY = 'YOUR_GROQ_API_KEY';
+// API keys are now securely loaded via Vite environment variables
+const GOOGLE_TRANSLATE_API_KEY =
+  import.meta.env.VITE_GOOGLE_TRANSLATE_API_KEY || 'YOUR_GOOGLE_TRANSLATE_API_KEY';
+const GROQ_API_KEY = import.meta.env.VITE_GROQ_API_KEY || 'YOUR_GROQ_API_KEY';
 
 // ==========================================
 // GLOBAL i18n SYSTEM
@@ -452,7 +456,7 @@ window.addEventListener('DOMContentLoaded', () => {
       const details = document.getElementById('emergency-details').value;
 
       const submitBtn = document.getElementById('btn-emergency-submit');
-      submitBtn.innerHTML = '<span class="animate-pulse">Analyzing...</span>';
+      submitBtn.innerHTML = DOMPurify.sanitize('<span class="animate-pulse">Analyzing...</span>');
       submitBtn.disabled = true;
 
       try {
@@ -499,7 +503,7 @@ window.addEventListener('DOMContentLoaded', () => {
       }
 
       emergencyModal.classList.add('hidden');
-      submitBtn.innerHTML = 'Submit';
+      submitBtn.innerHTML = DOMPurify.sanitize('Submit');
       submitBtn.disabled = false;
 
       const switchBtn = document.getElementById('btn-switch-role');
@@ -544,7 +548,7 @@ async function setUiLanguage(lang) {
     document.querySelectorAll('[data-i18n], [data-i18n-dyn]').forEach((el) => {
       const attr = el.hasAttribute('data-i18n') ? 'data-i18n' : 'data-i18n-dyn';
       const txt = getEnglish(el, attr, 'innerHTML');
-      if (txt) el.innerHTML = txt;
+      if (txt) el.innerHTML = DOMPurify.sanitize(txt);
     });
     document.querySelectorAll('[data-i18n-placeholder]').forEach((el) => {
       const txt = getEnglish(el, 'data-i18n-placeholder', 'placeholder');
@@ -612,7 +616,7 @@ async function setUiLanguage(lang) {
       translatedArray.forEach((t, i) => {
         const item = elementsToTranslate[i];
         if (item) {
-          if (item.type === 'text') item.el.innerHTML = t;
+          if (item.type === 'text') item.el.innerHTML = DOMPurify.sanitize(t);
           else if (item.type === 'placeholder') item.el.placeholder = t;
           else if (item.type === 'title') item.el.title = t;
         }
@@ -665,7 +669,7 @@ async function translateDynamicNodes(container) {
 
     if (translatedArray && translatedArray.length === elementsToTranslate.length) {
       translatedArray.forEach((t, i) => {
-        elementsToTranslate[i].innerHTML = t;
+        elementsToTranslate[i].innerHTML = DOMPurify.sanitize(t);
       });
     }
   } catch (e) {
@@ -1567,21 +1571,21 @@ function calculateRoute(startId, endId, skipEdges = []) {
 
     let weight = e.dist;
     switch (routeMode) {
-    case 'fastest':
-      weight = e.dist * 0.7 + queueWeight * 0.3;
-      break;
-    case 'least_crowded':
-      weight = e.dist * 0.2 + densityWeight * 0.8;
-      break;
-    case 'safest':
-      weight = densityWeight > 80 ? e.dist * 100 : e.dist * 0.5 + densityWeight * 0.5;
-      break;
-    case 'wheelchair':
-      weight = e.dist * 0.6 + densityWeight * 0.4;
-      break;
-    case 'balanced':
-    default:
-      weight = e.dist * 0.25 + densityWeight * 0.35 + queueWeight * 0.2 + densityWeight * 0.2;
+      case 'fastest':
+        weight = e.dist * 0.7 + queueWeight * 0.3;
+        break;
+      case 'least_crowded':
+        weight = e.dist * 0.2 + densityWeight * 0.8;
+        break;
+      case 'safest':
+        weight = densityWeight > 80 ? e.dist * 100 : e.dist * 0.5 + densityWeight * 0.5;
+        break;
+      case 'wheelchair':
+        weight = e.dist * 0.6 + densityWeight * 0.4;
+        break;
+      case 'balanced':
+      default:
+        weight = e.dist * 0.25 + densityWeight * 0.35 + queueWeight * 0.2 + densityWeight * 0.2;
     }
     adj[e.a].push({ node: e.b, weight: weight });
   });
@@ -1708,7 +1712,7 @@ function renderRouteUI(path, altPath) {
            </div>`);
     }
 
-    stepsList.innerHTML = steps.join('');
+    stepsList.innerHTML = DOMPurify.sanitize(steps.join(''));
     translateDynamicNodes(stepsList);
   } else {
     stepsContainer.classList.add('hidden');
@@ -1810,11 +1814,11 @@ setInterval(() => {
     const s = window.stadiumSim;
 
     if (!s.isRunning) {
-      document.getElementById('sim-live-stats').innerHTML = `
+      document.getElementById('sim-live-stats').innerHTML = DOMPurify.sanitize(`
                 <div class="p-3 text-center rounded bg-sky-900/20 border border-sky-500/30 transition-opacity duration-1000">
                   <span class="text-sky-400 font-medium uppercase text-[10px] tracking-widest">PLEASE TURN ON SIMULATION TO CONNECT TO LIVE DATA TO USE OPERATIONS</span>
                 </div>
-              `;
+              `);
       return;
     }
 
@@ -1830,7 +1834,7 @@ setInterval(() => {
       html += `<div>${g.name.replace('Gate', '').trim()}: <span class="${g.density > 0.7 ? 'text-red-400 font-bold' : 'text-emerald-400'}">Q:${g.queueLength}</span> <span class="text-slate-500 ml-1">F:${Math.floor(g.occupancy)}/m</span></div>`;
     });
     html += '</div>';
-    document.getElementById('sim-live-stats').innerHTML = html;
+    document.getElementById('sim-live-stats').innerHTML = DOMPurify.sanitize(html);
 
     // Re-render canvas to show breathing heatmap colors
     requestRender();
@@ -1882,7 +1886,7 @@ window.renderSustainability = function () {
       Math.max(0, sm.waterUsage.baseline + (Math.random() * 2 - 1))
     );
 
-    sustainEl.innerHTML = `
+    sustainEl.innerHTML = DOMPurify.sanitize(`
           <div class="p-3 bg-slate-800/50 rounded border border-emerald-500/30 shadow-sm">
             <div class="flex justify-between items-center mb-2">
               <div class="flex items-center gap-2 text-sm text-slate-200 font-bold">
@@ -1934,7 +1938,7 @@ window.renderSustainability = function () {
               <div class="bg-green-500 h-2 rounded-full" style="width: ${(sm.carbonOffset.baseline / sm.carbonOffset.target) * 100}%"></div>
             </div>
           </div>
-        `;
+        `);
     if (window.lucide) window.lucide.createIcons();
   }
 };
@@ -2108,7 +2112,7 @@ function renderFoodStalls() {
         .join('');
       const sectionDisplay = stall.section.replace('sec-', '');
 
-      div.innerHTML = `
+      div.innerHTML = DOMPurify.sanitize(`
             <div class="flex justify-between items-start mb-2">
               <div>
                 <div class="font-bold text-slate-200" data-i18n-dyn="true">${stall.name}</div>
@@ -2123,7 +2127,7 @@ function renderFoodStalls() {
             <button class="w-full py-1.5 bg-sky-500/20 hover:bg-sky-500/40 border border-sky-500/50 text-sky-400 font-bold rounded transition-colors text-xs" onclick="navigateFromFood('${stall.section}')" data-i18n-dyn="true">
               Take Me There
             </button>
-          `;
+          `);
       foodListContainer.appendChild(div);
     });
 
@@ -2194,7 +2198,7 @@ function addAiMessage(text, isHTML = false) {
   msg.className =
     'self-start bg-slate-800 text-slate-200 border border-slate-700 px-4 py-2 rounded-2xl rounded-tl-sm max-w-[85%] shadow-md leading-relaxed';
   if (isHTML) {
-    msg.innerHTML = text;
+    msg.innerHTML = DOMPurify.sanitize(text);
     // Only re-init icons if the message actually contains lucide data-lucide attributes
     if (text.includes('data-lucide')) lucide.createIcons();
   } else msg.textContent = text;
@@ -2209,8 +2213,9 @@ function showTyping() {
   typingEl.id = 'typing-indicator';
   typingEl.className =
     'self-start bg-slate-800 text-slate-400 border border-slate-700 px-4 py-3 rounded-2xl rounded-tl-sm max-w-[85%] flex gap-1.5 items-center';
-  typingEl.innerHTML =
-    '<div class="w-1.5 h-1.5 bg-slate-500 rounded-full animate-bounce"></div><div class="w-1.5 h-1.5 bg-slate-500 rounded-full animate-bounce" style="animation-delay: 0.15s"></div><div class="w-1.5 h-1.5 bg-slate-500 rounded-full animate-bounce" style="animation-delay: 0.3s"></div>';
+  typingEl.innerHTML = DOMPurify.sanitize(
+    '<div class="w-1.5 h-1.5 bg-slate-500 rounded-full animate-bounce"></div><div class="w-1.5 h-1.5 bg-slate-500 rounded-full animate-bounce" style="animation-delay: 0.15s"></div><div class="w-1.5 h-1.5 bg-slate-500 rounded-full animate-bounce" style="animation-delay: 0.3s"></div>'
+  );
   chatHistory.appendChild(typingEl);
   chatHistory.scrollTop = chatHistory.scrollHeight;
 }

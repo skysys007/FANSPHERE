@@ -1,3 +1,4 @@
+import DOMPurify from 'dompurify';
 /**
  * @fileoverview Stadium Parking System
  * Handles OpenFreeMap (MapLibre GL JS) initialization, mock occupancy data generation,
@@ -237,7 +238,7 @@ class StadiumParkingManager {
     if (!listEl) return;
 
     const html = this.data.map((lot) => this._createSidebarCardHTML(lot)).join('');
-    listEl.innerHTML = html;
+    listEl.innerHTML = DOMPurify.sanitize(html);
   }
 
   /**
@@ -359,7 +360,7 @@ class StadiumParkingManager {
       el.className =
         'w-6 h-6 rounded flex items-center justify-center font-black text-[12px] text-white border border-white/50 shadow-lg cursor-pointer transition-transform hover:scale-110';
       el.style.backgroundColor = lot.pinColor;
-      el.innerHTML = 'P';
+      el.innerHTML = DOMPurify.sanitize('P');
 
       const popup = new maplibregl.Popup({ offset: 15, closeButton: false }).setHTML(
         this._createMarkerPopupHTML(lot)

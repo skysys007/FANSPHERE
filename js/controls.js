@@ -1,3 +1,4 @@
+import DOMPurify from 'dompurify';
 // Crowd Intelligence UI Integration
 document.addEventListener('DOMContentLoaded', () => {
   const btnIntel = document.getElementById('btn-crowd-intel');
@@ -13,18 +14,18 @@ document.addEventListener('DOMContentLoaded', () => {
           if (window.stadiumSim && !window.stadiumSim.isRunning) {
             const kpiBar = document.getElementById('ci-kpi-bar');
             if (kpiBar) {
-              kpiBar.innerHTML = `
+              kpiBar.innerHTML = DOMPurify.sanitize(`
                       <div class="col-span-full w-full mt-2">
                          <div class="flex items-center justify-center gap-3 bg-sky-900/10 border border-sky-500/20 rounded-lg p-4">
                             <i data-lucide="info" class="w-5 h-5 text-sky-400 opacity-80"></i>
                             <span class="text-sky-300 font-medium uppercase text-sm tracking-wider">PLEASE TURN ON SIMULATION or CONNECT TO LIVE DATA source TO see insights</span>
                          </div>
                       </div>
-                    `;
+                    `);
             }
             const zoneGrid = document.getElementById('ci-zone-grid');
             if (zoneGrid) {
-              zoneGrid.innerHTML = `
+              zoneGrid.innerHTML = DOMPurify.sanitize(`
                       <div class="h-full w-full p-10 flex flex-col items-center justify-center transition-opacity duration-1000">
                          <div class="flex flex-col items-center justify-center max-w-lg text-center opacity-70">
                             <div class="p-4 bg-sky-900/20 rounded-full mb-6 border border-sky-500/20">
@@ -38,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             </p>
                          </div>
                       </div>
-                    `;
+                    `);
               lucide.createIcons();
             }
           }
@@ -84,7 +85,7 @@ window.addEventListener('crowdIntelligenceUpdated', (e) => {
 
   // Update Top KPIs
   if (isSimRunning) {
-    kpiBar.innerHTML = `
+    kpiBar.innerHTML = DOMPurify.sanitize(`
         <div class="bg-slate-800/40 p-3 rounded-lg border border-slate-700/50 backdrop-blur">
            <div class="text-[10px] text-slate-400 uppercase tracking-wider font-bold">Total Capacity</div>
            <div class="text-xl font-black text-white">82,500</div>
@@ -109,12 +110,12 @@ window.addEventListener('crowdIntelligenceUpdated', (e) => {
            <div class="text-[10px] text-slate-400 uppercase tracking-wider font-bold">Critical Zones</div>
            <div class="text-xl font-black ${criticalZones > 0 ? 'text-red-500 animate-pulse' : 'text-slate-500'}">${criticalZones}</div>
         </div>
-      `;
+      `);
   }
 
   // Update Action Log
   if (data.actionLog && data.actionLog.length > 0) {
-    actionLogEl.innerHTML = data.actionLog
+    actionLogEl.innerHTML = DOMPurify.sanitize(data.actionLog)
       .map(
         (log) => `
           <div class="text-xs text-slate-300 p-2 bg-slate-800/50 rounded border border-slate-700/50">
@@ -238,10 +239,11 @@ window.addEventListener('crowdIntelligenceUpdated', (e) => {
   }
 
   if (displayAlerts.length === 0) {
-    alertsEl.innerHTML =
-      '<div class="p-4 bg-slate-800/30 border border-slate-700/30 rounded-lg text-center text-sm text-emerald-500 font-bold"><i data-lucide="check-circle" class="w-6 h-6 mx-auto mb-2 opacity-50"></i>No Critical Incidents</div>';
+    alertsEl.innerHTML = DOMPurify.sanitize(
+      '<div class="p-4 bg-slate-800/30 border border-slate-700/30 rounded-lg text-center text-sm text-emerald-500 font-bold"><i data-lucide="check-circle" class="w-6 h-6 mx-auto mb-2 opacity-50"></i>No Critical Incidents</div>'
+    );
   } else {
-    alertsEl.innerHTML = displayAlerts
+    alertsEl.innerHTML = DOMPurify.sanitize(displayAlerts)
       .map((a) => {
         if (a.lifecyclePhase) {
           if (a.lifecyclePhase === 'taking_action') {
@@ -378,7 +380,7 @@ window.addEventListener('crowdIntelligenceUpdated', (e) => {
       return scoreB - scoreA;
     });
 
-    zoneGrid.innerHTML = allZones
+    zoneGrid.innerHTML = DOMPurify.sanitize(allZones)
       .map((s) => {
         let riskColor = 'text-emerald-400';
         const barColorOcc = s.occupancyPercentage > 85 ? 'bg-orange-500' : 'bg-emerald-500';
@@ -532,9 +534,11 @@ function applyExternalData(data) {
   if (data.zones) {
     data.zones.forEach((zone) => {
       let targetObj = null;
-      for (const gate of sim.entryGates.values()) if (gate.name === zone.zone_name) targetObj = gate;
+      for (const gate of sim.entryGates.values())
+        if (gate.name === zone.zone_name) targetObj = gate;
       if (!targetObj)
-        for (const gate of sim.exitGates.values()) if (gate.name === zone.zone_name) targetObj = gate;
+        for (const gate of sim.exitGates.values())
+          if (gate.name === zone.zone_name) targetObj = gate;
       if (!targetObj)
         for (const sec of sim.sections.values()) if (sec.name === zone.zone_name) targetObj = sec;
 

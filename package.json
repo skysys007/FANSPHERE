@@ -23,6 +23,7 @@
     "prettier": "^3.2.5"
   },
   "dependencies": {
+    "dompurify": "^3.0.9",
     "puppeteer": "^25.3.0",
     "ws": "^8.21.1"
   }

@@ -31,11 +31,11 @@ describe('Stadium Simulation Engine', () => {
   it('should transition phases correctly', () => {
     sim.setPhase('during_match');
     expect(sim.phase).toBe('during_match');
-    
+
     // Changing phase to during_match fast-forwards section occupancy
     sim.addSection('sec-1', 'Section A', 1000);
     sim.setPhase('during_match');
-    
+
     const section = sim.sections.get('sec-1');
     expect(section.occupiedSeats).toBeGreaterThan(0);
     expect(section.occupancyRate).toBeGreaterThan(0.85); // should be around 90-95%
@@ -44,10 +44,10 @@ describe('Stadium Simulation Engine', () => {
   it('should process ticks without error', () => {
     sim.addEntryGate('gate-1', 'Main Entry', 200);
     sim.addSection('sec-1', 'Section A', 500);
-    
+
     // Simulate one tick
     sim.tick();
-    
+
     expect(sim.tickCount).toBe(1);
     // In pre-match, entry gate queues should grow because people spawn
     const gate = sim.entryGates.get('gate-1');

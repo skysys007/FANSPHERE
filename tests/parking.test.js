@@ -6,22 +6,36 @@ global.document = {
   getElementById: (id) => ({
     addEventListener: () => {},
     classList: { add: () => {}, remove: () => {}, toggle: () => {} },
-    innerHTML: ''
+    innerHTML: '',
   }),
   addEventListener: () => {},
   createElement: () => ({
     classList: { add: () => {}, remove: () => {}, toggle: () => {} },
     style: {},
     innerHTML: '',
-    className: ''
+    className: '',
   }),
-  head: { appendChild: () => {} }
+  head: { appendChild: () => {} },
 };
 
 global.maplibregl = {
-  Map: class { flyTo() {} },
-  Marker: class { setLngLat() { return this; } setPopup() { return this; } addTo() {} },
-  Popup: class { setHTML() { return this; } }
+  Map: class {
+    flyTo() {}
+  },
+  Marker: class {
+    setLngLat() {
+      return this;
+    }
+    setPopup() {
+      return this;
+    }
+    addTo() {}
+  },
+  Popup: class {
+    setHTML() {
+      return this;
+    }
+  },
 };
 
 describe('Stadium Parking System', () => {
@@ -43,7 +57,7 @@ describe('Stadium Parking System', () => {
     expect(lot).toHaveProperty('available');
     expect(lot).toHaveProperty('status');
     expect(lot).toHaveProperty('barColor');
-    
+
     // Check that occupied + available = maxCapacity
     expect(lot.occupied + lot.available).toBe(lot.maxCapacity);
   });
@@ -51,7 +65,7 @@ describe('Stadium Parking System', () => {
   it('should escape HTML to prevent XSS vulnerabilities', () => {
     const maliciousInput = '<script>alert("xss")</script>';
     const escaped = manager._escapeHTML(maliciousInput);
-    
+
     expect(escaped).not.toContain('<script>');
     expect(escaped).toContain('&lt;script&gt;');
   });
@@ -61,12 +75,12 @@ describe('Stadium Parking System', () => {
     const fullLot = { ...PARKING_CONFIG.LOTS[0], maxCapacity: 100 };
     const occPercent = 0.95;
     const occupied = 95;
-    
+
     // Simulate what the private method does for testing
     let status = 'Comfortable';
     if (occPercent > 0.9) status = 'Full';
     else if (occPercent > 0.75) status = 'Busy';
-    
+
     expect(status).toBe('Full');
   });
 });

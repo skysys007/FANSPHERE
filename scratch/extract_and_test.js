@@ -6,7 +6,7 @@ const html = fs.readFileSync('/home/skysys/Desktop/Repositories/FAN SPHERE/index
 const scriptMatch = html.match(/<script>(.*?)<\/script>/s);
 if (scriptMatch) {
   let script = scriptMatch[1];
-  
+
   // mock browser stuff
   script = `
     const document = {
@@ -61,6 +61,9 @@ if (scriptMatch) {
     renderStadium();
     console.log("Render completed");
   `;
-  
-  fs.writeFileSync('/home/skysys/Desktop/Repositories/FAN SPHERE/scratch/test_route_run.js', script);
+
+  fs.writeFileSync(
+    '/home/skysys/Desktop/Repositories/FAN SPHERE/scratch/test_route_run.js',
+    script
+  );
 }

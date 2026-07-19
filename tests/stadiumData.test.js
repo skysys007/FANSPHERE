@@ -1,14 +1,20 @@
 import { describe, it, expect } from 'vitest';
-import { RAG_DATABASE, SUSTAINABILITY_METRICS, TRANSIT_SCHEDULE, FOOD_STALLS, TRANSLATIONS } from '../js/stadiumData.js';
+import {
+  RAG_DATABASE,
+  SUSTAINABILITY_METRICS,
+  TRANSIT_SCHEDULE,
+  FOOD_STALLS,
+  TRANSLATIONS,
+} from '../js/stadiumData.js';
 
 describe('Stadium Data Integrity', () => {
   it('should have a valid RAG database', () => {
     expect(RAG_DATABASE).toBeDefined();
     expect(Array.isArray(RAG_DATABASE)).toBe(true);
     expect(RAG_DATABASE.length).toBeGreaterThan(0);
-    
+
     // Check that each RAG entry has required fields
-    RAG_DATABASE.forEach(entry => {
+    RAG_DATABASE.forEach((entry) => {
       expect(entry).toHaveProperty('id');
       expect(entry).toHaveProperty('category');
       expect(entry).toHaveProperty('content');
@@ -37,7 +43,7 @@ describe('Stadium Data Integrity', () => {
     expect(TRANSLATIONS).toHaveProperty('hi');
     expect(TRANSLATIONS).toHaveProperty('fr');
     expect(TRANSLATIONS).toHaveProperty('pt');
-    
+
     // Check if a specific translation key exists
     expect(TRANSLATIONS.en.title).toContain('FANSPHERE');
   });

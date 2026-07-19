@@ -3,120 +3,876 @@
     "timestamp": "T+00:00",
     "phase": "halftime_start",
     "zones": [
-      {"zone_name":"FANSPHERE Gate","type":"gate","occupancy_pct":43.7,"congestion_pct":19.2,"speed_ms":1.08,"inflow_m":100.0,"outflow_m":80.0,"status":"COMFORTABLE"},
-      {"zone_name":"AMEX Gate","type":"gate","occupancy_pct":38.2,"congestion_pct":15.5,"speed_ms":1.18,"inflow_m":90.0,"outflow_m":70.0,"status":"COMFORTABLE"},
-      {"zone_name":"Verizon Gate","type":"gate","occupancy_pct":34.9,"congestion_pct":18.3,"speed_ms":1.29,"inflow_m":80.0,"outflow_m":60.0,"status":"COMFORTABLE"},
-      {"zone_name":"HCLTech Gate","type":"gate","occupancy_pct":29.4,"congestion_pct":6.9,"speed_ms":1.38,"inflow_m":70.0,"outflow_m":60.0,"status":"COMFORTABLE"},
-      {"zone_name":"Moody's Gate","type":"gate","occupancy_pct":26.1,"congestion_pct":8.8,"speed_ms":1.43,"inflow_m":60.0,"outflow_m":50.0,"status":"COMFORTABLE"},
-      {"zone_name":"Concourse 101","type":"concourse","occupancy_pct":56.3,"congestion_pct":13.5,"speed_ms":0.87,"inflow_m":120.0,"outflow_m":100.0,"status":"COMFORTABLE"},
-      {"zone_name":"Concourse 201","type":"concourse","occupancy_pct":49.1,"congestion_pct":10.4,"speed_ms":0.97,"inflow_m":110.0,"outflow_m":90.0,"status":"COMFORTABLE"},
-      {"zone_name":"Food Court 115","type":"amenity","occupancy_pct":61.4,"congestion_pct":19.2,"speed_ms":0.68,"inflow_m":130.0,"outflow_m":100.0,"status":"COMFORTABLE"},
-      {"zone_name":"Food Court 132","type":"amenity","occupancy_pct":54.7,"congestion_pct":11.3,"speed_ms":0.78,"inflow_m":120.0,"outflow_m":100.0,"status":"COMFORTABLE"},
-      {"zone_name":"Restroom Area 110","type":"amenity","occupancy_pct":48.9,"congestion_pct":9.3,"speed_ms":0.83,"inflow_m":110.0,"outflow_m":95.0,"status":"COMFORTABLE"},
-      {"zone_name":"Section 102","type":"seating","occupancy_pct":93.4,"congestion_pct":3.5,"speed_ms":0.04,"inflow_m":10.0,"outflow_m":150.0,"status":"COMFORTABLE"},
-      {"zone_name":"Section 105","type":"seating","occupancy_pct":95.1,"congestion_pct":4.8,"speed_ms":0.05,"inflow_m":15.0,"outflow_m":160.0,"status":"COMFORTABLE"},
-      {"zone_name":"Section 118","type":"seating","occupancy_pct":90.8,"congestion_pct":2.6,"speed_ms":0.04,"inflow_m":12.0,"outflow_m":140.0,"status":"COMFORTABLE"},
-      {"zone_name":"Transit Hub 140","type":"concourse","occupancy_pct":41.6,"congestion_pct":9.9,"speed_ms":1.07,"inflow_m":100.0,"outflow_m":85.0,"status":"COMFORTABLE"}
+      {
+        "zone_name": "FANSPHERE Gate",
+        "type": "gate",
+        "occupancy_pct": 43.7,
+        "congestion_pct": 19.2,
+        "speed_ms": 1.08,
+        "inflow_m": 100.0,
+        "outflow_m": 80.0,
+        "status": "COMFORTABLE"
+      },
+      {
+        "zone_name": "AMEX Gate",
+        "type": "gate",
+        "occupancy_pct": 38.2,
+        "congestion_pct": 15.5,
+        "speed_ms": 1.18,
+        "inflow_m": 90.0,
+        "outflow_m": 70.0,
+        "status": "COMFORTABLE"
+      },
+      {
+        "zone_name": "Verizon Gate",
+        "type": "gate",
+        "occupancy_pct": 34.9,
+        "congestion_pct": 18.3,
+        "speed_ms": 1.29,
+        "inflow_m": 80.0,
+        "outflow_m": 60.0,
+        "status": "COMFORTABLE"
+      },
+      {
+        "zone_name": "HCLTech Gate",
+        "type": "gate",
+        "occupancy_pct": 29.4,
+        "congestion_pct": 6.9,
+        "speed_ms": 1.38,
+        "inflow_m": 70.0,
+        "outflow_m": 60.0,
+        "status": "COMFORTABLE"
+      },
+      {
+        "zone_name": "Moody's Gate",
+        "type": "gate",
+        "occupancy_pct": 26.1,
+        "congestion_pct": 8.8,
+        "speed_ms": 1.43,
+        "inflow_m": 60.0,
+        "outflow_m": 50.0,
+        "status": "COMFORTABLE"
+      },
+      {
+        "zone_name": "Concourse 101",
+        "type": "concourse",
+        "occupancy_pct": 56.3,
+        "congestion_pct": 13.5,
+        "speed_ms": 0.87,
+        "inflow_m": 120.0,
+        "outflow_m": 100.0,
+        "status": "COMFORTABLE"
+      },
+      {
+        "zone_name": "Concourse 201",
+        "type": "concourse",
+        "occupancy_pct": 49.1,
+        "congestion_pct": 10.4,
+        "speed_ms": 0.97,
+        "inflow_m": 110.0,
+        "outflow_m": 90.0,
+        "status": "COMFORTABLE"
+      },
+      {
+        "zone_name": "Food Court 115",
+        "type": "amenity",
+        "occupancy_pct": 61.4,
+        "congestion_pct": 19.2,
+        "speed_ms": 0.68,
+        "inflow_m": 130.0,
+        "outflow_m": 100.0,
+        "status": "COMFORTABLE"
+      },
+      {
+        "zone_name": "Food Court 132",
+        "type": "amenity",
+        "occupancy_pct": 54.7,
+        "congestion_pct": 11.3,
+        "speed_ms": 0.78,
+        "inflow_m": 120.0,
+        "outflow_m": 100.0,
+        "status": "COMFORTABLE"
+      },
+      {
+        "zone_name": "Restroom Area 110",
+        "type": "amenity",
+        "occupancy_pct": 48.9,
+        "congestion_pct": 9.3,
+        "speed_ms": 0.83,
+        "inflow_m": 110.0,
+        "outflow_m": 95.0,
+        "status": "COMFORTABLE"
+      },
+      {
+        "zone_name": "Section 102",
+        "type": "seating",
+        "occupancy_pct": 93.4,
+        "congestion_pct": 3.5,
+        "speed_ms": 0.04,
+        "inflow_m": 10.0,
+        "outflow_m": 150.0,
+        "status": "COMFORTABLE"
+      },
+      {
+        "zone_name": "Section 105",
+        "type": "seating",
+        "occupancy_pct": 95.1,
+        "congestion_pct": 4.8,
+        "speed_ms": 0.05,
+        "inflow_m": 15.0,
+        "outflow_m": 160.0,
+        "status": "COMFORTABLE"
+      },
+      {
+        "zone_name": "Section 118",
+        "type": "seating",
+        "occupancy_pct": 90.8,
+        "congestion_pct": 2.6,
+        "speed_ms": 0.04,
+        "inflow_m": 12.0,
+        "outflow_m": 140.0,
+        "status": "COMFORTABLE"
+      },
+      {
+        "zone_name": "Transit Hub 140",
+        "type": "concourse",
+        "occupancy_pct": 41.6,
+        "congestion_pct": 9.9,
+        "speed_ms": 1.07,
+        "inflow_m": 100.0,
+        "outflow_m": 85.0,
+        "status": "COMFORTABLE"
+      }
     ]
   },
   {
     "timestamp": "T+02:00",
     "phase": "halftime_surge",
     "zones": [
-      {"zone_name":"FANSPHERE Gate","type":"gate","occupancy_pct":79.3,"congestion_pct":86.5,"speed_ms":0.38,"inflow_m":200.0,"outflow_m":120.0,"status":"MODERATE"},
-      {"zone_name":"AMEX Gate","type":"gate","occupancy_pct":73.6,"congestion_pct":64.4,"speed_ms":0.47,"inflow_m":180.0,"outflow_m":110.0,"status":"MODERATE"},
-      {"zone_name":"Verizon Gate","type":"gate","occupancy_pct":66.1,"congestion_pct":43.1,"speed_ms":0.58,"inflow_m":150.0,"outflow_m":100.0,"status":"MODERATE"},
-      {"zone_name":"HCLTech Gate","type":"gate","occupancy_pct":59.4,"congestion_pct":23.9,"speed_ms":0.68,"inflow_m":120.0,"outflow_m":90.0,"status":"COMFORTABLE"},
-      {"zone_name":"Moody's Gate","type":"gate","occupancy_pct":52.8,"congestion_pct":18.5,"speed_ms":0.77,"inflow_m":100.0,"outflow_m":80.0,"status":"COMFORTABLE"},
-      {"zone_name":"Concourse 101","type":"concourse","occupancy_pct":83.7,"congestion_pct":73.4,"speed_ms":0.28,"inflow_m":250.0,"outflow_m":150.0,"status":"MODERATE"},
-      {"zone_name":"Concourse 201","type":"concourse","occupancy_pct":76.2,"congestion_pct":46.2,"speed_ms":0.38,"inflow_m":220.0,"outflow_m":140.0,"status":"MODERATE"},
-      {"zone_name":"Food Court 115","type":"amenity","occupancy_pct":89.6,"congestion_pct":98.3,"speed_ms":0.11,"inflow_m":300.0,"outflow_m":180.0,"status":"MODERATE"},
-      {"zone_name":"Food Court 132","type":"amenity","occupancy_pct":83.4,"congestion_pct":74.4,"speed_ms":0.18,"inflow_m":270.0,"outflow_m":160.0,"status":"MODERATE"},
-      {"zone_name":"Restroom Area 110","type":"amenity","occupancy_pct":86.1,"congestion_pct":82.1,"speed_ms":0.14,"inflow_m":280.0,"outflow_m":170.0,"status":"MODERATE"},
-      {"zone_name":"Section 102","type":"seating","occupancy_pct":59.3,"congestion_pct":2.4,"speed_ms":0.05,"inflow_m":20.0,"outflow_m":200.0,"status":"COMFORTABLE"},
-      {"zone_name":"Section 105","type":"seating","occupancy_pct":56.1,"congestion_pct":1.7,"speed_ms":0.04,"inflow_m":15.0,"outflow_m":180.0,"status":"COMFORTABLE"},
-      {"zone_name":"Section 118","type":"seating","occupancy_pct":61.7,"congestion_pct":3.1,"speed_ms":0.05,"inflow_m":18.0,"outflow_m":190.0,"status":"COMFORTABLE"},
-      {"zone_name":"Transit Hub 140","type":"concourse","occupancy_pct":73.4,"congestion_pct":39.4,"speed_ms":0.48,"inflow_m":200.0,"outflow_m":130.0,"status":"MODERATE"}
+      {
+        "zone_name": "FANSPHERE Gate",
+        "type": "gate",
+        "occupancy_pct": 79.3,
+        "congestion_pct": 86.5,
+        "speed_ms": 0.38,
+        "inflow_m": 200.0,
+        "outflow_m": 120.0,
+        "status": "MODERATE"
+      },
+      {
+        "zone_name": "AMEX Gate",
+        "type": "gate",
+        "occupancy_pct": 73.6,
+        "congestion_pct": 64.4,
+        "speed_ms": 0.47,
+        "inflow_m": 180.0,
+        "outflow_m": 110.0,
+        "status": "MODERATE"
+      },
+      {
+        "zone_name": "Verizon Gate",
+        "type": "gate",
+        "occupancy_pct": 66.1,
+        "congestion_pct": 43.1,
+        "speed_ms": 0.58,
+        "inflow_m": 150.0,
+        "outflow_m": 100.0,
+        "status": "MODERATE"
+      },
+      {
+        "zone_name": "HCLTech Gate",
+        "type": "gate",
+        "occupancy_pct": 59.4,
+        "congestion_pct": 23.9,
+        "speed_ms": 0.68,
+        "inflow_m": 120.0,
+        "outflow_m": 90.0,
+        "status": "COMFORTABLE"
+      },
+      {
+        "zone_name": "Moody's Gate",
+        "type": "gate",
+        "occupancy_pct": 52.8,
+        "congestion_pct": 18.5,
+        "speed_ms": 0.77,
+        "inflow_m": 100.0,
+        "outflow_m": 80.0,
+        "status": "COMFORTABLE"
+      },
+      {
+        "zone_name": "Concourse 101",
+        "type": "concourse",
+        "occupancy_pct": 83.7,
+        "congestion_pct": 73.4,
+        "speed_ms": 0.28,
+        "inflow_m": 250.0,
+        "outflow_m": 150.0,
+        "status": "MODERATE"
+      },
+      {
+        "zone_name": "Concourse 201",
+        "type": "concourse",
+        "occupancy_pct": 76.2,
+        "congestion_pct": 46.2,
+        "speed_ms": 0.38,
+        "inflow_m": 220.0,
+        "outflow_m": 140.0,
+        "status": "MODERATE"
+      },
+      {
+        "zone_name": "Food Court 115",
+        "type": "amenity",
+        "occupancy_pct": 89.6,
+        "congestion_pct": 98.3,
+        "speed_ms": 0.11,
+        "inflow_m": 300.0,
+        "outflow_m": 180.0,
+        "status": "MODERATE"
+      },
+      {
+        "zone_name": "Food Court 132",
+        "type": "amenity",
+        "occupancy_pct": 83.4,
+        "congestion_pct": 74.4,
+        "speed_ms": 0.18,
+        "inflow_m": 270.0,
+        "outflow_m": 160.0,
+        "status": "MODERATE"
+      },
+      {
+        "zone_name": "Restroom Area 110",
+        "type": "amenity",
+        "occupancy_pct": 86.1,
+        "congestion_pct": 82.1,
+        "speed_ms": 0.14,
+        "inflow_m": 280.0,
+        "outflow_m": 170.0,
+        "status": "MODERATE"
+      },
+      {
+        "zone_name": "Section 102",
+        "type": "seating",
+        "occupancy_pct": 59.3,
+        "congestion_pct": 2.4,
+        "speed_ms": 0.05,
+        "inflow_m": 20.0,
+        "outflow_m": 200.0,
+        "status": "COMFORTABLE"
+      },
+      {
+        "zone_name": "Section 105",
+        "type": "seating",
+        "occupancy_pct": 56.1,
+        "congestion_pct": 1.7,
+        "speed_ms": 0.04,
+        "inflow_m": 15.0,
+        "outflow_m": 180.0,
+        "status": "COMFORTABLE"
+      },
+      {
+        "zone_name": "Section 118",
+        "type": "seating",
+        "occupancy_pct": 61.7,
+        "congestion_pct": 3.1,
+        "speed_ms": 0.05,
+        "inflow_m": 18.0,
+        "outflow_m": 190.0,
+        "status": "COMFORTABLE"
+      },
+      {
+        "zone_name": "Transit Hub 140",
+        "type": "concourse",
+        "occupancy_pct": 73.4,
+        "congestion_pct": 39.4,
+        "speed_ms": 0.48,
+        "inflow_m": 200.0,
+        "outflow_m": 130.0,
+        "status": "MODERATE"
+      }
     ]
   },
   {
     "timestamp": "T+04:30",
     "phase": "halftime_peak",
     "zones": [
-      {"zone_name":"FANSPHERE Gate","type":"gate","occupancy_pct":94.2,"congestion_pct":98.1,"speed_ms":0.05,"inflow_m":150.0,"outflow_m":100.0,"status":"CRITICAL"},
-      {"zone_name":"AMEX Gate","type":"gate","occupancy_pct":89.6,"congestion_pct":94.7,"speed_ms":0.08,"inflow_m":140.0,"outflow_m":90.0,"status":"CRITICAL"},
-      {"zone_name":"Verizon Gate","type":"gate","occupancy_pct":81.3,"congestion_pct":75.6,"speed_ms":0.28,"inflow_m":120.0,"outflow_m":80.0,"status":"MODERATE"},
-      {"zone_name":"HCLTech Gate","type":"gate","occupancy_pct":71.8,"congestion_pct":32.6,"speed_ms":0.48,"inflow_m":100.0,"outflow_m":70.0,"status":"MODERATE"},
-      {"zone_name":"Moody's Gate","type":"gate","occupancy_pct":63.4,"congestion_pct":24.2,"speed_ms":0.58,"inflow_m":80.0,"outflow_m":60.0,"status":"COMFORTABLE"},
-      {"zone_name":"Concourse 101","type":"concourse","occupancy_pct":96.1,"congestion_pct":99.2,"speed_ms":0.04,"inflow_m":180.0,"outflow_m":120.0,"status":"CRITICAL"},
-      {"zone_name":"Concourse 201","type":"concourse","occupancy_pct":86.7,"congestion_pct":61.8,"speed_ms":0.14,"inflow_m":160.0,"outflow_m":110.0,"status":"MODERATE"},
-      {"zone_name":"Food Court 115","type":"amenity","occupancy_pct":98.3,"congestion_pct":99.1,"speed_ms":0.02,"inflow_m":190.0,"outflow_m":130.0,"status":"CRITICAL"},
-      {"zone_name":"Food Court 132","type":"amenity","occupancy_pct":94.7,"congestion_pct":88.7,"speed_ms":0.04,"inflow_m":170.0,"outflow_m":120.0,"status":"CRITICAL"},
-      {"zone_name":"Restroom Area 110","type":"amenity","occupancy_pct":96.8,"congestion_pct":97.5,"speed_ms":0.03,"inflow_m":180.0,"outflow_m":125.0,"status":"CRITICAL"},
-      {"zone_name":"Section 102","type":"seating","occupancy_pct":36.2,"congestion_pct":2.1,"speed_ms":0.04,"inflow_m":5.0,"outflow_m":20.0,"status":"COMFORTABLE"},
-      {"zone_name":"Section 105","type":"seating","occupancy_pct":33.7,"congestion_pct":1.4,"speed_ms":0.05,"inflow_m":4.0,"outflow_m":18.0,"status":"COMFORTABLE"},
-      {"zone_name":"Section 118","type":"seating","occupancy_pct":39.4,"congestion_pct":3.2,"speed_ms":0.04,"inflow_m":6.0,"outflow_m":25.0,"status":"COMFORTABLE"},
-      {"zone_name":"Transit Hub 140","type":"concourse","occupancy_pct":92.4,"congestion_pct":87.9,"speed_ms":0.06,"inflow_m":170.0,"outflow_m":115.0,"status":"CRITICAL"}
+      {
+        "zone_name": "FANSPHERE Gate",
+        "type": "gate",
+        "occupancy_pct": 94.2,
+        "congestion_pct": 98.1,
+        "speed_ms": 0.05,
+        "inflow_m": 150.0,
+        "outflow_m": 100.0,
+        "status": "CRITICAL"
+      },
+      {
+        "zone_name": "AMEX Gate",
+        "type": "gate",
+        "occupancy_pct": 89.6,
+        "congestion_pct": 94.7,
+        "speed_ms": 0.08,
+        "inflow_m": 140.0,
+        "outflow_m": 90.0,
+        "status": "CRITICAL"
+      },
+      {
+        "zone_name": "Verizon Gate",
+        "type": "gate",
+        "occupancy_pct": 81.3,
+        "congestion_pct": 75.6,
+        "speed_ms": 0.28,
+        "inflow_m": 120.0,
+        "outflow_m": 80.0,
+        "status": "MODERATE"
+      },
+      {
+        "zone_name": "HCLTech Gate",
+        "type": "gate",
+        "occupancy_pct": 71.8,
+        "congestion_pct": 32.6,
+        "speed_ms": 0.48,
+        "inflow_m": 100.0,
+        "outflow_m": 70.0,
+        "status": "MODERATE"
+      },
+      {
+        "zone_name": "Moody's Gate",
+        "type": "gate",
+        "occupancy_pct": 63.4,
+        "congestion_pct": 24.2,
+        "speed_ms": 0.58,
+        "inflow_m": 80.0,
+        "outflow_m": 60.0,
+        "status": "COMFORTABLE"
+      },
+      {
+        "zone_name": "Concourse 101",
+        "type": "concourse",
+        "occupancy_pct": 96.1,
+        "congestion_pct": 99.2,
+        "speed_ms": 0.04,
+        "inflow_m": 180.0,
+        "outflow_m": 120.0,
+        "status": "CRITICAL"
+      },
+      {
+        "zone_name": "Concourse 201",
+        "type": "concourse",
+        "occupancy_pct": 86.7,
+        "congestion_pct": 61.8,
+        "speed_ms": 0.14,
+        "inflow_m": 160.0,
+        "outflow_m": 110.0,
+        "status": "MODERATE"
+      },
+      {
+        "zone_name": "Food Court 115",
+        "type": "amenity",
+        "occupancy_pct": 98.3,
+        "congestion_pct": 99.1,
+        "speed_ms": 0.02,
+        "inflow_m": 190.0,
+        "outflow_m": 130.0,
+        "status": "CRITICAL"
+      },
+      {
+        "zone_name": "Food Court 132",
+        "type": "amenity",
+        "occupancy_pct": 94.7,
+        "congestion_pct": 88.7,
+        "speed_ms": 0.04,
+        "inflow_m": 170.0,
+        "outflow_m": 120.0,
+        "status": "CRITICAL"
+      },
+      {
+        "zone_name": "Restroom Area 110",
+        "type": "amenity",
+        "occupancy_pct": 96.8,
+        "congestion_pct": 97.5,
+        "speed_ms": 0.03,
+        "inflow_m": 180.0,
+        "outflow_m": 125.0,
+        "status": "CRITICAL"
+      },
+      {
+        "zone_name": "Section 102",
+        "type": "seating",
+        "occupancy_pct": 36.2,
+        "congestion_pct": 2.1,
+        "speed_ms": 0.04,
+        "inflow_m": 5.0,
+        "outflow_m": 20.0,
+        "status": "COMFORTABLE"
+      },
+      {
+        "zone_name": "Section 105",
+        "type": "seating",
+        "occupancy_pct": 33.7,
+        "congestion_pct": 1.4,
+        "speed_ms": 0.05,
+        "inflow_m": 4.0,
+        "outflow_m": 18.0,
+        "status": "COMFORTABLE"
+      },
+      {
+        "zone_name": "Section 118",
+        "type": "seating",
+        "occupancy_pct": 39.4,
+        "congestion_pct": 3.2,
+        "speed_ms": 0.04,
+        "inflow_m": 6.0,
+        "outflow_m": 25.0,
+        "status": "COMFORTABLE"
+      },
+      {
+        "zone_name": "Transit Hub 140",
+        "type": "concourse",
+        "occupancy_pct": 92.4,
+        "congestion_pct": 87.9,
+        "speed_ms": 0.06,
+        "inflow_m": 170.0,
+        "outflow_m": 115.0,
+        "status": "CRITICAL"
+      }
     ]
   },
   {
     "timestamp": "T+07:00",
     "phase": "halftime_plateau",
     "zones": [
-      {"zone_name":"FANSPHERE Gate","type":"gate","occupancy_pct":86.3,"congestion_pct":53.7,"speed_ms":0.14,"inflow_m":110.0,"outflow_m":140.0,"status":"MODERATE"},
-      {"zone_name":"AMEX Gate","type":"gate","occupancy_pct":79.1,"congestion_pct":20.8,"speed_ms":0.33,"inflow_m":100.0,"outflow_m":130.0,"status":"MODERATE"},
-      {"zone_name":"Verizon Gate","type":"gate","occupancy_pct":73.6,"congestion_pct":2.8,"speed_ms":0.48,"inflow_m":90.0,"outflow_m":120.0,"status":"MODERATE"},
-      {"zone_name":"HCLTech Gate","type":"gate","occupancy_pct":61.8,"congestion_pct":1.5,"speed_ms":0.68,"inflow_m":80.0,"outflow_m":110.0,"status":"COMFORTABLE"},
-      {"zone_name":"Moody's Gate","type":"gate","occupancy_pct":56.3,"congestion_pct":2.6,"speed_ms":0.78,"inflow_m":70.0,"outflow_m":100.0,"status":"COMFORTABLE"},
-      {"zone_name":"Concourse 101","type":"concourse","occupancy_pct":89.4,"congestion_pct":34.9,"speed_ms":0.09,"inflow_m":130.0,"outflow_m":180.0,"status":"MODERATE"},
-      {"zone_name":"Concourse 201","type":"concourse","occupancy_pct":81.6,"congestion_pct":14.3,"speed_ms":0.26,"inflow_m":120.0,"outflow_m":170.0,"status":"MODERATE"},
-      {"zone_name":"Food Court 115","type":"amenity","occupancy_pct":96.7,"congestion_pct":61.7,"speed_ms":0.03,"inflow_m":150.0,"outflow_m":200.0,"status":"MODERATE"},
-      {"zone_name":"Food Court 132","type":"amenity","occupancy_pct":91.3,"congestion_pct":41.5,"speed_ms":0.07,"inflow_m":140.0,"outflow_m":190.0,"status":"MODERATE"},
-      {"zone_name":"Restroom Area 110","type":"amenity","occupancy_pct":88.6,"congestion_pct":34.5,"speed_ms":0.11,"inflow_m":145.0,"outflow_m":195.0,"status":"MODERATE"},
-      {"zone_name":"Section 102","type":"seating","occupancy_pct":38.6,"congestion_pct":3.5,"speed_ms":0.04,"inflow_m":30.0,"outflow_m":10.0,"status":"COMFORTABLE"},
-      {"zone_name":"Section 105","type":"seating","occupancy_pct":35.3,"congestion_pct":1.7,"speed_ms":0.05,"inflow_m":25.0,"outflow_m":8.0,"status":"COMFORTABLE"},
-      {"zone_name":"Section 118","type":"seating","occupancy_pct":41.7,"congestion_pct":4.2,"speed_ms":0.04,"inflow_m":35.0,"outflow_m":12.0,"status":"COMFORTABLE"},
-      {"zone_name":"Transit Hub 140","type":"concourse","occupancy_pct":83.8,"congestion_pct":18.4,"speed_ms":0.19,"inflow_m":125.0,"outflow_m":175.0,"status":"MODERATE"}
+      {
+        "zone_name": "FANSPHERE Gate",
+        "type": "gate",
+        "occupancy_pct": 86.3,
+        "congestion_pct": 53.7,
+        "speed_ms": 0.14,
+        "inflow_m": 110.0,
+        "outflow_m": 140.0,
+        "status": "MODERATE"
+      },
+      {
+        "zone_name": "AMEX Gate",
+        "type": "gate",
+        "occupancy_pct": 79.1,
+        "congestion_pct": 20.8,
+        "speed_ms": 0.33,
+        "inflow_m": 100.0,
+        "outflow_m": 130.0,
+        "status": "MODERATE"
+      },
+      {
+        "zone_name": "Verizon Gate",
+        "type": "gate",
+        "occupancy_pct": 73.6,
+        "congestion_pct": 2.8,
+        "speed_ms": 0.48,
+        "inflow_m": 90.0,
+        "outflow_m": 120.0,
+        "status": "MODERATE"
+      },
+      {
+        "zone_name": "HCLTech Gate",
+        "type": "gate",
+        "occupancy_pct": 61.8,
+        "congestion_pct": 1.5,
+        "speed_ms": 0.68,
+        "inflow_m": 80.0,
+        "outflow_m": 110.0,
+        "status": "COMFORTABLE"
+      },
+      {
+        "zone_name": "Moody's Gate",
+        "type": "gate",
+        "occupancy_pct": 56.3,
+        "congestion_pct": 2.6,
+        "speed_ms": 0.78,
+        "inflow_m": 70.0,
+        "outflow_m": 100.0,
+        "status": "COMFORTABLE"
+      },
+      {
+        "zone_name": "Concourse 101",
+        "type": "concourse",
+        "occupancy_pct": 89.4,
+        "congestion_pct": 34.9,
+        "speed_ms": 0.09,
+        "inflow_m": 130.0,
+        "outflow_m": 180.0,
+        "status": "MODERATE"
+      },
+      {
+        "zone_name": "Concourse 201",
+        "type": "concourse",
+        "occupancy_pct": 81.6,
+        "congestion_pct": 14.3,
+        "speed_ms": 0.26,
+        "inflow_m": 120.0,
+        "outflow_m": 170.0,
+        "status": "MODERATE"
+      },
+      {
+        "zone_name": "Food Court 115",
+        "type": "amenity",
+        "occupancy_pct": 96.7,
+        "congestion_pct": 61.7,
+        "speed_ms": 0.03,
+        "inflow_m": 150.0,
+        "outflow_m": 200.0,
+        "status": "MODERATE"
+      },
+      {
+        "zone_name": "Food Court 132",
+        "type": "amenity",
+        "occupancy_pct": 91.3,
+        "congestion_pct": 41.5,
+        "speed_ms": 0.07,
+        "inflow_m": 140.0,
+        "outflow_m": 190.0,
+        "status": "MODERATE"
+      },
+      {
+        "zone_name": "Restroom Area 110",
+        "type": "amenity",
+        "occupancy_pct": 88.6,
+        "congestion_pct": 34.5,
+        "speed_ms": 0.11,
+        "inflow_m": 145.0,
+        "outflow_m": 195.0,
+        "status": "MODERATE"
+      },
+      {
+        "zone_name": "Section 102",
+        "type": "seating",
+        "occupancy_pct": 38.6,
+        "congestion_pct": 3.5,
+        "speed_ms": 0.04,
+        "inflow_m": 30.0,
+        "outflow_m": 10.0,
+        "status": "COMFORTABLE"
+      },
+      {
+        "zone_name": "Section 105",
+        "type": "seating",
+        "occupancy_pct": 35.3,
+        "congestion_pct": 1.7,
+        "speed_ms": 0.05,
+        "inflow_m": 25.0,
+        "outflow_m": 8.0,
+        "status": "COMFORTABLE"
+      },
+      {
+        "zone_name": "Section 118",
+        "type": "seating",
+        "occupancy_pct": 41.7,
+        "congestion_pct": 4.2,
+        "speed_ms": 0.04,
+        "inflow_m": 35.0,
+        "outflow_m": 12.0,
+        "status": "COMFORTABLE"
+      },
+      {
+        "zone_name": "Transit Hub 140",
+        "type": "concourse",
+        "occupancy_pct": 83.8,
+        "congestion_pct": 18.4,
+        "speed_ms": 0.19,
+        "inflow_m": 125.0,
+        "outflow_m": 175.0,
+        "status": "MODERATE"
+      }
     ]
   },
   {
     "timestamp": "T+10:00",
     "phase": "halftime_return",
     "zones": [
-      {"zone_name":"FANSPHERE Gate","type":"gate","occupancy_pct":61.7,"congestion_pct":2.1,"speed_ms":0.68,"inflow_m":60.0,"outflow_m":180.0,"status":"COMFORTABLE"},
-      {"zone_name":"AMEX Gate","type":"gate","occupancy_pct":56.3,"congestion_pct":1.4,"speed_ms":0.78,"inflow_m":50.0,"outflow_m":170.0,"status":"COMFORTABLE"},
-      {"zone_name":"Verizon Gate","type":"gate","occupancy_pct":51.4,"congestion_pct":0.8,"speed_ms":0.87,"inflow_m":45.0,"outflow_m":160.0,"status":"COMFORTABLE"},
-      {"zone_name":"HCLTech Gate","type":"gate","occupancy_pct":46.8,"congestion_pct":2.7,"speed_ms":0.96,"inflow_m":40.0,"outflow_m":150.0,"status":"COMFORTABLE"},
-      {"zone_name":"Moody's Gate","type":"gate","occupancy_pct":41.2,"congestion_pct":1.1,"speed_ms":1.06,"inflow_m":35.0,"outflow_m":140.0,"status":"COMFORTABLE"},
-      {"zone_name":"Concourse 101","type":"concourse","occupancy_pct":93.6,"congestion_pct":31.6,"speed_ms":0.05,"inflow_m":150.0,"outflow_m":250.0,"status":"MODERATE"},
-      {"zone_name":"Concourse 201","type":"concourse","occupancy_pct":79.4,"congestion_pct":2.4,"speed_ms":0.33,"inflow_m":140.0,"outflow_m":230.0,"status":"COMFORTABLE"},
-      {"zone_name":"Food Court 115","type":"amenity","occupancy_pct":76.3,"congestion_pct":1.8,"speed_ms":0.38,"inflow_m":120.0,"outflow_m":250.0,"status":"COMFORTABLE"},
-      {"zone_name":"Food Court 132","type":"amenity","occupancy_pct":71.8,"congestion_pct":2.9,"speed_ms":0.48,"inflow_m":110.0,"outflow_m":230.0,"status":"COMFORTABLE"},
-      {"zone_name":"Restroom Area 110","type":"amenity","occupancy_pct":66.4,"congestion_pct":0.7,"speed_ms":0.57,"inflow_m":115.0,"outflow_m":240.0,"status":"COMFORTABLE"},
-      {"zone_name":"Section 102","type":"seating","occupancy_pct":73.6,"congestion_pct":20.7,"speed_ms":0.05,"inflow_m":200.0,"outflow_m":20.0,"status":"COMFORTABLE"},
-      {"zone_name":"Section 105","type":"seating","occupancy_pct":69.4,"congestion_pct":16.2,"speed_ms":0.04,"inflow_m":190.0,"outflow_m":18.0,"status":"COMFORTABLE"},
-      {"zone_name":"Section 118","type":"seating","occupancy_pct":71.2,"congestion_pct":20.5,"speed_ms":0.05,"inflow_m":195.0,"outflow_m":19.0,"status":"COMFORTABLE"},
-      {"zone_name":"Transit Hub 140","type":"concourse","occupancy_pct":89.7,"congestion_pct":19.3,"speed_ms":0.09,"inflow_m":145.0,"outflow_m":240.0,"status":"MODERATE"}
+      {
+        "zone_name": "FANSPHERE Gate",
+        "type": "gate",
+        "occupancy_pct": 61.7,
+        "congestion_pct": 2.1,
+        "speed_ms": 0.68,
+        "inflow_m": 60.0,
+        "outflow_m": 180.0,
+        "status": "COMFORTABLE"
+      },
+      {
+        "zone_name": "AMEX Gate",
+        "type": "gate",
+        "occupancy_pct": 56.3,
+        "congestion_pct": 1.4,
+        "speed_ms": 0.78,
+        "inflow_m": 50.0,
+        "outflow_m": 170.0,
+        "status": "COMFORTABLE"
+      },
+      {
+        "zone_name": "Verizon Gate",
+        "type": "gate",
+        "occupancy_pct": 51.4,
+        "congestion_pct": 0.8,
+        "speed_ms": 0.87,
+        "inflow_m": 45.0,
+        "outflow_m": 160.0,
+        "status": "COMFORTABLE"
+      },
+      {
+        "zone_name": "HCLTech Gate",
+        "type": "gate",
+        "occupancy_pct": 46.8,
+        "congestion_pct": 2.7,
+        "speed_ms": 0.96,
+        "inflow_m": 40.0,
+        "outflow_m": 150.0,
+        "status": "COMFORTABLE"
+      },
+      {
+        "zone_name": "Moody's Gate",
+        "type": "gate",
+        "occupancy_pct": 41.2,
+        "congestion_pct": 1.1,
+        "speed_ms": 1.06,
+        "inflow_m": 35.0,
+        "outflow_m": 140.0,
+        "status": "COMFORTABLE"
+      },
+      {
+        "zone_name": "Concourse 101",
+        "type": "concourse",
+        "occupancy_pct": 93.6,
+        "congestion_pct": 31.6,
+        "speed_ms": 0.05,
+        "inflow_m": 150.0,
+        "outflow_m": 250.0,
+        "status": "MODERATE"
+      },
+      {
+        "zone_name": "Concourse 201",
+        "type": "concourse",
+        "occupancy_pct": 79.4,
+        "congestion_pct": 2.4,
+        "speed_ms": 0.33,
+        "inflow_m": 140.0,
+        "outflow_m": 230.0,
+        "status": "COMFORTABLE"
+      },
+      {
+        "zone_name": "Food Court 115",
+        "type": "amenity",
+        "occupancy_pct": 76.3,
+        "congestion_pct": 1.8,
+        "speed_ms": 0.38,
+        "inflow_m": 120.0,
+        "outflow_m": 250.0,
+        "status": "COMFORTABLE"
+      },
+      {
+        "zone_name": "Food Court 132",
+        "type": "amenity",
+        "occupancy_pct": 71.8,
+        "congestion_pct": 2.9,
+        "speed_ms": 0.48,
+        "inflow_m": 110.0,
+        "outflow_m": 230.0,
+        "status": "COMFORTABLE"
+      },
+      {
+        "zone_name": "Restroom Area 110",
+        "type": "amenity",
+        "occupancy_pct": 66.4,
+        "congestion_pct": 0.7,
+        "speed_ms": 0.57,
+        "inflow_m": 115.0,
+        "outflow_m": 240.0,
+        "status": "COMFORTABLE"
+      },
+      {
+        "zone_name": "Section 102",
+        "type": "seating",
+        "occupancy_pct": 73.6,
+        "congestion_pct": 20.7,
+        "speed_ms": 0.05,
+        "inflow_m": 200.0,
+        "outflow_m": 20.0,
+        "status": "COMFORTABLE"
+      },
+      {
+        "zone_name": "Section 105",
+        "type": "seating",
+        "occupancy_pct": 69.4,
+        "congestion_pct": 16.2,
+        "speed_ms": 0.04,
+        "inflow_m": 190.0,
+        "outflow_m": 18.0,
+        "status": "COMFORTABLE"
+      },
+      {
+        "zone_name": "Section 118",
+        "type": "seating",
+        "occupancy_pct": 71.2,
+        "congestion_pct": 20.5,
+        "speed_ms": 0.05,
+        "inflow_m": 195.0,
+        "outflow_m": 19.0,
+        "status": "COMFORTABLE"
+      },
+      {
+        "zone_name": "Transit Hub 140",
+        "type": "concourse",
+        "occupancy_pct": 89.7,
+        "congestion_pct": 19.3,
+        "speed_ms": 0.09,
+        "inflow_m": 145.0,
+        "outflow_m": 240.0,
+        "status": "MODERATE"
+      }
     ]
   },
   {
     "timestamp": "T+13:30",
     "phase": "halftime_end",
     "zones": [
-      {"zone_name":"FANSPHERE Gate","type":"gate","occupancy_pct":31.4,"congestion_pct":1.4,"speed_ms":1.28,"inflow_m":20.0,"outflow_m":50.0,"status":"COMFORTABLE"},
-      {"zone_name":"AMEX Gate","type":"gate","occupancy_pct":26.8,"congestion_pct":2.2,"speed_ms":1.36,"inflow_m":18.0,"outflow_m":45.0,"status":"COMFORTABLE"},
-      {"zone_name":"Verizon Gate","type":"gate","occupancy_pct":23.1,"congestion_pct":0.5,"speed_ms":1.42,"inflow_m":16.0,"outflow_m":40.0,"status":"COMFORTABLE"},
-      {"zone_name":"HCLTech Gate","type":"gate","occupancy_pct":19.6,"congestion_pct":1.1,"speed_ms":1.47,"inflow_m":14.0,"outflow_m":35.0,"status":"COMFORTABLE"},
-      {"zone_name":"Moody's Gate","type":"gate","occupancy_pct":16.3,"congestion_pct":2.8,"speed_ms":1.52,"inflow_m":12.0,"outflow_m":30.0,"status":"COMFORTABLE"},
-      {"zone_name":"Concourse 101","type":"concourse","occupancy_pct":56.8,"congestion_pct":2.5,"speed_ms":0.87,"inflow_m":80.0,"outflow_m":100.0,"status":"COMFORTABLE"},
-      {"zone_name":"Concourse 201","type":"concourse","occupancy_pct":48.3,"congestion_pct":1.7,"speed_ms":0.97,"inflow_m":70.0,"outflow_m":90.0,"status":"COMFORTABLE"},
-      {"zone_name":"Food Court 115","type":"amenity","occupancy_pct":41.6,"congestion_pct":2.3,"speed_ms":0.97,"inflow_m":50.0,"outflow_m":80.0,"status":"COMFORTABLE"},
-      {"zone_name":"Food Court 132","type":"amenity","occupancy_pct":37.4,"congestion_pct":1.2,"speed_ms":1.04,"inflow_m":45.0,"outflow_m":75.0,"status":"COMFORTABLE"},
-      {"zone_name":"Restroom Area 110","type":"amenity","occupancy_pct":34.1,"congestion_pct":3.1,"speed_ms":1.08,"inflow_m":40.0,"outflow_m":70.0,"status":"COMFORTABLE"},
-      {"zone_name":"Section 102","type":"seating","occupancy_pct":91.7,"congestion_pct":21.2,"speed_ms":0.04,"inflow_m":80.0,"outflow_m":10.0,"status":"COMFORTABLE"},
-      {"zone_name":"Section 105","type":"seating","occupancy_pct":93.4,"congestion_pct":21.4,"speed_ms":0.05,"inflow_m":85.0,"outflow_m":8.0,"status":"COMFORTABLE"},
-      {"zone_name":"Section 118","type":"seating","occupancy_pct":89.6,"congestion_pct":18.8,"speed_ms":0.04,"inflow_m":75.0,"outflow_m":12.0,"status":"COMFORTABLE"},
-      {"zone_name":"Transit Hub 140","type":"concourse","occupancy_pct":51.4,"congestion_pct":0.8,"speed_ms":0.88,"inflow_m":75.0,"outflow_m":95.0,"status":"COMFORTABLE"}
+      {
+        "zone_name": "FANSPHERE Gate",
+        "type": "gate",
+        "occupancy_pct": 31.4,
+        "congestion_pct": 1.4,
+        "speed_ms": 1.28,
+        "inflow_m": 20.0,
+        "outflow_m": 50.0,
+        "status": "COMFORTABLE"
+      },
+      {
+        "zone_name": "AMEX Gate",
+        "type": "gate",
+        "occupancy_pct": 26.8,
+        "congestion_pct": 2.2,
+        "speed_ms": 1.36,
+        "inflow_m": 18.0,
+        "outflow_m": 45.0,
+        "status": "COMFORTABLE"
+      },
+      {
+        "zone_name": "Verizon Gate",
+        "type": "gate",
+        "occupancy_pct": 23.1,
+        "congestion_pct": 0.5,
+        "speed_ms": 1.42,
+        "inflow_m": 16.0,
+        "outflow_m": 40.0,
+        "status": "COMFORTABLE"
+      },
+      {
+        "zone_name": "HCLTech Gate",
+        "type": "gate",
+        "occupancy_pct": 19.6,
+        "congestion_pct": 1.1,
+        "speed_ms": 1.47,
+        "inflow_m": 14.0,
+        "outflow_m": 35.0,
+        "status": "COMFORTABLE"
+      },
+      {
+        "zone_name": "Moody's Gate",
+        "type": "gate",
+        "occupancy_pct": 16.3,
+        "congestion_pct": 2.8,
+        "speed_ms": 1.52,
+        "inflow_m": 12.0,
+        "outflow_m": 30.0,
+        "status": "COMFORTABLE"
+      },
+      {
+        "zone_name": "Concourse 101",
+        "type": "concourse",
+        "occupancy_pct": 56.8,
+        "congestion_pct": 2.5,
+        "speed_ms": 0.87,
+        "inflow_m": 80.0,
+        "outflow_m": 100.0,
+        "status": "COMFORTABLE"
+      },
+      {
+        "zone_name": "Concourse 201",
+        "type": "concourse",
+        "occupancy_pct": 48.3,
+        "congestion_pct": 1.7,
+        "speed_ms": 0.97,
+        "inflow_m": 70.0,
+        "outflow_m": 90.0,
+        "status": "COMFORTABLE"
+      },
+      {
+        "zone_name": "Food Court 115",
+        "type": "amenity",
+        "occupancy_pct": 41.6,
+        "congestion_pct": 2.3,
+        "speed_ms": 0.97,
+        "inflow_m": 50.0,
+        "outflow_m": 80.0,
+        "status": "COMFORTABLE"
+      },
+      {
+        "zone_name": "Food Court 132",
+        "type": "amenity",
+        "occupancy_pct": 37.4,
+        "congestion_pct": 1.2,
+        "speed_ms": 1.04,
+        "inflow_m": 45.0,
+        "outflow_m": 75.0,
+        "status": "COMFORTABLE"
+      },
+      {
+        "zone_name": "Restroom Area 110",
+        "type": "amenity",
+        "occupancy_pct": 34.1,
+        "congestion_pct": 3.1,
+        "speed_ms": 1.08,
+        "inflow_m": 40.0,
+        "outflow_m": 70.0,
+        "status": "COMFORTABLE"
+      },
+      {
+        "zone_name": "Section 102",
+        "type": "seating",
+        "occupancy_pct": 91.7,
+        "congestion_pct": 21.2,
+        "speed_ms": 0.04,
+        "inflow_m": 80.0,
+        "outflow_m": 10.0,
+        "status": "COMFORTABLE"
+      },
+      {
+        "zone_name": "Section 105",
+        "type": "seating",
+        "occupancy_pct": 93.4,
+        "congestion_pct": 21.4,
+        "speed_ms": 0.05,
+        "inflow_m": 85.0,
+        "outflow_m": 8.0,
+        "status": "COMFORTABLE"
+      },
+      {
+        "zone_name": "Section 118",
+        "type": "seating",
+        "occupancy_pct": 89.6,
+        "congestion_pct": 18.8,
+        "speed_ms": 0.04,
+        "inflow_m": 75.0,
+        "outflow_m": 12.0,
+        "status": "COMFORTABLE"
+      },
+      {
+        "zone_name": "Transit Hub 140",
+        "type": "concourse",
+        "occupancy_pct": 51.4,
+        "congestion_pct": 0.8,
+        "speed_ms": 0.88,
+        "inflow_m": 75.0,
+        "outflow_m": 95.0,
+        "status": "COMFORTABLE"
+      }
     ]
   }
 ]

@@ -63,12 +63,18 @@
 /* ==========================================
    Base & Typography
    ========================================== */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
 body {
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family:
+    'Inter',
+    system-ui,
+    -apple-system,
+    sans-serif;
   margin: 0;
   padding: 0;
   background: #020617;
@@ -128,7 +134,8 @@ body {
 
 /* Pulse glow for critical alerts */
 @keyframes pulse-glow {
-  0%, 100% {
+  0%,
+  100% {
     box-shadow: 0 0 8px rgba(239, 68, 68, 0.5);
     border-color: rgba(239, 68, 68, 0.8);
   }
@@ -144,8 +151,13 @@ body {
 
 /* Generic pulse */
 @keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
 }
 
 .animate-pulse {
@@ -154,7 +166,8 @@ body {
 
 /* Ping animation for status dot */
 @keyframes ping {
-  75%, 100% {
+  75%,
+  100% {
     transform: scale(2);
     opacity: 0;
   }
@@ -215,15 +228,20 @@ body {
 
 /* Skeleton loading pulse */
 @keyframes skeletonShimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
 }
 
 .skeleton-loading {
-  background: linear-gradient(90deg, 
-    rgba(255,255,255,0.03) 25%, 
-    rgba(255,255,255,0.08) 50%, 
-    rgba(255,255,255,0.03) 75%
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.03) 25%,
+    rgba(255, 255, 255, 0.08) 50%,
+    rgba(255, 255, 255, 0.03) 75%
   );
   background-size: 200% 100%;
   animation: skeletonShimmer 1.5s infinite;
@@ -232,8 +250,14 @@ body {
 
 /* Chatbot typing indicator */
 @keyframes typingBounce {
-  0%, 60%, 100% { transform: translateY(0); }
-  30% { transform: translateY(-6px); }
+  0%,
+  60%,
+  100% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(-6px);
+  }
 }
 
 .typing-indicator {
@@ -403,13 +427,23 @@ body {
 .progress-bar-fill {
   height: 100%;
   border-radius: 3px;
-  transition: width var(--transition-normal) ease, background var(--transition-normal) ease;
+  transition:
+    width var(--transition-normal) ease,
+    background var(--transition-normal) ease;
 }
 
-.progress-bar-fill.green { background: linear-gradient(90deg, #10b981, #34d399); }
-.progress-bar-fill.yellow { background: linear-gradient(90deg, #eab308, #facc15); }
-.progress-bar-fill.red { background: linear-gradient(90deg, #ef4444, #f87171); }
-.progress-bar-fill.blue { background: linear-gradient(90deg, #0ea5e9, #38bdf8); }
+.progress-bar-fill.green {
+  background: linear-gradient(90deg, #10b981, #34d399);
+}
+.progress-bar-fill.yellow {
+  background: linear-gradient(90deg, #eab308, #facc15);
+}
+.progress-bar-fill.red {
+  background: linear-gradient(90deg, #ef4444, #f87171);
+}
+.progress-bar-fill.blue {
+  background: linear-gradient(90deg, #0ea5e9, #38bdf8);
+}
 
 /* ==========================================
    Custom Scrollbar

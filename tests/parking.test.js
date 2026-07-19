@@ -1,16 +1,22 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { StadiumParkingManager, PARKING_CONFIG } from '../js/parking.js';
 
-// Mock the DOM and MapLibre for tests
-if (typeof document !== 'undefined') {
-  document.body.innerHTML = `
-    <button id="btn-parking"></button>
-    <button id="btn-close-parking"></button>
-    <div id="parking-panel" class="hidden"></div>
-    <div id="parking-list"></div>
-    <div id="parking-map"></div>
-  `;
-}
+// Mock the DOM for Node.js test environment
+global.document = {
+  getElementById: (id) => ({
+    addEventListener: () => {},
+    classList: { add: () => {}, remove: () => {}, toggle: () => {} },
+    innerHTML: ''
+  }),
+  addEventListener: () => {},
+  createElement: () => ({
+    classList: { add: () => {}, remove: () => {}, toggle: () => {} },
+    style: {},
+    innerHTML: '',
+    className: ''
+  }),
+  head: { appendChild: () => {} }
+};
 
 global.maplibregl = {
   Map: class { flyTo() {} },

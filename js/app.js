@@ -1,6 +1,6 @@
-import './js/crowdIntelligence.js';
-import './js/simulation.js';
-import './js/parking.js';
+import './crowdIntelligence.js';
+import './simulation.js';
+import './parking.js';
 import DOMPurify from 'dompurify';
 
 // ==========================================

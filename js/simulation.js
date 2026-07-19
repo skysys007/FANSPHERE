@@ -461,3 +461,5 @@ if (typeof window !== 'undefined') {
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = { StadiumSimulation };
 }
+
+export { StadiumSimulation };

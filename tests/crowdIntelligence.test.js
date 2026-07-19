@@ -1,15 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import fs from 'fs';
-import path from 'path';
-
-// Load the class into global scope to test it
-const enginePath = path.resolve(__dirname, '../js/crowdIntelligence.js');
-const engineCode = fs.readFileSync(enginePath, 'utf8');
-// Remove the export logic at the bottom to prevent module errors in eval
-const cleanEngineCode = engineCode.replace(/if\s*\(typeof window.*[\s\S]*$/, '');
-eval(cleanEngineCode);
-
-const CrowdIntelligenceEngine = eval('CrowdIntelligenceEngine');
+import { CrowdIntelligenceEngine } from '../js/crowdIntelligence.js';
 
 describe('Crowd Intelligence Engine', () => {
   it('should initialize with correct default state', () => {

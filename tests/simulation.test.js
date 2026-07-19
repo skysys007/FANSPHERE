@@ -1,15 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import fs from 'fs';
-import path from 'path';
-
-// Load the class into global scope to test it
-const enginePath = path.resolve(__dirname, '../js/simulation.js');
-const engineCode = fs.readFileSync(enginePath, 'utf8');
-// Remove the export logic at the bottom to prevent module errors in eval
-const cleanEngineCode = engineCode.replace(/if\s*\(typeof window.*[\s\S]*$/, '');
-eval(cleanEngineCode);
-
-const StadiumSimulation = eval('StadiumSimulation');
+import { StadiumSimulation } from '../js/simulation.js';
 
 describe('Stadium Simulation Engine', () => {
   let sim;

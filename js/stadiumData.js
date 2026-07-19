@@ -367,3 +367,11 @@ const TRANSLATIONS = {
     language: "Idioma"
   }
 };
+
+export {
+  RAG_DATABASE,
+  SUSTAINABILITY_METRICS,
+  TRANSIT_SCHEDULE,
+  FOOD_STALLS,
+  TRANSLATIONS
+};

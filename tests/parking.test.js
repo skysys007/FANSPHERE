@@ -1,4 +1,12 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+
+// Mock DOMPurify since it requires a real JSDOM window to initialize in Node environments
+vi.mock('dompurify', () => ({
+  default: {
+    sanitize: (html) => html
+  }
+}));
+
 import { StadiumParkingManager, PARKING_CONFIG } from '../js/parking.js';
 
 // Mock the DOM for Node.js test environment

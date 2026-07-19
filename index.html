@@ -508,7 +508,7 @@
       <p class="text-sm text-center mb-8" style="color:#94a3b8; margin-bottom:2rem;">Please select your preferred language to begin.</p>
       
       <div style="width:100%; position:relative;">
-        <select id="splash-lang-select" style="width:100%; background-color:#1e293b; border:1px solid #475569; color:#f8fafc; border-radius:0.5rem; padding:1rem; margin-bottom:1.5rem; outline:none; font-size:1rem; box-sizing:border-box; cursor:pointer; appearance:none;">
+        <select id="splash-lang-select" aria-label="Select Preferred Language" style="width:100%; background-color:#1e293b; border:1px solid #475569; color:#f8fafc; border-radius:0.5rem; padding:1rem; margin-bottom:1.5rem; outline:none; font-size:1rem; box-sizing:border-box; cursor:pointer; appearance:none;">
         </select>
         <!-- Custom arrow for select -->
         <div style="position:absolute; right:1.5rem; top:1.25rem; pointer-events:none; color:#94a3b8;">
@@ -540,7 +540,7 @@
         <span data-i18n="capacity">CAPACITY: 82,500</span> <br/>
         <span data-i18n="levels">LEVELS: 100, 200, 300, SUITES</span>
       </div>
-      <select id="ui-lang-select" class="pointer-events-auto bg-slate-900 border border-slate-700 text-xs text-slate-200 rounded px-2 py-1 focus:border-sky-500 focus:outline-none cursor-pointer shadow-sm" onchange="setUiLanguage(this.value)"></select>
+      <select id="ui-lang-select" aria-label="Select Interface Language" class="pointer-events-auto bg-slate-900 border border-slate-700 text-xs text-slate-200 rounded px-2 py-1 focus:border-sky-500 focus:outline-none cursor-pointer shadow-sm" onchange="setUiLanguage(this.value)"></select>
       <button id="btn-switch-role" class="pointer-events-auto bg-slate-900 border border-slate-700 text-xs text-sky-400 font-bold rounded px-3 py-1 hover:bg-slate-800 transition-colors cursor-pointer shadow-sm ml-2 hidden relative">Switch Mode</button>
     </div>
   </div>
@@ -553,26 +553,26 @@
 
   <div id="map-container" style="width: 100vw; height: 100vh; overflow: hidden; position: absolute; top: 0; left: 0; z-index: 0;">
     <!-- viewBox: X Y Width Height. Center is at 600, 500 -->
-    <canvas id="blueprint-canvas" style="display:block; width:100%; height:100%; cursor:grab; touch-action:none;"></canvas>
+    <canvas id="blueprint-canvas" style="display:block; width:100%; height:100%; cursor:grab; touch-action:none;" role="img" aria-label="Interactive 2D schematic of the stadium">Your browser does not support the HTML5 canvas element.</canvas>
   </div>
 
 
 
   <!-- Zoom/Pan Controls -->
   <div class="controls-overlay">
-    <button class="btn-control bg-red-500/20 text-red-500 border-red-500/50 hover:bg-red-500/40" id="btn-emergency" title="Emergency"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg></button>
-    <button class="btn-control flex items-center justify-center p-0" id="btn-parking" title="Parking System">
+    <button class="btn-control bg-red-500/20 text-red-500 border-red-500/50 hover:bg-red-500/40" id="btn-emergency" title="Emergency" aria-label="Emergency Alerts"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg></button>
+    <button class="btn-control flex items-center justify-center p-0" id="btn-parking" title="Parking System" aria-label="Parking System">
       <span class="bg-sky-500 text-slate-900 rounded-sm flex items-center justify-center w-5 h-5 text-sm font-black shadow-[0_0_8px_rgba(14,165,233,0.6)]">P</span>
     </button>
-    <button class="btn-control" id="btn-nav" data-i18n-title="btnNav" title="Navigation"><i data-lucide="map" class="w-5 h-5"></i></button>
-    <button class="btn-control" id="btn-food" title="Dietary Food Stalls"><i data-lucide="coffee" class="w-5 h-5"></i></button>
-    <button class="btn-control" id="btn-chat" data-i18n-title="btnChat" title="AI Assistant"><i data-lucide="message-square" class="w-5 h-5"></i></button>
-    <button class="btn-control text-purple-400 border-purple-400/50 bg-purple-500/10 hover:bg-purple-500/20" id="btn-crowd-intel" title="Crowd Intelligence"><i data-lucide="database" class="w-5 h-5"></i></button>
-    <button class="btn-control text-emerald-400 border-emerald-400/50 bg-emerald-500/10 hover:bg-emerald-500/20" id="btn-data-config" title="Data Sources"><i data-lucide="hard-drive" class="w-5 h-5"></i></button>
+    <button class="btn-control" id="btn-nav" data-i18n-title="btnNav" title="Navigation" aria-label="Navigation"><i data-lucide="map" class="w-5 h-5"></i></button>
+    <button class="btn-control" id="btn-food" title="Dietary Food Stalls" aria-label="Dietary Food Stalls"><i data-lucide="coffee" class="w-5 h-5"></i></button>
+    <button class="btn-control" id="btn-chat" data-i18n-title="btnChat" title="AI Assistant" aria-label="AI Assistant"><i data-lucide="message-square" class="w-5 h-5"></i></button>
+    <button class="btn-control text-purple-400 border-purple-400/50 bg-purple-500/10 hover:bg-purple-500/20" id="btn-crowd-intel" title="Crowd Intelligence" aria-label="Crowd Intelligence"><i data-lucide="database" class="w-5 h-5"></i></button>
+    <button class="btn-control text-emerald-400 border-emerald-400/50 bg-emerald-500/10 hover:bg-emerald-500/20" id="btn-data-config" title="Data Sources" aria-label="Data Sources"><i data-lucide="hard-drive" class="w-5 h-5"></i></button>
     <div class="w-px bg-slate-700 mx-1"></div>
-    <button class="btn-control" id="btn-zoom-in" data-i18n-title="btnZoomIn" title="Zoom In"><i data-lucide="zoom-in" class="w-5 h-5"></i></button>
-    <button class="btn-control" id="btn-zoom-out" data-i18n-title="btnZoomOut" title="Zoom Out"><i data-lucide="zoom-out" class="w-5 h-5"></i></button>
-    <button class="btn-control" id="btn-reset" data-i18n-title="btnReset" title="Reset View"><i data-lucide="maximize" class="w-5 h-5"></i></button>
+    <button class="btn-control" id="btn-zoom-in" data-i18n-title="btnZoomIn" title="Zoom In" aria-label="Zoom In"><i data-lucide="zoom-in" class="w-5 h-5"></i></button>
+    <button class="btn-control" id="btn-zoom-out" data-i18n-title="btnZoomOut" title="Zoom Out" aria-label="Zoom Out"><i data-lucide="zoom-out" class="w-5 h-5"></i></button>
+    <button class="btn-control" id="btn-reset" data-i18n-title="btnReset" title="Reset View" aria-label="Reset View"><i data-lucide="maximize" class="w-5 h-5"></i></button>
   </div>
 
   <!-- NAVIGATION OVERLAY -->
@@ -583,7 +583,7 @@
     </div>
     <div class="space-y-4">
       <div>
-        <label class="block text-[10px] text-sky-400 font-mono tracking-widest uppercase mb-1" data-i18n="navMode">Routing Mode</label>
+        <label for="nav-mode" class="block text-[10px] text-sky-400 font-mono tracking-widest uppercase mb-1" data-i18n="navMode">Routing Mode</label>
         <select id="nav-mode" class="w-full bg-slate-950 border border-slate-700 text-sm text-slate-200 rounded p-2 focus:border-sky-500 focus:outline-none mb-4">
           <option value="balanced">Balanced (Optimal Speed & Safety)</option>
           <option value="fastest">Fastest (Minimum Travel Time)</option>
@@ -593,11 +593,11 @@
         </select>
       </div>
       <div>
-        <label class="block text-[10px] text-sky-400 font-mono tracking-widest uppercase mb-1" data-i18n="navStart">Start Location</label>
+        <label for="nav-start" class="block text-[10px] text-sky-400 font-mono tracking-widest uppercase mb-1" data-i18n="navStart">Start Location</label>
         <select id="nav-start" class="w-full bg-slate-950 border border-slate-700 text-sm text-slate-200 rounded p-2 focus:border-sky-500 focus:outline-none"></select>
       </div>
       <div>
-        <label class="block text-[10px] text-sky-400 font-mono tracking-widest uppercase mb-1" data-i18n="navEnd">Destination</label>
+        <label for="nav-end" class="block text-[10px] text-sky-400 font-mono tracking-widest uppercase mb-1" data-i18n="navEnd">Destination</label>
         <select id="nav-end" class="w-full bg-slate-950 border border-slate-700 text-sm text-slate-200 rounded p-2 focus:border-sky-500 focus:outline-none"></select>
       </div>
       <button id="btn-find-route" class="w-full py-2 bg-sky-500/20 hover:bg-sky-500/40 border border-sky-500/50 text-sky-400 font-bold rounded transition-colors text-sm" data-i18n="navBtn">Calculate Route</button>
@@ -628,8 +628,8 @@
     </div>
     <div class="p-4 border-t border-slate-800 bg-slate-950/90">
       <form id="chat-form" class="flex gap-2 relative">
-        <input type="text" id="chat-input" data-i18n-placeholder="chatPlaceholder" placeholder="Ask about routes, seats, or heatmap..." class="flex-1 bg-slate-800 border border-slate-700 text-white rounded-lg px-4 py-2 focus:outline-none focus:border-sky-500 text-sm placeholder-slate-500 w-full" autocomplete="off" />
-        <button type="submit" class="bg-sky-500/20 hover:bg-sky-500/40 text-sky-400 border border-sky-500/50 rounded-lg p-2 transition-colors">
+        <input type="text" id="chat-input" aria-label="Ask the AI Assistant" data-i18n-placeholder="chatPlaceholder" placeholder="Ask about routes, seats, or heatmap..." class="flex-1 bg-slate-800 border border-slate-700 text-white rounded-lg px-4 py-2 focus:outline-none focus:border-sky-500 text-sm placeholder-slate-500 w-full" autocomplete="off" />
+        <button type="submit" aria-label="Send Message" class="bg-sky-500/20 hover:bg-sky-500/40 text-sky-400 border border-sky-500/50 rounded-lg p-2 transition-colors">
            <i data-lucide="send" class="w-5 h-5"></i>
         </button>
       </form>
@@ -715,8 +715,8 @@
       <p>Override the internal math model with your own dataset or live API.</p>
       
       <div>
-        <label class="block text-[10px] text-emerald-400 font-mono tracking-widest uppercase mb-1">Active Engine</label>
-        <select id="data-engine-select" class="w-full bg-slate-950 border border-slate-700 text-sm text-slate-200 rounded p-2 focus:border-emerald-500 focus:outline-none mb-2">
+        <label for="data-engine-select" class="block text-[10px] text-emerald-400 font-mono tracking-widest uppercase mb-1">Active Engine</label>
+        <select id="data-engine-select" aria-label="Select Data Engine" class="w-full bg-slate-950 border border-slate-700 text-sm text-slate-200 rounded p-2 focus:border-emerald-500 focus:outline-none mb-2">
           <option value="math">Internal Math Simulation</option>
           <option value="file">File Upload (.json)</option>
           <option value="api">Live API (WebSocket)</option>
@@ -725,16 +725,16 @@
 
       <!-- File Upload Config -->
       <div id="data-config-file" class="hidden space-y-2">
-        <label class="block text-[10px] text-slate-400 font-mono uppercase">Upload Dataset</label>
-        <input type="file" id="data-file-input" accept=".json" class="w-full text-xs bg-slate-950 border border-slate-700 text-slate-200 rounded p-2">
+        <label for="data-file-input" class="block text-[10px] text-slate-400 font-mono uppercase">Upload Dataset</label>
+        <input type="file" id="data-file-input" aria-label="Upload Dataset File" accept=".json" class="w-full text-xs bg-slate-950 border border-slate-700 text-slate-200 rounded p-2">
         <div class="text-[10px] text-slate-500">Expects an array of frame objects.</div>
       </div>
 
       <!-- Live API Config -->
       <div id="data-config-api" class="hidden space-y-2">
-        <label class="block text-[10px] text-slate-400 font-mono uppercase">WebSocket URL</label>
+        <label for="data-api-url" class="block text-[10px] text-slate-400 font-mono uppercase">WebSocket URL</label>
         <div class="flex gap-2">
-          <input type="url" id="data-api-url" placeholder="wss://..." class="flex-1 text-xs bg-slate-950 border border-slate-700 text-slate-200 rounded p-2 focus:border-emerald-500 focus:outline-none">
+          <input type="url" id="data-api-url" aria-label="WebSocket API URL" placeholder="wss://..." class="flex-1 text-xs bg-slate-950 border border-slate-700 text-slate-200 rounded p-2 focus:border-emerald-500 focus:outline-none">
           <button id="btn-api-connect" class="bg-emerald-500/20 hover:bg-emerald-500/40 text-emerald-400 border border-emerald-500/50 rounded px-3 text-xs font-bold transition-colors">Connect</button>
         </div>
       </div>
@@ -859,12 +859,12 @@
       
       <div class="space-y-4">
         <div>
-          <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Location</label>
-          <select id="emergency-location" class="w-full bg-slate-950 border border-slate-700 text-sm text-slate-200 rounded p-2 focus:border-red-500 focus:outline-none"></select>
+          <label for="emergency-location" class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Location</label>
+          <select id="emergency-location" aria-label="Emergency Location" class="w-full bg-slate-950 border border-slate-700 text-sm text-slate-200 rounded p-2 focus:border-red-500 focus:outline-none"></select>
         </div>
         <div>
-          <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Emergency Type</label>
-          <select id="emergency-type" class="w-full bg-slate-950 border border-slate-700 text-sm text-slate-200 rounded p-2 focus:border-red-500 focus:outline-none">
+          <label for="emergency-type" class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Emergency Type</label>
+          <select id="emergency-type" aria-label="Emergency Type" class="w-full bg-slate-950 border border-slate-700 text-sm text-slate-200 rounded p-2 focus:border-red-500 focus:outline-none">
             <option value="Medical Emergency">Medical Emergency</option>
             <option value="Security Incident">Security Incident</option>
             <option value="Fire/Smoke">Fire / Smoke</option>
@@ -875,8 +875,8 @@
           </select>
         </div>
         <div>
-          <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Additional Details (Optional)</label>
-          <input type="text" id="emergency-details" class="w-full bg-slate-950 border border-slate-700 text-sm text-slate-200 rounded p-2 focus:border-red-500 focus:outline-none" placeholder="e.g. Person collapsed...">
+          <label for="emergency-details" class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Additional Details (Optional)</label>
+          <input type="text" id="emergency-details" aria-label="Emergency Details" class="w-full bg-slate-950 border border-slate-700 text-sm text-slate-200 rounded p-2 focus:border-red-500 focus:outline-none" placeholder="e.g. Person collapsed...">
         </div>
       </div>
       

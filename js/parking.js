@@ -300,3 +300,5 @@ class StadiumParkingManager {
 document.addEventListener('DOMContentLoaded', () => {
     window.parkingManager = new StadiumParkingManager();
 });
+
+export { StadiumParkingManager, PARKING_CONFIG };

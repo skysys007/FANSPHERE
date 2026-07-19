@@ -339,7 +339,7 @@ window.addEventListener('DOMContentLoaded', () => {
         if (nativeRaw) {
           nativeName = nativeRaw.charAt(0).toUpperCase() + nativeRaw.slice(1);
         }
-      } catch (e) {}
+      } catch(e) { /* ignore */ }
 
       const displayText =
         l.name.toLowerCase() === nativeName.toLowerCase() ? l.name : `${l.name} (${nativeName})`;
@@ -1298,7 +1298,7 @@ function renderStadium() {
       }
     }
 
-    function pushCurve(pts, a1, a2, rx, ry) {
+    const pushCurve = (pts, a1, a2, rx, ry) => {
       let diff = a2 - a1;
       while (diff > Math.PI) diff -= 2 * Math.PI;
       while (diff < -Math.PI) diff += 2 * Math.PI;
@@ -1311,7 +1311,7 @@ function renderStadium() {
         const r = getStadiumRadius(a, rx, ry);
         pts.push({ x: centerX + Math.cos(a) * r, y: centerY + Math.sin(a) * r });
       }
-    }
+    };
 
     let currentAisleA = null;
 
@@ -1571,21 +1571,21 @@ function calculateRoute(startId, endId, skipEdges = []) {
 
     let weight = e.dist;
     switch (routeMode) {
-      case 'fastest':
-        weight = e.dist * 0.7 + queueWeight * 0.3;
-        break;
-      case 'least_crowded':
-        weight = e.dist * 0.2 + densityWeight * 0.8;
-        break;
-      case 'safest':
-        weight = densityWeight > 80 ? e.dist * 100 : e.dist * 0.5 + densityWeight * 0.5;
-        break;
-      case 'wheelchair':
-        weight = e.dist * 0.6 + densityWeight * 0.4;
-        break;
-      case 'balanced':
-      default:
-        weight = e.dist * 0.25 + densityWeight * 0.35 + queueWeight * 0.2 + densityWeight * 0.2;
+    case 'fastest':
+      weight = e.dist * 0.7 + queueWeight * 0.3;
+      break;
+    case 'least_crowded':
+      weight = e.dist * 0.2 + densityWeight * 0.8;
+      break;
+    case 'safest':
+      weight = densityWeight > 80 ? e.dist * 100 : e.dist * 0.5 + densityWeight * 0.5;
+      break;
+    case 'wheelchair':
+      weight = e.dist * 0.6 + densityWeight * 0.4;
+      break;
+    case 'balanced':
+    default:
+      weight = e.dist * 0.25 + densityWeight * 0.35 + queueWeight * 0.2 + densityWeight * 0.2;
     }
     adj[e.a].push({ node: e.b, weight: weight });
   });

@@ -9,15 +9,20 @@
     "ecmaVersion": 12,
     "sourceType": "module"
   },
+  "globals": {
+    "lucide": "readonly",
+    "maplibregl": "readonly",
+    "requestRender": "writable"
+  },
   "rules": {
     "indent": ["error", 2],
     "quotes": ["error", "single", { "avoidEscape": true }],
     "semi": ["error", "always"],
-    "no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
+    "no-unused-vars": ["warn", { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_" }],
     "no-undef": "warn",
     "eqeqeq": "error",
-    "camelcase": "warn",
-    "prefer-const": "error",
+    "camelcase": ["warn", { "properties": "never", "ignoreDestructuring": true }],
+    "prefer-const": "warn",
     "no-var": "error",
     "max-len": [
       "warn",

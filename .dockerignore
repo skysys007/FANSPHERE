@@ -1,0 +1,12 @@
+node_modules
+dist
+.env
+.git
+.github
+.vercel
+scratch
+tests
+coverage
+Dockerfile
+.dockerignore
+*.md

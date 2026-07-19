@@ -297,8 +297,10 @@ class StadiumParkingManager {
 }
 
 // Initialize the system on DOM load
-document.addEventListener('DOMContentLoaded', () => {
-    window.parkingManager = new StadiumParkingManager();
-});
+if (typeof document !== 'undefined') {
+    document.addEventListener('DOMContentLoaded', () => {
+        window.parkingManager = new StadiumParkingManager();
+    });
+}
 
 export { StadiumParkingManager, PARKING_CONFIG };

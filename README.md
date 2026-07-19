@@ -1,5 +1,7 @@
 # FANSPHERE: GenAI-Powered Real-Time Stadium Intelligence System for FIFA 2026
 
+🚀 **[View Live Deployment](https://fansphere.vercel.app)** *(Replace with your actual Vercel link)*
+
 **FANSPHERE** is a state-of-the-art, high-fidelity operations and fan assistance prototype designed for large-scale sporting events like the FIFA World Cup 2026. The system combines real-time crowd density simulations, step-free accessibility routing (Dijkstra's algorithm), and a localized Retrieval-Augmented Generation (RAG) Chatbot to provide immediate decision support for organizers and step-by-step guidance for fans.
 
 ---

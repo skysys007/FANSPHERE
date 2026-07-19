@@ -26,7 +26,7 @@ wss.on('connection', function connection(ws) {
     const payload = {
       gates: [
         { id: 'gate-verizon', queueLength: Math.max(0, verizonQueue) },
-        { id: 'gate-metlife', queueLength: 5 }
+        { id: 'gate-fansphere', queueLength: 5 }
       ],
       sections: [
         { id: 'sec-115', occupancyRate: foodCourtOccupancy, movementSpeed: movementSpeed.toFixed(2) },

@@ -1,4 +1,4 @@
-// SmartStadium AI - Stadium Data and Knowledge Base
+// FANSPHERE - Stadium Data and Knowledge Base
 
 
 
@@ -257,7 +257,7 @@ const FOOD_STALLS = [
 // Multilingual translations database
 const TRANSLATIONS = {
   en: {
-    title: "SmartStadium AI • FIFA 2026",
+    title: "FANSPHERE • FIFA 2026",
     subtitle: "GenAI-Powered Real-Time Stadium Intelligence System",
     fanView: "Fan Guide",
     staffView: "Organizer Dashboard",
@@ -273,13 +273,13 @@ const TRANSLATIONS = {
     wheelchairFriendly: "Wheelchair-Accessible Route",
     calculateRoute: "Calculate Shortest Path",
     routeDetails: "Route Navigation Path",
-    chatPlaceholder: "Ask SmartStadium AI... (e.g., 'Where is EcoEats?', 'How to reach Section A1?')",
-    chatbotTitle: "SmartStadium AI Chatbot",
+    chatPlaceholder: "Ask FANSPHERE... (e.g., 'Where is EcoEats?', 'How to reach Section A1?')",
+    chatbotTitle: "FANSPHERE Chatbot",
     send: "Send",
     language: "Language"
   },
   es: {
-    title: "SmartStadium AI • FIFA 2026",
+    title: "FANSPHERE • FIFA 2026",
     subtitle: "Sistema de Inteligencia en Tiempo Real con IA Generativa",
     fanView: "Guía del Fan",
     staffView: "Panel del Organizador",
@@ -295,7 +295,7 @@ const TRANSLATIONS = {
     wheelchairFriendly: "Ruta Accesible para Silla de Ruedas",
     calculateRoute: "Calcular Ruta Más Corta",
     routeDetails: "Detalles de la Ruta",
-    chatPlaceholder: "Pregunte a SmartStadium AI... (ej. '¿Dónde está EcoEats?', '¿Cómo llego a la A1?')",
+    chatPlaceholder: "Pregunte a FANSPHERE... (ej. '¿Dónde está EcoEats?', '¿Cómo llego a la A1?')",
     chatbotTitle: "Asistente Virtual SmartStadium",
     send: "Enviar",
     language: "Idioma"
@@ -323,7 +323,7 @@ const TRANSLATIONS = {
     language: "भाषा"
   },
   fr: {
-    title: "SmartStadium AI • FIFA 2026",
+    title: "FANSPHERE • FIFA 2026",
     subtitle: "Système d'Intelligence de Stade en Temps Réel GenAI",
     fanView: "Guide des Supporters",
     staffView: "Tableau de Bord Organisateur",
@@ -339,13 +339,13 @@ const TRANSLATIONS = {
     wheelchairFriendly: "Itinéraire Accessible aux Fauteuils",
     calculateRoute: "Calculer le Chemin le Plus Court",
     routeDetails: "Détails de l'Itinéraire",
-    chatPlaceholder: "Demander à SmartStadium AI... (ex. 'Où sont les toilettes?')",
+    chatPlaceholder: "Demander à FANSPHERE... (ex. 'Où sont les toilettes?')",
     chatbotTitle: "Assistant Virtuel SmartStadium",
     send: "Envoyer",
     language: "Langue"
   },
   pt: {
-    title: "SmartStadium AI • FIFA 2026",
+    title: "FANSPHERE • FIFA 2026",
     subtitle: "Sistema de Inteligência Esportiva com IA Generativa",
     fanView: "Guia do Torcedor",
     staffView: "Painel do Organizador",
@@ -361,8 +361,8 @@ const TRANSLATIONS = {
     wheelchairFriendly: "Rota Acessível para Cadeirantes",
     calculateRoute: "Calcular Rota Mais Curta",
     routeDetails: "Detalhes do Trajeto",
-    chatPlaceholder: "Pergunte ao SmartStadium AI... (ex. 'Como chego ao Setor A1?')",
-    chatbotTitle: "Assistente SmartStadium AI",
+    chatPlaceholder: "Pergunte ao FANSPHERE... (ex. 'Como chego ao Setor A1?')",
+    chatbotTitle: "Assistente FANSPHERE",
     send: "Enviar",
     language: "Idioma"
   }

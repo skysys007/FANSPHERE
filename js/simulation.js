@@ -96,17 +96,30 @@ class StadiumSimulation {
        // Optional: implement halftime logic if needed
     } else if (phase === 'during_match') {
        // Instantly fast-forward section occupancy to 90-95% when entering during match phase
+       let initialIncidentCount = 0;
        this.sections.forEach(sec => {
           const targetOccupancy = sec.capacity * (0.90 + Math.random() * 0.05);
           if (sec.occupiedSeats < targetOccupancy) {
              sec.occupiedSeats = targetOccupancy;
              this._updateSectionMetrics(sec);
           }
+          // Seed a few immediate incidents so the phase visibly 'works' right away
+          if (initialIncidentCount < 4 && Math.random() < 0.05) {
+             sec.activeIncidentTicks = 20 + Math.floor(Math.random() * 20);
+             initialIncidentCount++;
+          }
        });
-       // Clear queues
+       // Clear queues but pre-seed with realistic background flows so the UI doesn't look dead before the first tick
+       // Clear queues but pre-seed with realistic background flows so the UI doesn't look dead before the first tick
        this.entryGates.forEach(gate => {
-          gate.queueLength = 0;
-          gate.occupancy = 0;
+          gate.queueLength = 5 + Math.floor(Math.random() * 10);
+          gate.occupancy = 10 + Math.random() * 20; 
+          gate.density = 0;
+          gate.status = 'normal';
+       });
+       this.exitGates.forEach(gate => {
+          gate.queueLength = 8 + Math.floor(Math.random() * 15);
+          gate.occupancy = 15 + Math.random() * 25;
           gate.density = 0;
           gate.status = 'normal';
        });
@@ -201,14 +214,27 @@ class StadiumSimulation {
       // Clear entry gates queues slowly if any left
       this.entryGates.forEach(gate => {
          gate.queueLength = Math.max(0, gate.queueLength - Math.floor(100 * minElapsed));
+         gate.occupancy = 0; // Ensure flow stops completely
          gate.density = 0;
          gate.status = 'normal';
       });
     } else {
-       // during_match: gate influx should not arise as people are already seated
+       // during_match: gate influx should not arise as people are already seated, but there is some steady traffic
        this.entryGates.forEach(gate => {
-         gate.occupancy = 0.5 + Math.random(); // Extremely minimal trickle
-         gate.queueLength = Math.max(0, gate.queueLength - Math.floor(50 * minElapsed));
+         gate.occupancy = 10 + Math.random() * 20; // Some traffic (10-30/min), but not substantial
+         // Force a small persistent queue to simulate stragglers at security
+         gate.queueLength = Math.max(2, Math.floor(gate.queueLength * 0.8) + Math.floor(Math.random() * 8));
+         gate.density = 0;
+         gate.status = 'normal';
+       });
+       
+       // Handle early exiters trickling out
+       this.exitGates.forEach(gate => {
+         gate.occupancy = 15 + Math.random() * 25; // Steady trickle out (15-40/min)
+         // Force a small persistent queue for exiters waiting for rides/friends
+         gate.queueLength = Math.max(5, Math.floor(gate.queueLength * 0.85) + Math.floor(Math.random() * 12));
+         gate.totalProcessed += gate.occupancy * minElapsed;
+         gate.waitTime = 0;
          gate.density = 0;
          gate.status = 'normal';
        });
@@ -269,9 +295,14 @@ class StadiumSimulation {
     } else if (this.phase === 'during_match') {
       // Minor shuffling, but with occasional congestion spikes and rare critical anomalies
       this.sections.forEach(sec => {
-        const rand = Math.random();
-        const isCriticalEvent = rand < 0.02; // 2% chance for a severe incident (massive crowd surge)
-        const isBusy = rand >= 0.02 && rand < 0.10; // 8% chance for standard busy concourse
+        if (sec.activeIncidentTicks > 0) {
+           sec.activeIncidentTicks--;
+        } else if (Math.random() < 0.002) { // 0.2% chance to start a new incident
+           sec.activeIncidentTicks = 12 + Math.floor(Math.random() * 15); // Lasts ~60-135 seconds
+        }
+        
+        const isCriticalEvent = sec.activeIncidentTicks > 0;
+        const isBusy = !isCriticalEvent && Math.random() < 0.08;
         
         if (isCriticalEvent) {
            // Massive localized traffic spike simulating an incident or major bathroom/concession rush
@@ -302,8 +333,8 @@ class StadiumSimulation {
       let totalLeavingThisTick = 0;
       
       this.sections.forEach(sec => {
-         // Drain sections aggressively
-         const leaveRatePerMin = sec.capacity * (0.1 + Math.random() * 0.2); // 10-30% leave per min
+         // Drain sections more realistically so they don't dump 80,000 people into the gates in 3 minutes
+         const leaveRatePerMin = sec.capacity * (0.03 + Math.random() * 0.05); // 3-8% leave per min
          const leaving = Math.min(sec.occupiedSeats, Math.floor(leaveRatePerMin * minElapsed));
          
          sec.peopleEnteringPerMin = 0;
@@ -312,8 +343,13 @@ class StadiumSimulation {
          
          totalLeavingThisTick += leaving;
          
-         sec.flowDirection = 'Exiting';
-         sec.movementSpeed = 0.8 + (Math.random() * 0.4); // Slower exit due to crowding
+         if (sec.occupiedSeats === 0 && leaving === 0) {
+             sec.flowDirection = 'Static';
+             sec.movementSpeed = 0; // Completely empty, no traffic
+         } else {
+             sec.flowDirection = 'Exiting';
+             sec.movementSpeed = 0.8 + (Math.random() * 0.4); // Slower exit due to crowding
+         }
          
          this._updateSectionMetrics(sec);
       });
@@ -321,8 +357,13 @@ class StadiumSimulation {
       // Route exiting people to exit gates' queues
       const exits = Array.from(this.exitGates.values());
       if (exits.length > 0 && totalLeavingThisTick > 0) {
-         const perGate = Math.floor(totalLeavingThisTick / exits.length);
-         exits.forEach(gate => {
+         if (!this.exitGateWeights) {
+            this.exitGateWeights = exits.map(() => 0.2 + Math.random() * 1.8);
+            const totalWeight = this.exitGateWeights.reduce((a, b) => a + b, 0);
+            this.exitGateWeights = this.exitGateWeights.map(w => w / totalWeight);
+         }
+         exits.forEach((gate, idx) => {
+            const perGate = Math.floor(totalLeavingThisTick * this.exitGateWeights[idx]);
             gate.queueLength += perGate;
          });
       }
@@ -343,7 +384,17 @@ class StadiumSimulation {
 
   _updateSectionMetrics(sec) {
      sec.occupancyRate = sec.capacity > 0 ? (sec.occupiedSeats / sec.capacity) : 0;
-     sec.crowdDensity = sec.occupancyRate * 100;
+     
+     if (this.phase === 'during_match') {
+         // Heatmap represents concourse. If incident, concourse is flooded. Otherwise, empty (fans seated).
+         if (sec.activeIncidentTicks > 0) {
+            sec.crowdDensity = (0.8 + Math.random() * 0.2) * 100;
+         } else {
+            sec.crowdDensity = (0.05 + Math.random() * 0.1) * 100;
+         }
+     } else {
+         sec.crowdDensity = sec.occupancyRate * 100;
+     }
   }
   
   // Hook for crowd intelligence to dynamically alter simulation

@@ -71,7 +71,7 @@ frames_cfg = [
     },
 ]
 
-gate_names = ["MetLife Gate", "AMEX Gate", "Verizon Gate", "HCLTech Gate", "Moody's Gate"]
+gate_names = ["FANSPHERE Gate", "AMEX Gate", "Verizon Gate", "HCLTech Gate", "Moody's Gate"]
 concourse_names = ["Concourse 101", "Concourse 201", "Transit Hub 140"]
 amenity_names = ["Food Court 115", "Food Court 132", "Restroom Area 110"]
 seating_names = ["Section 102", "Section 105", "Section 118"]

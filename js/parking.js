@@ -18,11 +18,11 @@ const PARKING_CONFIG = {
     ANIMATION_DURATION_MS: 2100,
     LOTS: [
         { id: 'lot-e', name: 'Lot E, East Rutherford, NJ 07073, USA', lat: 40.8162, lng: -74.0772, maxCapacity: 2500, price: '$40' },
-        { id: 'prepaid-efg', name: 'Prepaid Parking - Lots E/F/G, 1 MetLife Stadium Dr, East Rutherford, NJ 07073, USA', lat: 40.8168, lng: -74.0745, maxCapacity: 1200, price: 'Prepaid' },
+        { id: 'prepaid-efg', name: 'Prepaid Parking - Lots E/F/G, 1 FANSPHERE Stadium Dr, East Rutherford, NJ 07073, USA', lat: 40.8168, lng: -74.0745, maxCapacity: 1200, price: 'Prepaid' },
         { id: 'lot-f', name: 'Lot F, East Rutherford, NJ 07073, USA', lat: 40.8175, lng: -74.0745, maxCapacity: 3000, price: '$40' },
         { id: 'lot-g17', name: 'Stadium Lot G-17, East Rutherford, NJ 07073, USA', lat: 40.8160, lng: -74.0715, maxCapacity: 4500, price: '$40' },
         { id: 'lot-h', name: 'Lot H, H, East Rutherford, NJ 07073, USA', lat: 40.8150, lng: -74.0700, maxCapacity: 1500, price: '$40' },
-        { id: 'lot-j', name: 'New Meadowlands Flea Market (Lot J), Lot J Metlife Stadium, 102 NJ-120, East Rutherford, NJ 07073, USA', lat: 40.8095, lng: -74.0740, maxCapacity: 1500, price: '$60' },
+        { id: 'lot-j', name: 'New Meadowlands Flea Market (Lot J), Lot J FANSPHERE Stadium, 102 NJ-120, East Rutherford, NJ 07073, USA', lat: 40.8095, lng: -74.0740, maxCapacity: 1500, price: '$60' },
         { id: 'lot-k', name: 'Lot K, K, 1 American Way Level 2, Court C, East Rutherford, NJ 07073, USA', lat: 40.8090, lng: -74.0725, maxCapacity: 1600, price: '$40' },
         { id: 'lot-l', name: 'Lot L, East Rutherford, NJ 07073, USA', lat: 40.8105, lng: -74.0710, maxCapacity: 800, price: '$120' },
         { id: 'lot-m', name: 'Lot M, East Rutherford, NJ 07073, USA', lat: 40.8125, lng: -74.0790, maxCapacity: 2100, price: '$40' },
@@ -98,6 +98,7 @@ class StadiumParkingManager {
             const occPercent = 0.4 + (Math.random() * 0.58); // 40% to 98%
             const occupied = Math.floor(lot.maxCapacity * occPercent);
             const available = lot.maxCapacity - occupied;
+            const exactOccPercent = (occupied / lot.maxCapacity) * 100;
             
             let status = 'Comfortable';
             let statusColor = 'text-emerald-400';
@@ -120,7 +121,7 @@ class StadiumParkingManager {
                 ...lot,
                 occupied,
                 available,
-                occPercent: occPercent * 100,
+                occPercent: exactOccPercent,
                 status,
                 statusColor,
                 barColor,
@@ -181,7 +182,7 @@ class StadiumParkingManager {
                 
                 <div class="flex justify-between items-end mb-2 mt-3">
                     <div class="text-xs text-slate-400">Price: <span class="text-sky-400 font-mono">${safePrice}</span></div>
-                    <div class="text-xs text-slate-400 font-mono"><span class="text-white">${lot.available}</span> / ${lot.maxCapacity} open</div>
+                    <div class="text-xs text-slate-400 font-mono"><span class="text-white">${lot.occupied}</span> / ${lot.maxCapacity} occupied</div>
                 </div>
                 
                 <div class="w-full bg-slate-900 rounded-full h-1.5 overflow-hidden">
@@ -209,7 +210,7 @@ class StadiumParkingManager {
             <div class="text-slate-900 p-1">
                 <strong class="block mb-1 text-sm font-black leading-tight">${safeName}</strong>
                 <div class="text-xs mb-0.5 mt-2">Status: <b>${safeStatus}</b></div>
-                <div class="text-xs">Available: <b>${lot.available}</b> / ${lot.maxCapacity}</div>
+                <div class="text-xs">Occupied: <b>${lot.occupied}</b> / ${lot.maxCapacity}</div>
             </div>
         `;
     }

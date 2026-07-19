@@ -136,7 +136,7 @@ class CrowdIntelligenceEngine {
       phase: sim.phase,
       stadium: {
         id: "metlife-stadium",
-        name: "MetLife Stadium",
+        name: "FANSPHERE Stadium",
         capacity: totalCapacity,
         occupied: totalOccupied,
         available: totalCapacity - totalOccupied,
@@ -188,7 +188,12 @@ class CrowdIntelligenceEngine {
       
       // Congestion is based on movement restriction
       const speedRaw = parseFloat(sec.movementSpeed);
-      const isSeating = sec.id.startsWith('sec-');
+      let isSeating = sec.id.startsWith('sec-');
+      
+      // Dynamic bottleneck override: If traffic is at a standstill with high occupancy, treat it as a congested concourse
+      if (speedRaw < 0.2 && occupancyPercentage > 60) {
+         isSeating = false;
+      }
       
       // PROBABILITY DISTRIBUTION FOR CONGESTION (Gaussian / Box-Muller)
       // Generates high variance and high peak amplitudes organically
@@ -393,8 +398,8 @@ class CrowdIntelligenceEngine {
     if (this._rawIncidents && this._rawIncidents.length > 0) {
        const mergedIncidents = new Map();
        this._rawIncidents.forEach(inc => {
-          // Identify general zone area
-          const level = Math.floor(parseInt(inc.id)/100) * 100;
+          // Identify general zone area by stripping non-digits
+          const level = Math.floor(parseInt(inc.id.replace(/\D/g, ''))/100) * 100;
           const clusterKey = isNaN(level) ? "Concourse Area" : `Level ${level} Area`;
           
           if (!mergedIncidents.has(clusterKey)) {

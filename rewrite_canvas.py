@@ -285,8 +285,8 @@ canvas_engine = """// ==========================================
       ctx.fillStyle = "rgba(255,255,255,0.6)";
       ctx.font = "bold 14px sans-serif";
       ctx.textAlign = "center";
-      ctx.save(); ctx.translate(80, 20); ctx.rotate(Math.PI); ctx.fillText("METLIFE", 0, 0); ctx.restore();
-      ctx.fillText("METLIFE", 80, 350);
+      ctx.save(); ctx.translate(80, 20); ctx.rotate(Math.PI); ctx.fillText("FANSPHERE", 0, 0); ctx.restore();
+      ctx.fillText("FANSPHERE", 80, 350);
       
       ctx.strokeStyle = "rgba(255,255,255,0.2)";
       ctx.lineWidth = 1;

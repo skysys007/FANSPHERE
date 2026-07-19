@@ -3,7 +3,7 @@
     "timestamp": "T+00:00",
     "phase": "halftime_start",
     "zones": [
-      {"zone_name":"MetLife Gate","type":"gate","occupancy_pct":43.7,"congestion_pct":19.2,"speed_ms":1.08,"inflow_m":100.0,"outflow_m":80.0,"status":"COMFORTABLE"},
+      {"zone_name":"FANSPHERE Gate","type":"gate","occupancy_pct":43.7,"congestion_pct":19.2,"speed_ms":1.08,"inflow_m":100.0,"outflow_m":80.0,"status":"COMFORTABLE"},
       {"zone_name":"AMEX Gate","type":"gate","occupancy_pct":38.2,"congestion_pct":15.5,"speed_ms":1.18,"inflow_m":90.0,"outflow_m":70.0,"status":"COMFORTABLE"},
       {"zone_name":"Verizon Gate","type":"gate","occupancy_pct":34.9,"congestion_pct":18.3,"speed_ms":1.29,"inflow_m":80.0,"outflow_m":60.0,"status":"COMFORTABLE"},
       {"zone_name":"HCLTech Gate","type":"gate","occupancy_pct":29.4,"congestion_pct":6.9,"speed_ms":1.38,"inflow_m":70.0,"outflow_m":60.0,"status":"COMFORTABLE"},
@@ -23,7 +23,7 @@
     "timestamp": "T+02:00",
     "phase": "halftime_surge",
     "zones": [
-      {"zone_name":"MetLife Gate","type":"gate","occupancy_pct":79.3,"congestion_pct":86.5,"speed_ms":0.38,"inflow_m":200.0,"outflow_m":120.0,"status":"MODERATE"},
+      {"zone_name":"FANSPHERE Gate","type":"gate","occupancy_pct":79.3,"congestion_pct":86.5,"speed_ms":0.38,"inflow_m":200.0,"outflow_m":120.0,"status":"MODERATE"},
       {"zone_name":"AMEX Gate","type":"gate","occupancy_pct":73.6,"congestion_pct":64.4,"speed_ms":0.47,"inflow_m":180.0,"outflow_m":110.0,"status":"MODERATE"},
       {"zone_name":"Verizon Gate","type":"gate","occupancy_pct":66.1,"congestion_pct":43.1,"speed_ms":0.58,"inflow_m":150.0,"outflow_m":100.0,"status":"MODERATE"},
       {"zone_name":"HCLTech Gate","type":"gate","occupancy_pct":59.4,"congestion_pct":23.9,"speed_ms":0.68,"inflow_m":120.0,"outflow_m":90.0,"status":"COMFORTABLE"},
@@ -43,7 +43,7 @@
     "timestamp": "T+04:30",
     "phase": "halftime_peak",
     "zones": [
-      {"zone_name":"MetLife Gate","type":"gate","occupancy_pct":94.2,"congestion_pct":98.1,"speed_ms":0.05,"inflow_m":150.0,"outflow_m":100.0,"status":"CRITICAL"},
+      {"zone_name":"FANSPHERE Gate","type":"gate","occupancy_pct":94.2,"congestion_pct":98.1,"speed_ms":0.05,"inflow_m":150.0,"outflow_m":100.0,"status":"CRITICAL"},
       {"zone_name":"AMEX Gate","type":"gate","occupancy_pct":89.6,"congestion_pct":94.7,"speed_ms":0.08,"inflow_m":140.0,"outflow_m":90.0,"status":"CRITICAL"},
       {"zone_name":"Verizon Gate","type":"gate","occupancy_pct":81.3,"congestion_pct":75.6,"speed_ms":0.28,"inflow_m":120.0,"outflow_m":80.0,"status":"MODERATE"},
       {"zone_name":"HCLTech Gate","type":"gate","occupancy_pct":71.8,"congestion_pct":32.6,"speed_ms":0.48,"inflow_m":100.0,"outflow_m":70.0,"status":"MODERATE"},
@@ -63,7 +63,7 @@
     "timestamp": "T+07:00",
     "phase": "halftime_plateau",
     "zones": [
-      {"zone_name":"MetLife Gate","type":"gate","occupancy_pct":86.3,"congestion_pct":53.7,"speed_ms":0.14,"inflow_m":110.0,"outflow_m":140.0,"status":"MODERATE"},
+      {"zone_name":"FANSPHERE Gate","type":"gate","occupancy_pct":86.3,"congestion_pct":53.7,"speed_ms":0.14,"inflow_m":110.0,"outflow_m":140.0,"status":"MODERATE"},
       {"zone_name":"AMEX Gate","type":"gate","occupancy_pct":79.1,"congestion_pct":20.8,"speed_ms":0.33,"inflow_m":100.0,"outflow_m":130.0,"status":"MODERATE"},
       {"zone_name":"Verizon Gate","type":"gate","occupancy_pct":73.6,"congestion_pct":2.8,"speed_ms":0.48,"inflow_m":90.0,"outflow_m":120.0,"status":"MODERATE"},
       {"zone_name":"HCLTech Gate","type":"gate","occupancy_pct":61.8,"congestion_pct":1.5,"speed_ms":0.68,"inflow_m":80.0,"outflow_m":110.0,"status":"COMFORTABLE"},
@@ -83,7 +83,7 @@
     "timestamp": "T+10:00",
     "phase": "halftime_return",
     "zones": [
-      {"zone_name":"MetLife Gate","type":"gate","occupancy_pct":61.7,"congestion_pct":2.1,"speed_ms":0.68,"inflow_m":60.0,"outflow_m":180.0,"status":"COMFORTABLE"},
+      {"zone_name":"FANSPHERE Gate","type":"gate","occupancy_pct":61.7,"congestion_pct":2.1,"speed_ms":0.68,"inflow_m":60.0,"outflow_m":180.0,"status":"COMFORTABLE"},
       {"zone_name":"AMEX Gate","type":"gate","occupancy_pct":56.3,"congestion_pct":1.4,"speed_ms":0.78,"inflow_m":50.0,"outflow_m":170.0,"status":"COMFORTABLE"},
       {"zone_name":"Verizon Gate","type":"gate","occupancy_pct":51.4,"congestion_pct":0.8,"speed_ms":0.87,"inflow_m":45.0,"outflow_m":160.0,"status":"COMFORTABLE"},
       {"zone_name":"HCLTech Gate","type":"gate","occupancy_pct":46.8,"congestion_pct":2.7,"speed_ms":0.96,"inflow_m":40.0,"outflow_m":150.0,"status":"COMFORTABLE"},
@@ -103,7 +103,7 @@
     "timestamp": "T+13:30",
     "phase": "halftime_end",
     "zones": [
-      {"zone_name":"MetLife Gate","type":"gate","occupancy_pct":31.4,"congestion_pct":1.4,"speed_ms":1.28,"inflow_m":20.0,"outflow_m":50.0,"status":"COMFORTABLE"},
+      {"zone_name":"FANSPHERE Gate","type":"gate","occupancy_pct":31.4,"congestion_pct":1.4,"speed_ms":1.28,"inflow_m":20.0,"outflow_m":50.0,"status":"COMFORTABLE"},
       {"zone_name":"AMEX Gate","type":"gate","occupancy_pct":26.8,"congestion_pct":2.2,"speed_ms":1.36,"inflow_m":18.0,"outflow_m":45.0,"status":"COMFORTABLE"},
       {"zone_name":"Verizon Gate","type":"gate","occupancy_pct":23.1,"congestion_pct":0.5,"speed_ms":1.42,"inflow_m":16.0,"outflow_m":40.0,"status":"COMFORTABLE"},
       {"zone_name":"HCLTech Gate","type":"gate","occupancy_pct":19.6,"congestion_pct":1.1,"speed_ms":1.47,"inflow_m":14.0,"outflow_m":35.0,"status":"COMFORTABLE"},

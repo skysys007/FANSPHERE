@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MetLife Stadium Architecture</title>
+  <title>FANSPHERE Architecture</title>
   
-  <meta name="description" content="Detailed Architectural Layout of MetLife Stadium" />
+  <meta name="description" content="Detailed Architectural Layout of FANSPHERE" />
   
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2338bdf8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z'/></svg>" />
 
@@ -468,6 +468,30 @@
       .sm\:top-24 { top: 6rem; }
       .sm\:left-8 { left: 2rem; }
     }
+
+    /* Custom Scrollbar - Sleek & Modern */
+    .custom-scrollbar::-webkit-scrollbar,
+    ::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    
+    .custom-scrollbar::-webkit-scrollbar-track,
+    ::-webkit-scrollbar-track {
+      background: rgba(2, 6, 23, 0.4);
+      border-radius: 10px;
+    }
+    
+    .custom-scrollbar::-webkit-scrollbar-thumb,
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, #0ea5e9, #10b981);
+      border-radius: 10px;
+    }
+    
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover,
+    ::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(180deg, #38bdf8, #34d399);
+    }
   </style>
 </head>
 <body class="bg-grid text-slate-800">
@@ -502,9 +526,9 @@
 
   <!-- Header Overlay -->
   <div class="absolute top-4 left-4 sm:top-6 sm:left-8 z-10 pointer-events-none">
-    <div class="text-[8px] sm:text-[10px] text-sky-600 font-mono tracking-[0.3em] uppercase mb-1">Architectural Blueprint</div>
+    <div class="text-[8px] sm:text-[10px] text-sky-600 font-mono tracking-[0.3em] uppercase mb-1">MetLife Stadium</div>
     <h1 class="text-2xl sm:text-4xl font-outfit font-black text-slate-100 tracking-tight drop-shadow-sm flex flex-col sm:flex-row items-start sm:items-center gap-1 sm:gap-3">
-      <span data-i18n="title">METLIFE STADIUM</span>
+      <span data-i18n="title">FANSPHERE</span>
       <span data-i18n="scaleBadge" class="bg-sky-900/30 text-sky-400 border border-sky-700 text-[10px] sm:text-xs px-2 py-1 rounded tracking-widest font-bold">100% SCALE</span>
     </h1>
     <div class="flex items-center gap-3 mt-2">
@@ -597,7 +621,7 @@
       </button>
     </div>
     <div id="chat-history" class="p-5 flex-1 overflow-y-auto flex flex-col gap-4 text-sm font-sans">
-       <div class="self-start bg-slate-800 text-slate-200 border border-slate-700 px-4 py-2 rounded-2xl rounded-tl-sm max-w-[85%] shadow-md leading-relaxed" data-i18n="welcomeMessage">Welcome to MetLife Stadium! I am your AI concierge. Ask me about the Live Heatmap, finding the shortest Route, or exploring VIP Suites.</div>
+       <div class="self-start bg-slate-800 text-slate-200 border border-slate-700 px-4 py-2 rounded-2xl rounded-tl-sm max-w-[85%] shadow-md leading-relaxed" data-i18n="welcomeMessage">Welcome to FANSPHERE! I am your AI concierge. Ask me about the Live Heatmap, finding the shortest Route, or exploring VIP Suites.</div>
     </div>
     <div class="p-4 border-t border-slate-800 bg-slate-950/90">
       <form id="chat-form" class="flex gap-2 relative">
@@ -734,9 +758,17 @@
           </div>
         </div>
       </div>
-      <button onclick="document.getElementById('crowd-intel-panel').classList.add('hidden')" class="p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors">
-        <i data-lucide="x" class="w-6 h-6"></i>
-      </button>
+      <div class="flex items-center gap-4">
+        <button onclick="document.getElementById('incidents-sidebar').classList.toggle('translate-x-full'); if(!window.lucideIconsCreated){lucide.createIcons(); window.lucideIconsCreated=true;}" class="flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-lg transition-colors font-bold text-sm relative">
+          <i data-lucide="bell" class="w-4 h-4 text-amber-400"></i>
+          Incidents & History
+          <span id="incident-badge-ping" class="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-ping hidden"></span>
+          <span id="incident-badge-core" class="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full hidden"></span>
+        </button>
+        <button onclick="document.getElementById('crowd-intel-panel').classList.add('hidden')" class="p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors">
+          <i data-lucide="x" class="w-6 h-6"></i>
+        </button>
+      </div>
     </div>
     
     <!-- Top KPIs -->
@@ -759,21 +791,46 @@
         </div>
       </div>
 
-      <!-- Right Sidebar: Incidents & Trends -->
-      <div class="w-96 flex flex-col bg-slate-900/30 overflow-hidden">
+      <!-- Eco & Sustainability (New Section) -->
+      <div class="w-80 border-r border-slate-800 flex flex-col overflow-hidden bg-emerald-950/10">
+        <div class="p-6 border-b border-emerald-900/30 flex items-center gap-2">
+          <i data-lucide="leaf" class="w-5 h-5 text-emerald-400"></i>
+          <h3 class="text-lg font-bold text-emerald-200">Eco & Sustainability</h3>
+        </div>
+        <div class="p-6 flex-1 overflow-y-auto custom-scrollbar">
+           <div id="ci-sustainability" class="space-y-4">
+              <!-- Populated by JS -->
+           </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Slide-over Sidebar: Incidents & History -->
+    <div id="incidents-sidebar" class="absolute right-0 top-0 bottom-0 w-[400px] bg-slate-950/95 backdrop-blur-2xl border-l border-slate-800 flex flex-col z-[150] transform translate-x-full transition-transform duration-300 shadow-2xl">
+      <div class="p-6 border-b border-slate-800 flex justify-between items-center bg-slate-900/50">
+        <h3 class="text-lg font-bold text-white flex items-center gap-2">
+          <i data-lucide="bell" class="w-5 h-5 text-amber-500"></i>
+          Incidents & History
+        </h3>
+        <button onclick="document.getElementById('incidents-sidebar').classList.add('translate-x-full')" class="text-slate-400 hover:text-white p-1 rounded hover:bg-slate-800 transition-colors">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <div class="flex-1 flex flex-col overflow-hidden">
         <div class="flex-1 p-6 flex flex-col overflow-hidden border-b border-slate-800">
           <div class="flex items-center gap-2 mb-4">
             <i data-lucide="alert-triangle" class="w-4 h-4 text-amber-500"></i>
-            <h3 class="text-lg font-bold text-slate-200">Incident Feed</h3>
+            <h3 class="font-bold text-slate-200 text-sm uppercase tracking-wider">Incident Feed</h3>
           </div>
           <div id="ci-alerts" class="flex-1 overflow-y-auto space-y-4 pr-2 custom-scrollbar">
              <!-- Populated by JS -->
           </div>
         </div>
-        <div class="h-1/3 p-6 flex flex-col overflow-hidden">
+        <div class="flex-1 p-6 flex flex-col overflow-hidden bg-slate-900/20">
           <div class="flex items-center gap-2 mb-4">
             <i data-lucide="history" class="w-4 h-4 text-sky-400"></i>
-            <h3 class="text-lg font-bold text-slate-200">Action History</h3>
+            <h3 class="font-bold text-slate-200 text-sm uppercase tracking-wider">Action History</h3>
           </div>
           <div id="ci-action-log" class="flex-1 overflow-y-auto space-y-2 pr-2 custom-scrollbar">
              <!-- Populated by JS -->
@@ -781,6 +838,7 @@
         </div>
       </div>
     </div>
+
   </div>
 
   <!-- EMERGENCY MODAL -->
@@ -886,7 +944,7 @@
     // ==========================================
     window.uiLang = 'en';
     const uiDict = {
-      title: { en: "METLIFE STADIUM", es: "ESTADIO METLIFE", fr: "STADE METLIFE", de: "METLIFE STADION", it: "STADIO METLIFE", pt: "ESTÁDIO METLIFE" },
+      title: { en: "FANSPHERE", es: "ESTADIO FANSPHERE", fr: "STADE FANSPHERE", de: "FANSPHERE STADION", it: "STADIO FANSPHERE", pt: "ESTÁDIO FANSPHERE" },
       scaleBadge: { en: "100% SCALE", es: "ESCALA 100%", fr: "ÉCHELLE 100%", de: "100% MASSSTAB", it: "SCALA 100%", pt: "ESCALA 100%" },
       coords: { en: "COORDINATES: 40.8136° N, 74.0745° W", es: "COORDENADAS: 40.8136° N, 74.0745° W", fr: "COORDONNÉES: 40.8136° N, 74.0745° W", de: "KOORDINATEN: 40.8136° N, 74.0745° W", it: "COORDINATE: 40.8136° N, 74.0745° W", pt: "COORDENADAS: 40.8136° N, 74.0745° W" },
       capacity: { en: "CAPACITY: 82,500", es: "CAPACIDAD: 82,500", fr: "CAPACITÉ: 82 500", de: "KAPAZITÄT: 82.500", it: "CAPACITÀ: 82.500", pt: "CAPACIDADE: 82.500" },
@@ -911,7 +969,7 @@
       stepToReach: { en: "to reach", es: "para llegar a", fr: "pour atteindre", de: "um zu erreichen:", it: "per raggiungere", pt: "para chegar a" },
       stepWalkTo: { en: "Walk to", es: "Camina hacia", fr: "Marchez vers", de: "Gehen Sie zu", it: "Cammina verso", pt: "Caminhe para" },
       stepArrive: { en: "Arrive at", es: "Llega a", fr: "Arrivez à", de: "Ankunft bei", it: "Arriva a", pt: "Chegue a" },
-      welcomeMessage: { en: "Welcome to MetLife Stadium! I am your AI concierge. Ask me about finding the shortest Route, or exploring VIP Suites." }
+      welcomeMessage: { en: "Welcome to FANSPHERE! I am your AI concierge. Ask me about finding the shortest Route, or exploring VIP Suites." }
     };
 
     const supportedLangs = [
@@ -1343,7 +1401,7 @@
       ctx.closePath();
     }
     
-    // MetLife Stadium accurately features 50 sections per level (e.g., 101-150)
+    // FANSPHERE accurately features 50 sections per level (e.g., 101-150)
     const numSections = 50;
     const angleStep = (2 * Math.PI) / numSections;
     
@@ -1409,7 +1467,7 @@
       { id: 'gate-amex', name: 'AMEX Gate', angle: -Math.PI/2 },
       { id: 'gate-hcl', name: 'HCLTech Gate', angle: -0.69 },
       { id: 'gate-verizon', name: 'Verizon Gate', angle: 0.69 },
-      { id: 'gate-metlife', name: 'MetLife Gate', angle: Math.PI/2 },
+      { id: 'gate-fansphere', name: 'FANSPHERE Gate', angle: Math.PI/2 },
       { id: 'gate-moodys', name: 'Moody\'s Gate', angle: Math.PI - 0.69 },
     ].map(g => {
       const r = getStadiumRadius(g.angle, 540, 400); // 540x400 is the outer boundary
@@ -1676,8 +1734,8 @@
       ctx.fillStyle = "rgba(255,255,255,0.8)";
       ctx.font = "bold 14px sans-serif";
       ctx.textAlign = "center";
-      ctx.save(); ctx.translate(80, 20); ctx.rotate(Math.PI); ctx.fillText("METLIFE", 0, 0); ctx.restore();
-      ctx.fillText("METLIFE", 80, 350);
+      ctx.save(); ctx.translate(80, 20); ctx.rotate(Math.PI); ctx.fillText("FANSPHERE", 0, 0); ctx.restore();
+      ctx.fillText("FANSPHERE", 80, 350);
       
       ctx.strokeStyle = "rgba(255,255,255,0.4)";
       ctx.lineWidth = 1;
@@ -2270,7 +2328,7 @@
           gatesList.forEach(g => uniqueGates.set(g.name, g));
           
           Array.from(uniqueGates.values()).forEach(g => {
-             html += `<div>${g.name.replace('Gate', '').trim()}: <span class="${g.density > 0.7 ? 'text-red-400 font-bold' : 'text-emerald-400'}">${g.queueLength}</span></div>`;
+             html += `<div>${g.name.replace('Gate', '').trim()}: <span class="${g.density > 0.7 ? 'text-red-400 font-bold' : 'text-emerald-400'}">Q:${g.queueLength}</span> <span class="text-slate-500 ml-1">F:${Math.floor(g.occupancy)}/m</span></div>`;
           });
           html += `</div>`;
           document.getElementById('sim-live-stats').innerHTML = html;
@@ -2282,6 +2340,15 @@
     
     // Default initial selection
     updateSimPhaseUI('pre_match');
+
+    // SUSTAINABILITY METRICS
+    // ==========================================
+    const SUSTAINABILITY_METRICS = {
+      smartBins: { label: "Smart Bin Recyclables", baseline: 42, unit: "%", warningThreshold: 75, criticalThreshold: 90, icon: "recycle" },
+      solarGrid: { label: "Solar Energy Output", baseline: 68, unit: "kW", max: 150, icon: "sun" },
+      waterUsage: { label: "Water Consumption", baseline: 35, unit: "kL", max: 100, warningThreshold: 70, icon: "droplets" },
+      carbonOffset: { label: "Carbon Offset", baseline: 2.4, unit: "tons CO₂", target: 5.0, icon: "leaf" }
+    };
 
     // FOOD STALLS LOGIC
     // ==========================================
@@ -2554,7 +2621,7 @@
 
     const aiResponseCache = new Map([
        ["lost fan looking for a seat.", { message: "Don't worry, I can help you find your seat! If you know your section number, I can map the shortest route from your current location. If you need immediate assistance, please head to the nearest Guest Services booth at Section 124.", action: { type: "route", startId: "gate-amex", destId: "sec-124" } }],
-       ["wheelchair user needing an accessible route.", { message: "MetLife Stadium is fully ADA accessible. I have mapped a route using the concourse elevators from the Verizon Gate to the ADA seating area at Section 139. Elevators are located at all VIP entrances.", action: { type: "route", startId: "gate-verizon", destId: "sec-139" } }],
+       ["wheelchair user needing an accessible route.", { message: "FANSPHERE is fully ADA accessible. I have mapped a route using the concourse elevators from the Verizon Gate to the ADA seating area at Section 139. Elevators are located at all VIP entrances.", action: { type: "route", startId: "gate-verizon", destId: "sec-139" } }],
        ["spanish-speaking fan asking for halal food.", { message: "¡Hola! Las mejores opciones de comida Halal se encuentran en el carrito 'Halal Guys', ubicado en el nivel 100, cerca de la Sección 118. He trazado la ruta más rápida desde la puerta principal para ti.", action: { type: "route", startId: "gate-amex", destId: "sec-118" } }],
        ["medical emergency.", { message: "<b class='text-red-500'>If this is a life-threatening emergency, please call 911 immediately.</b><br>For stadium medical assistance, First Aid stations are located on every level. I have routed you to the nearest First Aid station at Section 103.", action: { type: "route", startId: "gate-amex", destId: "sec-103" } }],
        ["parking reroute after the match.", { message: "Post-match traffic is currently heavy near the HCLTech Gate. I recommend exiting through the Moody's Gate to access Parking Lots F and G for a faster departure. I've routed you there.", action: { type: "route", startId: "sec-110", destId: "gate-moodys" } }]
@@ -2684,7 +2751,7 @@ ALWAYS respond in the user's language (${lang}). Ensure your tool parameters are
             
             // Auto-calculate closest gate if unspecified
             if (finalStartId === 'auto' || !stadiumGraph.nodes[finalStartId]) {
-               const gates = ['gate-amex', 'gate-hcl', 'gate-verizon', 'gate-metlife', 'gate-moodys'];
+               const gates = ['gate-amex', 'gate-hcl', 'gate-verizon', 'gate-fansphere', 'gate-moodys'];
                let bestGate = 'gate-amex';
                let minAvgDist = Infinity;
                const destNode = stadiumGraph.nodes[args.destId];
@@ -2914,6 +2981,70 @@ ALWAYS respond in the user's language (${lang}). Ensure your tool parameters are
         `).reverse().join('');
       }
       
+      // Update Sustainability Metrics
+      const sustainEl = document.getElementById('ci-sustainability');
+      if (sustainEl && typeof SUSTAINABILITY_METRICS !== 'undefined') {
+        const sm = SUSTAINABILITY_METRICS;
+        // Add some slight organic fluctuation
+        const fluctuatedGrid = Math.min(sm.solarGrid.max, Math.max(0, sm.solarGrid.baseline + (Math.random() * 4 - 2)));
+        const fluctuatedWater = Math.min(sm.waterUsage.max, Math.max(0, sm.waterUsage.baseline + (Math.random() * 2 - 1)));
+        
+        sustainEl.innerHTML = `
+          <div class="p-3 bg-slate-800/50 rounded border border-emerald-500/30 shadow-sm">
+            <div class="flex justify-between items-center mb-2">
+              <div class="flex items-center gap-2 text-sm text-slate-200 font-bold">
+                 <i data-lucide="recycle" class="w-4 h-4 text-emerald-400"></i>
+                 <span>${sm.smartBins.label}</span>
+              </div>
+              <div class="font-mono text-sm font-bold text-emerald-400">${sm.smartBins.baseline}${sm.smartBins.unit}</div>
+            </div>
+            <div class="w-full bg-slate-900 rounded-full h-2 mt-1 border border-slate-700 overflow-hidden">
+              <div class="bg-emerald-500 h-2 rounded-full" style="width: ${sm.smartBins.baseline}%"></div>
+            </div>
+          </div>
+          
+          <div class="p-3 bg-slate-800/50 rounded border border-amber-500/30 shadow-sm">
+            <div class="flex justify-between items-center mb-2">
+              <div class="flex items-center gap-2 text-sm text-slate-200 font-bold">
+                 <i data-lucide="sun" class="w-4 h-4 text-amber-400"></i>
+                 <span>${sm.solarGrid.label}</span>
+              </div>
+              <div class="font-mono text-sm font-bold text-amber-400">${fluctuatedGrid.toFixed(1)} ${sm.solarGrid.unit}</div>
+            </div>
+            <div class="w-full bg-slate-900 rounded-full h-2 mt-1 border border-slate-700 overflow-hidden">
+              <div class="bg-amber-500 h-2 rounded-full" style="width: ${(fluctuatedGrid / sm.solarGrid.max) * 100}%"></div>
+            </div>
+          </div>
+          
+          <div class="p-3 bg-slate-800/50 rounded border border-blue-500/30 shadow-sm">
+            <div class="flex justify-between items-center mb-2">
+              <div class="flex items-center gap-2 text-sm text-slate-200 font-bold">
+                 <i data-lucide="droplets" class="w-4 h-4 text-blue-400"></i>
+                 <span>${sm.waterUsage.label}</span>
+              </div>
+              <div class="font-mono text-sm font-bold text-blue-400">${fluctuatedWater.toFixed(1)} ${sm.waterUsage.unit}</div>
+            </div>
+            <div class="w-full bg-slate-900 rounded-full h-2 mt-1 border border-slate-700 overflow-hidden">
+              <div class="bg-blue-500 h-2 rounded-full" style="width: ${(fluctuatedWater / sm.waterUsage.max) * 100}%"></div>
+            </div>
+          </div>
+          
+          <div class="p-3 bg-slate-800/50 rounded border border-green-500/30 shadow-sm">
+            <div class="flex justify-between items-center mb-2">
+              <div class="flex items-center gap-2 text-sm text-slate-200 font-bold">
+                 <i data-lucide="leaf" class="w-4 h-4 text-green-400"></i>
+                 <span>${sm.carbonOffset.label}</span>
+              </div>
+              <div class="font-mono text-sm font-bold text-green-400">${sm.carbonOffset.baseline.toFixed(2)} ${sm.carbonOffset.unit}</div>
+            </div>
+            <div class="w-full bg-slate-900 rounded-full h-2 mt-1 border border-slate-700 overflow-hidden">
+              <div class="bg-green-500 h-2 rounded-full" style="width: ${(sm.carbonOffset.baseline / sm.carbonOffset.target) * 100}%"></div>
+            </div>
+          </div>
+        `;
+        lucide.createIcons();
+      }
+      
       // Delegate action clicks
       if (!window.actionLogDelegated) {
         alertsEl.addEventListener('click', (ev) => {
@@ -2985,6 +3116,20 @@ ALWAYS respond in the user's language (${lang}). Ensure your tool parameters are
           });
       }
 
+      // Update red blinking dot
+      const pingBadge = document.getElementById('incident-badge-ping');
+      const coreBadge = document.getElementById('incident-badge-core');
+      const hasActiveIncidents = displayAlerts.some(a => !a.lifecyclePhase || a.lifecyclePhase === 'taking_action');
+      if (pingBadge && coreBadge) {
+          if (hasActiveIncidents) {
+              pingBadge.classList.remove('hidden');
+              coreBadge.classList.remove('hidden');
+          } else {
+              pingBadge.classList.add('hidden');
+              coreBadge.classList.add('hidden');
+          }
+      }
+
       if (displayAlerts.length === 0) {
         alertsEl.innerHTML = '<div class="p-4 bg-slate-800/30 border border-slate-700/30 rounded-lg text-center text-sm text-emerald-500 font-bold"><i data-lucide="check-circle" class="w-6 h-6 mx-auto mb-2 opacity-50"></i>No Critical Incidents</div>';
       } else {
@@ -3042,7 +3187,7 @@ ALWAYS respond in the user's language (${lang}). Ensure your tool parameters are
       if (isSimRunning) {
         const gateNames = {
            'gate-amex': 'AMEX Gate', 'gate-hcl': 'HCLTech Gate', 
-           'gate-verizon': 'Verizon Gate', 'gate-metlife': 'MetLife Gate', 
+           'gate-verizon': 'Verizon Gate', 'gate-fansphere': 'FANSPHERE Gate', 
            'gate-moodys': "Moody's Gate"
         };
         const formattedGates = (data.gates || []).map(g => {
@@ -3101,8 +3246,8 @@ ALWAYS respond in the user's language (${lang}). Ensure your tool parameters are
                return target;
             })(),
             queueLength: g.queueLength,
-            enteringPerMin: g.type === 'Entry' ? Math.floor(g.queueLength / 2) : 0,
-            leavingPerMin: g.type === 'Exit' ? Math.floor(g.queueLength / 2) : 0,
+            enteringPerMin: g.type === 'Entry' ? Math.floor(g.currentFlow) : 0,
+            leavingPerMin: g.type === 'Exit' ? Math.floor(g.currentFlow) : 0,
             movementSpeed: isCong ? '0.2' : '1.0'
          };
       });
@@ -3253,6 +3398,39 @@ ALWAYS respond in the user's language (${lang}). Ensure your tool parameters are
                 sec.peopleEnteringPerMin = s.peopleEnteringPerMin !== undefined ? s.peopleEnteringPerMin : sec.peopleEnteringPerMin;
                 sec.peopleLeavingPerMin = s.peopleLeavingPerMin !== undefined ? s.peopleLeavingPerMin : sec.peopleLeavingPerMin;
                 sec.crowdDensity = s.crowdDensity !== undefined ? s.crowdDensity : sec.occupancyRate;
+             }
+          });
+       }
+       
+       if (data.zones) {
+          data.zones.forEach(zone => {
+             let targetObj = null;
+             for (let gate of sim.entryGates.values()) if (gate.name === zone.zone_name) targetObj = gate;
+             if (!targetObj) for (let gate of sim.exitGates.values()) if (gate.name === zone.zone_name) targetObj = gate;
+             if (!targetObj) for (let sec of sim.sections.values()) if (sec.name === zone.zone_name) targetObj = sec;
+             
+             if (!targetObj) {
+                const secMatch = zone.zone_name.match(/\d{3}/);
+                if (secMatch) {
+                   const fallbackName = `Section ${secMatch[0]}`;
+                   for (let sec of sim.sections.values()) if (sec.name === fallbackName) targetObj = sec;
+                }
+             }
+             
+             if (targetObj) {
+                if (zone.type === 'gate') {
+                   targetObj.queueLength = Math.floor((zone.congestion_pct / 100) * targetObj.capacity);
+                   targetObj.occupancy = zone.inflow_m;
+                   targetObj.density = zone.congestion_pct / 100;
+                   targetObj.status = zone.congestion_pct > 80 ? 'congested' : 'normal';
+                } else {
+                   targetObj.occupancyRate = zone.occupancy_pct / 100;
+                   targetObj.occupiedSeats = Math.floor(targetObj.capacity * targetObj.occupancyRate);
+                   targetObj.movementSpeed = zone.speed_ms;
+                   targetObj.peopleEnteringPerMin = zone.inflow_m;
+                   targetObj.peopleLeavingPerMin = zone.outflow_m;
+                   targetObj.crowdDensity = zone.occupancy_pct;
+                }
              }
           });
        }

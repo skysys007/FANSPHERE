@@ -123,6 +123,22 @@ class StadiumSimulation {
           gate.density = 0;
           gate.status = 'normal';
        });
+    } else if (phase === 'post_match') {
+       // Instantly fast-forward section occupancy to 70-80% so people have to leave
+       this.sections.forEach(sec => {
+          const targetOccupancy = sec.capacity * (0.70 + Math.random() * 0.10);
+          if (sec.occupiedSeats < targetOccupancy) {
+             sec.occupiedSeats = targetOccupancy;
+             this._updateSectionMetrics(sec);
+          }
+       });
+       // Clear entry gates, set some exit gate queues
+       this.entryGates.forEach(gate => { gate.queueLength = 0; gate.occupancy = 0; });
+       this.exitGates.forEach(gate => {
+          gate.queueLength = 50 + Math.floor(Math.random() * 100);
+          gate.occupancy = 50 + Math.random() * 30;
+          gate.status = 'congested';
+       });
     }
   }
 
@@ -439,8 +455,9 @@ class StadiumSimulation {
 }
 
 // Export for module usage or attach to window
+if (typeof window !== 'undefined') {
+  window.StadiumSimulation = StadiumSimulation;
+}
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = { StadiumSimulation };
-} else if (typeof window !== 'undefined') {
-  window.StadiumSimulation = StadiumSimulation;
 }

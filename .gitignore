@@ -41,3 +41,4 @@ coverage/
 *.pdf
 report.tex
 *.tex
+.vercel

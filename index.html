@@ -36,7 +36,10 @@
         send: '<line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>',
         database: '<ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>',
         'hard-drive': '<line x1="22" y1="12" x2="2" y2="12"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/><line x1="6" y1="16" x2="6.01" y2="16"/><line x1="10" y1="16" x2="10.01" y2="16"/>',
-        coffee: '<path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" x2="6" y1="2" y2="4"/><line x1="10" x2="10" y1="2" y2="4"/><line x1="14" x2="14" y1="2" y2="4"/>'
+        coffee: '<path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" x2="6" y1="2" y2="4"/><line x1="10" x2="10" y1="2" y2="4"/><line x1="14" x2="14" y1="2" y2="4"/>',
+        recycle: '<path d="M7 19H4.815a1.83 1.83 0 0 1-1.57-.881 1.785 1.785 0 0 1-.004-1.784L7.196 9.5M11 19h8.203a1.83 1.83 0 0 0 1.556-.89 1.784 1.784 0 0 0 0-1.775l-4.204-7.3M14 8V5M17 9l-3-3M22 15l-3 3M11 5l3-3M4 15l3 3M7 9l-3-3"/>',
+        droplets: '<path d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z"/><path d="M12.56 6.6A10.97 10.97 0 0 0 14 3.02c.5 2.5 2 4.9 4 6.5s3 3.5 3 5.5a6.98 6.98 0 0 1-11.91 4.97"/>',
+        leaf: '<path d="M11 20A7 7 0 0 1 14 6a7 7 0 0 1 7 7c0 5-5 7-5 7a7 7 0 0 1-5-5Z"/>'
       },
       createIcons: function() {
         document.querySelectorAll('[data-lucide]').forEach(el => {
@@ -927,10 +930,10 @@
     </div>
   </div>
 
-  <script src="js/crowdIntelligence.js"></script>
-  <script src="js/simulation.js"></script>
-  <script src="js/parking.js"></script>
-  <script>
+  <script type="module">
+    import './js/crowdIntelligence.js';
+    import './js/simulation.js';
+    import './js/parking.js';
     // ==========================================
     // API KEY CONFIGURATION
     // ==========================================
@@ -1534,8 +1537,8 @@
     /* Seat drill-down removed for performance */
 
     // Initialize and Populate Stadium Simulation
-    if (typeof StadiumSimulation !== 'undefined') {
-      window.stadiumSim = new StadiumSimulation(12345);
+    if (window.StadiumSimulation) {
+      window.stadiumSim = new window.StadiumSimulation(12345);
       
       // Auto-populate from stadiumGraph
       Object.values(stadiumGraph.nodes).forEach(node => {
@@ -2350,6 +2353,75 @@
       carbonOffset: { label: "Carbon Offset", baseline: 2.4, unit: "tons CO₂", target: 5.0, icon: "leaf" }
     };
 
+    window.renderSustainability = function() {
+      const sustainEl = document.getElementById('ci-sustainability');
+      if (sustainEl && typeof SUSTAINABILITY_METRICS !== 'undefined') {
+        const sm = SUSTAINABILITY_METRICS;
+        const fluctuatedGrid = Math.min(sm.solarGrid.max, Math.max(0, sm.solarGrid.baseline + (Math.random() * 4 - 2)));
+        const fluctuatedWater = Math.min(sm.waterUsage.max, Math.max(0, sm.waterUsage.baseline + (Math.random() * 2 - 1)));
+        
+        sustainEl.innerHTML = `
+          <div class="p-3 bg-slate-800/50 rounded border border-emerald-500/30 shadow-sm">
+            <div class="flex justify-between items-center mb-2">
+              <div class="flex items-center gap-2 text-sm text-slate-200 font-bold">
+                 <i data-lucide="recycle" class="w-4 h-4 text-emerald-400"></i>
+                 <span>${sm.smartBins.label}</span>
+              </div>
+              <div class="font-mono text-sm font-bold text-emerald-400">${sm.smartBins.baseline}${sm.smartBins.unit}</div>
+            </div>
+            <div class="w-full bg-slate-900 rounded-full h-2 mt-1 border border-slate-700 overflow-hidden">
+              <div class="bg-emerald-500 h-2 rounded-full" style="width: ${sm.smartBins.baseline}%"></div>
+            </div>
+          </div>
+          
+          <div class="p-3 bg-slate-800/50 rounded border border-amber-500/30 shadow-sm">
+            <div class="flex justify-between items-center mb-2">
+              <div class="flex items-center gap-2 text-sm text-slate-200 font-bold">
+                 <i data-lucide="sun" class="w-4 h-4 text-amber-400"></i>
+                 <span>${sm.solarGrid.label}</span>
+              </div>
+              <div class="font-mono text-sm font-bold text-amber-400">${fluctuatedGrid.toFixed(1)} ${sm.solarGrid.unit}</div>
+            </div>
+            <div class="w-full bg-slate-900 rounded-full h-2 mt-1 border border-slate-700 overflow-hidden">
+              <div class="bg-amber-500 h-2 rounded-full" style="width: ${(fluctuatedGrid / sm.solarGrid.max) * 100}%"></div>
+            </div>
+          </div>
+          
+          <div class="p-3 bg-slate-800/50 rounded border border-blue-500/30 shadow-sm">
+            <div class="flex justify-between items-center mb-2">
+              <div class="flex items-center gap-2 text-sm text-slate-200 font-bold">
+                 <i data-lucide="droplets" class="w-4 h-4 text-blue-400"></i>
+                 <span>${sm.waterUsage.label}</span>
+              </div>
+              <div class="font-mono text-sm font-bold text-blue-400">${fluctuatedWater.toFixed(1)} ${sm.waterUsage.unit}</div>
+            </div>
+            <div class="w-full bg-slate-900 rounded-full h-2 mt-1 border border-slate-700 overflow-hidden">
+              <div class="bg-blue-500 h-2 rounded-full" style="width: ${(fluctuatedWater / sm.waterUsage.max) * 100}%"></div>
+            </div>
+          </div>
+          
+          <div class="p-3 bg-slate-800/50 rounded border border-green-500/30 shadow-sm">
+            <div class="flex justify-between items-center mb-2">
+              <div class="flex items-center gap-2 text-sm text-slate-200 font-bold">
+                 <i data-lucide="leaf" class="w-4 h-4 text-green-400"></i>
+                 <span>${sm.carbonOffset.label}</span>
+              </div>
+              <div class="font-mono text-sm font-bold text-green-400">${sm.carbonOffset.baseline.toFixed(2)} ${sm.carbonOffset.unit}</div>
+            </div>
+            <div class="w-full bg-slate-900 rounded-full h-2 mt-1 border border-slate-700 overflow-hidden">
+              <div class="bg-green-500 h-2 rounded-full" style="width: ${(sm.carbonOffset.baseline / sm.carbonOffset.target) * 100}%"></div>
+            </div>
+          </div>
+        `;
+        if (window.lucide) window.lucide.createIcons();
+      }
+    };
+    
+    // Initial render so the panel isn't completely empty before simulation ticks
+    document.addEventListener('DOMContentLoaded', () => {
+       window.renderSustainability();
+    });
+
     // FOOD STALLS LOGIC
     // ==========================================
     window.FOOD_STALLS = [
@@ -2982,67 +3054,8 @@ ALWAYS respond in the user's language (${lang}). Ensure your tool parameters are
       }
       
       // Update Sustainability Metrics
-      const sustainEl = document.getElementById('ci-sustainability');
-      if (sustainEl && typeof SUSTAINABILITY_METRICS !== 'undefined') {
-        const sm = SUSTAINABILITY_METRICS;
-        // Add some slight organic fluctuation
-        const fluctuatedGrid = Math.min(sm.solarGrid.max, Math.max(0, sm.solarGrid.baseline + (Math.random() * 4 - 2)));
-        const fluctuatedWater = Math.min(sm.waterUsage.max, Math.max(0, sm.waterUsage.baseline + (Math.random() * 2 - 1)));
-        
-        sustainEl.innerHTML = `
-          <div class="p-3 bg-slate-800/50 rounded border border-emerald-500/30 shadow-sm">
-            <div class="flex justify-between items-center mb-2">
-              <div class="flex items-center gap-2 text-sm text-slate-200 font-bold">
-                 <i data-lucide="recycle" class="w-4 h-4 text-emerald-400"></i>
-                 <span>${sm.smartBins.label}</span>
-              </div>
-              <div class="font-mono text-sm font-bold text-emerald-400">${sm.smartBins.baseline}${sm.smartBins.unit}</div>
-            </div>
-            <div class="w-full bg-slate-900 rounded-full h-2 mt-1 border border-slate-700 overflow-hidden">
-              <div class="bg-emerald-500 h-2 rounded-full" style="width: ${sm.smartBins.baseline}%"></div>
-            </div>
-          </div>
-          
-          <div class="p-3 bg-slate-800/50 rounded border border-amber-500/30 shadow-sm">
-            <div class="flex justify-between items-center mb-2">
-              <div class="flex items-center gap-2 text-sm text-slate-200 font-bold">
-                 <i data-lucide="sun" class="w-4 h-4 text-amber-400"></i>
-                 <span>${sm.solarGrid.label}</span>
-              </div>
-              <div class="font-mono text-sm font-bold text-amber-400">${fluctuatedGrid.toFixed(1)} ${sm.solarGrid.unit}</div>
-            </div>
-            <div class="w-full bg-slate-900 rounded-full h-2 mt-1 border border-slate-700 overflow-hidden">
-              <div class="bg-amber-500 h-2 rounded-full" style="width: ${(fluctuatedGrid / sm.solarGrid.max) * 100}%"></div>
-            </div>
-          </div>
-          
-          <div class="p-3 bg-slate-800/50 rounded border border-blue-500/30 shadow-sm">
-            <div class="flex justify-between items-center mb-2">
-              <div class="flex items-center gap-2 text-sm text-slate-200 font-bold">
-                 <i data-lucide="droplets" class="w-4 h-4 text-blue-400"></i>
-                 <span>${sm.waterUsage.label}</span>
-              </div>
-              <div class="font-mono text-sm font-bold text-blue-400">${fluctuatedWater.toFixed(1)} ${sm.waterUsage.unit}</div>
-            </div>
-            <div class="w-full bg-slate-900 rounded-full h-2 mt-1 border border-slate-700 overflow-hidden">
-              <div class="bg-blue-500 h-2 rounded-full" style="width: ${(fluctuatedWater / sm.waterUsage.max) * 100}%"></div>
-            </div>
-          </div>
-          
-          <div class="p-3 bg-slate-800/50 rounded border border-green-500/30 shadow-sm">
-            <div class="flex justify-between items-center mb-2">
-              <div class="flex items-center gap-2 text-sm text-slate-200 font-bold">
-                 <i data-lucide="leaf" class="w-4 h-4 text-green-400"></i>
-                 <span>${sm.carbonOffset.label}</span>
-              </div>
-              <div class="font-mono text-sm font-bold text-green-400">${sm.carbonOffset.baseline.toFixed(2)} ${sm.carbonOffset.unit}</div>
-            </div>
-            <div class="w-full bg-slate-900 rounded-full h-2 mt-1 border border-slate-700 overflow-hidden">
-              <div class="bg-green-500 h-2 rounded-full" style="width: ${(sm.carbonOffset.baseline / sm.carbonOffset.target) * 100}%"></div>
-            </div>
-          </div>
-        `;
-        lucide.createIcons();
+      if (window.renderSustainability) {
+         window.renderSustainability();
       }
       
       // Delegate action clicks

@@ -507,8 +507,9 @@ class CrowdIntelligenceEngine {
 }
 
 // Export for module usage or attach to window
+if (typeof window !== 'undefined') {
+  window.CrowdIntelligenceEngine = CrowdIntelligenceEngine;
+}
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = { CrowdIntelligenceEngine };
-} else if (typeof window !== 'undefined') {
-  window.CrowdIntelligenceEngine = CrowdIntelligenceEngine;
 }
